@@ -1,4 +1,4 @@
-package net.astesana.ajlib.swing.framework;
+package net.astesana.ajlib.swing;
 
 import java.awt.Component;
 import java.awt.Window;
