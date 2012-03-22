@@ -20,16 +20,16 @@ import javax.swing.text.PlainDocument;
  * <BR>License : GPL v3
  */
 
-public class CoolJTextField extends JTextField {
+public class TextWidget extends JTextField {
 	private static final long serialVersionUID = 1L;
 
 	public static final String TEXT_PROPERTY = "text"; //$NON-NLS-1$
 	
-	public CoolJTextField() {
+	public TextWidget() {
 		this(0);
 	}
 
-	public CoolJTextField(int nbColumns) {
+	public TextWidget(int nbColumns) {
 		super("", nbColumns); //$NON-NLS-1$
 		this.setDocument(new MyDocument());
 	}
@@ -40,20 +40,20 @@ public class CoolJTextField extends JTextField {
 		
 		@Override
 		public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-			String oldValue = CoolJTextField.this.getText();
+			String oldValue = TextWidget.this.getText();
 			this.ignoreEvents = true;
 			super.replace(offset, length, text, attrs);
 			this.ignoreEvents = false;
-			String newValue = CoolJTextField.this.getText();
-			if (!oldValue.equals(newValue)) CoolJTextField.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			String newValue = TextWidget.this.getText();
+			if (!oldValue.equals(newValue)) TextWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
 		}
 		
 		@Override
 		public void remove(int offs, int len) throws BadLocationException {
-			String oldValue = CoolJTextField.this.getText();
+			String oldValue = TextWidget.this.getText();
 			super.remove(offs, len);
-			String newValue = CoolJTextField.this.getText();
-			if (!ignoreEvents && !oldValue.equals(newValue)) CoolJTextField.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			String newValue = TextWidget.this.getText();
+			if (!ignoreEvents && !oldValue.equals(newValue)) TextWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
 		}
 	}
 }
