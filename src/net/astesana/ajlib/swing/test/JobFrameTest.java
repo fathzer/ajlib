@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.framework.Application;
 import net.astesana.ajlib.swing.worker.JobFrame;
 import net.astesana.ajlib.swing.worker.SwingWorkerJobAdapter;
@@ -30,12 +31,13 @@ public class JobFrameTest extends Application {
 		JButton button = new JButton("Start");
 		pane.add(button);
 		
-		
 		button.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new JobFrame(new Toto()).setVisible(true);
+				JobFrame jobFrame = new JobFrame(new Toto());
+				Utils.centerWindow(jobFrame, getJFrame());
+				jobFrame.setVisible(true);
 			}
 		});
 		return pane;
@@ -53,13 +55,12 @@ public class JobFrameTest extends Application {
 				Thread.sleep(1);
 				if (isCancelled()) return null;
 			}
-			int nb = 10;
+			int nb = 100;
 			setPhase("Longueur = "+nb, nb);
 			for (int i=0;i<nb;i++) {
-				Thread.sleep(300);
+				Thread.sleep(20);
 				try {
 					reportProgress(i);
-					System.out.println (i);
 					if (isCancelled()) return null;
 				} catch (Exception e) {
 					e.printStackTrace();

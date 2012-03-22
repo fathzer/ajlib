@@ -51,9 +51,7 @@ public class JobFrame extends JFrame {
 		contentPane.add(progressPanel, gbc_panel);
 		
 		progressPanel.setSwingWorker(swingAdapter);
-		initProgressBar(swingAdapter);
 		
-		pack();
 		swingAdapter.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -61,27 +59,12 @@ public class JobFrame extends JFrame {
 					if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
 						if (swingAdapter.isCancelled()) {
 							JobFrame.this.dispose();
-						} else {
-							progressPanel.setMessage("done");
-							progressPanel.getProgressBar().setIndeterminate(false);
-							progressPanel.getProgressBar().setValue(progressPanel.getProgressBar().getMaximum());
 						}
 					}
-				} else if (evt.getPropertyName().equals(SwingWorkerJobAdapter.PROGRESS_PROPERTY_NAME)){
-					long absoluteValue = ((Integer)evt.getNewValue())*swingAdapter.getPhaseLength()/100;
-					progressPanel.getProgressBar().setValue((int)absoluteValue);
-				} else if (evt.getPropertyName().equals(SwingWorkerJobAdapter.JOB_PHASE)){
-					progressPanel.setMessage((String)evt.getNewValue());					
-					initProgressBar(swingAdapter);
 				}
 			}
 		});
+		pack();
 		swingAdapter.execute();
-	}
-
-	public void initProgressBar(final SwingWorkerJobAdapter<?, ?> swingAdapter) {
-		int phaseLength = swingAdapter.getPhaseLength();
-		progressPanel.getProgressBar().setIndeterminate(phaseLength<0);
-		if (swingAdapter.getPhaseLength()>0) progressPanel.getProgressBar().setMaximum(swingAdapter.getPhaseLength());
 	}
 }
