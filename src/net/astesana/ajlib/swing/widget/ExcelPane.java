@@ -26,7 +26,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import net.astesana.ajlib.swing.Utils;
-import net.astesana.ajlib.swing.dialog.SafeJFileChooser;
+import net.astesana.ajlib.swing.dialog.FileChooser;
 import net.astesana.ajlib.swing.framework.Application;
 import net.astesana.ajlib.swing.table.RowHeaderRenderer;
 import net.astesana.ajlib.swing.table.TitledRowsTableModel;
@@ -101,7 +101,7 @@ public class ExcelPane extends JPanel {
 			button = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JFileChooser chooser = new SafeJFileChooser(Application.getString("ExcelPane.dialog.title")); //$NON-NLS-1$
+					JFileChooser chooser = new FileChooser(Application.getString("ExcelPane.dialog.title")); //$NON-NLS-1$
 					File file = chooser.showSaveDialog(ExcelPane.this)==JFileChooser.APPROVE_OPTION?chooser.getSelectedFile():null;
 					if (file!=null) {
 						try {

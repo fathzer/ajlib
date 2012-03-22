@@ -24,7 +24,7 @@ import java.beans.PropertyChangeListener;
  * @see SwingWorkerJobAdapter
  */
 public class WorkInProgressPanel extends JPanel {
-	private SwingWorkerJobAdapter<?, ?> worker;
+	private Worker<?, ?> worker;
 	private JLabel message;
 	private JProgressBar progressBar;
 	private JButton btnCancel;
@@ -73,7 +73,7 @@ public class WorkInProgressPanel extends JPanel {
 		workerListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(SwingWorkerJobAdapter.STATE_PROPERTY_NAME)) {
+				if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
 					btnCancel.setEnabled(evt.getNewValue().equals(SwingWorker.StateValue.STARTED));
 					if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
 						if (!worker.isCancelled()) {
@@ -82,10 +82,10 @@ public class WorkInProgressPanel extends JPanel {
 							getProgressBar().setValue(getProgressBar().getMaximum());
 						}
 					}
-				} else if (evt.getPropertyName().equals(SwingWorkerJobAdapter.PROGRESS_PROPERTY_NAME)){
+				} else if (evt.getPropertyName().equals(Worker.PROGRESS_PROPERTY_NAME)){
 					long absoluteValue = ((Integer)evt.getNewValue())*worker.getPhaseLength()/100;
 					getProgressBar().setValue((int)absoluteValue);
-				} else if (evt.getPropertyName().equals(SwingWorkerJobAdapter.JOB_PHASE)){
+				} else if (evt.getPropertyName().equals(Worker.JOB_PHASE)){
 					setMessage((String)evt.getNewValue());					
 					initProgressBar();
 				}
@@ -93,11 +93,11 @@ public class WorkInProgressPanel extends JPanel {
 		};
 	}
 
-	public SwingWorkerJobAdapter<?, ?> getWorker() {
+	public Worker<?, ?> getWorker() {
 		return worker;
 	}
 
-	public void setSwingWorker(SwingWorkerJobAdapter<?, ?> worker) {
+	public void setSwingWorker(Worker<?, ?> worker) {
 		if (this.worker!=null) this.worker.removePropertyChangeListener(workerListener);
 		this.worker = worker;
 		this.worker.addPropertyChangeListener(workerListener);

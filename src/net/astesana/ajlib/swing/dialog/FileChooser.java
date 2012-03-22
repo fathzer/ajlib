@@ -12,10 +12,10 @@ import net.astesana.ajlib.utilities.LocalizationData;
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */
-public class SafeJFileChooser extends JFileChooser {
+public class FileChooser extends JFileChooser {
 	private static final long serialVersionUID = 1L;
 
-	public SafeJFileChooser(String title) {
+	public FileChooser(String title) {
 		super(title);
 	}
 
