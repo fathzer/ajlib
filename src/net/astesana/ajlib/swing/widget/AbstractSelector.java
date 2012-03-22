@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import net.astesana.ajlib.swing.framework.Utils;
+import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.utilities.NullUtils;
 
 /** An abstract widget composed of an optional label, a combo box and a new button.

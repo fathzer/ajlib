@@ -7,8 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.astesana.ajlib.swing.framework.Application;
-import net.astesana.ajlib.swing.framework.JobFrame;
-import net.astesana.ajlib.swing.framework.SwingWorkerJobAdapter;
+import net.astesana.ajlib.swing.worker.JobFrame;
+import net.astesana.ajlib.swing.worker.SwingWorkerJobAdapter;
 
 public class JobFrameTest extends Application {
 

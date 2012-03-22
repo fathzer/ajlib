@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.framework.Application;
-import net.astesana.ajlib.swing.framework.Utils;
 
 /** An abstract dialog with a customizable center pane, an Ok and/or a Cancel button.
  * <br>By default, the dialog is not resizable, call this.setResizable(true) to change this behavior

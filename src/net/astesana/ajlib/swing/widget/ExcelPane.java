@@ -25,9 +25,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.dialog.SafeJFileChooser;
 import net.astesana.ajlib.swing.framework.Application;
-import net.astesana.ajlib.swing.framework.Utils;
 import net.astesana.ajlib.swing.table.RowHeaderRenderer;
 import net.astesana.ajlib.swing.table.TitledRowsTableModel;
 import net.astesana.ajlib.utilities.CSVExporter;
