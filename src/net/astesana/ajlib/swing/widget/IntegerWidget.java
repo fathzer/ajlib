@@ -12,7 +12,7 @@ import net.astesana.ajlib.utilities.NullUtils;
  *  You can set minimum and maximum values accepted by this field.
  *  It is a java bean, so you can listen to its VALUE_PROPERTY change.
  */
-public class IntegerWidget extends CoolJTextField {
+public class IntegerWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;
 	private final static boolean DEBUG = false;
 	/** The field value property name. */

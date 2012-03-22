@@ -46,7 +46,8 @@ public abstract class Application {
 
 	/** Gets the application name.
 	 * <br>You should implement this method to define the name of your application.
-	 * @return
+	 * <br>This name will be displayed in the main window of the application
+	 * @return The application's name
 	 */
 	public abstract String getName();
 

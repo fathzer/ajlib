@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build" name="Build script for A-JLib project">
+	<property file="customPaths.properties"/>
+	
+	<property name="ajlibVersion" value="0.0.1"/>
+	<tstamp><format property="TODAY" pattern="dd/MM/yyyy" locale="fr,FR"/></tstamp>
+	
+	<property name="releaseDir" value="ajlibRelease"/>
+	
+	<target name="build">
+		<echo message="version=${yapbamVersion} (${TODAY})" file="src/net/astesana/ajlib/version.txt"/>
+		<delete dir="releaseCompile"/>
+		<mkdir dir="releaseCompile"/>
+		<copy todir="releaseCompile">
+	    	<fileset dir="src" excludes="**/*.java"/>
+		</copy>
+		<javac srcdir="src" destdir="releaseCompile" source="1.6" target="1.6" encoding="ISO8859-1" sourcepath="${jfreechartpath};${jcommonpath};${commonsnetpath}" includeAntRuntime="false" debug="true"/>
+		<property name="appDir" value="${releaseDir}/App"/>
+		<!-- Ensure the releaseDir is a fresh new one. -->
+		<delete dir="${releaseDir}"/>
+		<mkdir dir="${releaseDir}"/>
+		<mkdir dir="${appDir}"/>
+		<jar destfile="${appDir}/program.jar">
+			<manifest>
+				<attribute name="Main-Class" value="net.astesana.ajlib.swing.test.JobFrameTest"/>
+			</manifest>
+			<fileset dir="releaseCompile"/>
+		</jar>
+		<delete dir="releaseCompile"/>
+	</target>
+	
+	<target name="doc">
+		<javadoc header="${ajlibVersion}" sourcepath="src"
+			destdir="doc" doctitle="A-JLib" windowtitle="A-JLib"/>
+	</target>
+</project>

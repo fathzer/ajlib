@@ -29,7 +29,7 @@ import net.astesana.ajlib.utilities.NullUtils;
 public abstract class AbstractSelector<T,V> extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel JLabel;
-	private CoolJComboBox combo;
+	private ComboBox combo;
 	private JButton newButton;
 
 	private T lastSelected;
@@ -152,9 +152,9 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	/** Gets the ComboBox.
 	 * @return a CoolJComboBox.
 	 */
-	public CoolJComboBox getCombo() {
+	public ComboBox getCombo() {
 		if (combo == null) {
-			combo = new CoolJComboBox();
+			combo = new ComboBox();
 			combo.setRenderer(new Renderer());
 			combo.addActionListener(new ActionListener() {
 				@Override
