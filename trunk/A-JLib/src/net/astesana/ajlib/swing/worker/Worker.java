@@ -4,18 +4,17 @@ import javax.swing.SwingWorker;
 
 import net.astesana.ajlib.utilities.NullUtils;
 
-public abstract class SwingWorkerJobAdapter<T,V> extends SwingWorker<T,V> {
+public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	/** The state property name of the SwingWorker (Should have been defined in SwingWorker by Oracle ?) */
 	public static String STATE_PROPERTY_NAME = "state"; //$NON-NLS-1$
 	/** The progress property name of the SwingWorker (Should have been defined in SwingWorker by Oracle ?) */
 	public static String PROGRESS_PROPERTY_NAME = "progress"; //$NON-NLS-1$
-	public static final String JOB_PHASE = "phase";
+	public static final String JOB_PHASE = "phase"; //$NON-NLS-1$
 	
-	private JobFrame frame;
 	private String phase;
 	private int phaseLength;
 
-	public SwingWorkerJobAdapter() {
+	public Worker() {
 		super();
 		this.phase = null;
 		this.phaseLength = -1;
@@ -39,15 +38,5 @@ public abstract class SwingWorkerJobAdapter<T,V> extends SwingWorker<T,V> {
 		if (progress>phaseLength) throw new IllegalArgumentException();
 		long percent = (progress*100)/phaseLength;
 		super.setProgress((int)percent);
-	}
-
-	@Override
-	protected void done() {
-		super.done();
-		frame.dispose();
-	}
-	
-	void setJobFrame(JobFrame frame) {
-		this.frame = frame;
 	}
 }
