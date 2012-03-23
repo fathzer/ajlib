@@ -21,7 +21,7 @@ import java.beans.PropertyChangeListener;
 /** A panel reporting the progress of a background task.
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
- * @see SwingWorkerJobAdapter
+ * @see Worker
  */
 public class WorkInProgressPanel extends JPanel {
 	private Worker<?, ?> worker;

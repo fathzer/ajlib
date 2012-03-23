@@ -17,7 +17,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-/** A panel that allows the selection of a file. */
+/** A panel that allows the selection of a file.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 public class FileSelectionPane extends JPanel {
 	private static final long serialVersionUID = 1L;
 	

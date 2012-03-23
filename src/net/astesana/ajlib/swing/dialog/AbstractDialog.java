@@ -19,6 +19,8 @@ import net.astesana.ajlib.swing.framework.Application;
  * <BR>License : GPL v3
  * @param <T> The class of the parameter of the dialog (information that is useful to build the center pane).
  * @param <V> The class of the result of the dialog
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
  */
 public abstract class AbstractDialog<T,V> extends JDialog {
 	private static final long serialVersionUID = 1L;

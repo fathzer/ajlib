@@ -32,7 +32,10 @@ import net.astesana.ajlib.swing.table.RowHeaderRenderer;
 import net.astesana.ajlib.swing.table.TitledRowsTableModel;
 import net.astesana.ajlib.utilities.CSVExporter;
 
-/** A widget with a JTable and a button that is able to save it in csv format.*/ 
+/** A widget with a JTable and a button that is able to save it in csv format.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */ 
 public class ExcelPane extends JPanel {
 	private static final long serialVersionUID = 1L;
 

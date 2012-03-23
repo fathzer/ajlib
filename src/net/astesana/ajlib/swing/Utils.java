@@ -9,6 +9,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+/** Some Swing utilities.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 public class Utils {
 	/** Gets the window which contains a component.
 	 * @param component the component

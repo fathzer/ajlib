@@ -11,6 +11,8 @@ import net.astesana.ajlib.utilities.NullUtils;
 /** This widget is an integer input field.
  *  You can set minimum and maximum values accepted by this field.
  *  It is a java bean, so you can listen to its VALUE_PROPERTY change.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
  */
 public class IntegerWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;

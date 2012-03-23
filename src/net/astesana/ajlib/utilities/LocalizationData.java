@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /** This class is the main entry point for localization concerns.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
  */
 public class LocalizationData {
 	public static final Locale SYS_LOCALE = new Locale(System.getProperty("user.language"), System.getProperty("user.country")); //$NON-NLS-1$ //$NON-NLS-2$
