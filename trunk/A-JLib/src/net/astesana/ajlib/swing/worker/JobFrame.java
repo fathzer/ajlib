@@ -13,6 +13,10 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/** TODO
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 @SuppressWarnings("serial")
 public class JobFrame extends JFrame {
 	private static final long DEFAULT_DELAY = 500;

@@ -11,6 +11,10 @@ import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+/** A HTML component.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 @SuppressWarnings("serial")
 public class HTMLPane extends JScrollPane {
 	private JTextPane textPane;
@@ -38,6 +42,16 @@ public class HTMLPane extends JScrollPane {
 		this.setViewportView(textPane);
 	}
 	
+	public HTMLPane (URL url) throws IOException {
+		this();
+		setContent(url);
+	}
+
+	public HTMLPane (String text) {
+		this();
+		setContent(text);
+	}
+
 	public void setContent (String text) {
 		textPane.setContentType("text/html"); //$NON-NLS-1$
 		// We should not use textPane.setText because it scrolls the textPane to the end of the text
@@ -54,12 +68,7 @@ public class HTMLPane extends JScrollPane {
 		}
 	}
 	
-	public HTMLPane (URL url) throws IOException {
-		this();
-		setContent(url);
-	}
-	public HTMLPane (String text) {
-		this();
-		setContent(text);
+	public JTextPane getTextPane() {
+		return this.textPane;
 	}
 }

@@ -25,6 +25,8 @@ import net.astesana.ajlib.utilities.NullUtils;
  * <br>It also allows the combo box display to be customized using method getDefaultRenderedValue.
  * @see #getPropertyName()
  * @see #getDefaultRenderedValue(Object)
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
  */
 public abstract class AbstractSelector<T,V> extends JPanel {
 	private static final long serialVersionUID = 1L;

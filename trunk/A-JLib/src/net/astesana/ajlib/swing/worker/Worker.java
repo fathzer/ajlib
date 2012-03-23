@@ -4,6 +4,12 @@ import javax.swing.SwingWorker;
 
 import net.astesana.ajlib.utilities.NullUtils;
 
+/** TODO
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ * @param <T>
+ * @param <V>
+ */
 public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	/** The state property name of the SwingWorker (Should have been defined in SwingWorker by Oracle ?) */
 	public static String STATE_PROPERTY_NAME = "state"; //$NON-NLS-1$

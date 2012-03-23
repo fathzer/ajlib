@@ -7,6 +7,10 @@ import javax.swing.table.TableModel;
 
 import net.astesana.ajlib.swing.table.TitledRowsTableModel;
 
+/** A CSV Exporter.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 public class CSVExporter {
 	private char separator;
 	private boolean quoteCells;

@@ -15,7 +15,10 @@ import javax.swing.UIManager;
 
 import net.astesana.ajlib.utilities.LocalizationData;
 
-/** A basic canvas to create simple java application. */
+/** A basic canvas to create simple java application.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 public abstract class Application {
 	private static final String LOCATION_Y_PROPERTY = "y"; //$NON-NLS-1$
 	private static final String LOCATION_X_PROPERTY = "x"; //$NON-NLS-1$
