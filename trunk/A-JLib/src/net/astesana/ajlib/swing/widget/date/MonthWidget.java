@@ -34,6 +34,7 @@ public class MonthWidget extends JPanel {
 	private DateFormat formater;
 
 	private JButton now = null;
+	private JPanel buttonsPanel;
 
 	/**
 	 * This is the default constructor
@@ -85,47 +86,24 @@ public class MonthWidget extends JPanel {
 	 * This method initializes this
 	 */
 	private void initialize() {
-		GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-		gridBagConstraints11.gridx = 2;
-		gridBagConstraints11.fill = GridBagConstraints.HORIZONTAL;
-		gridBagConstraints11.insets = new Insets(5, 5, 5, 5);
-		gridBagConstraints11.gridy = 1;
-		GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-		gridBagConstraints4.gridx = 4;
-		gridBagConstraints4.insets = new Insets(5, 5, 5, 5);
-		gridBagConstraints4.gridy = 1;
-		GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-		gridBagConstraints3.gridx = 3;
-		gridBagConstraints3.insets = new Insets(5, 5, 5, 5);
-		gridBagConstraints3.gridy = 1;
 		GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.gridx = 0;
 		gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.weightx = 1.0D;
 		gridBagConstraints2.anchor = GridBagConstraints.CENTER;
-		gridBagConstraints2.insets = new Insets(5, 5, 5, 5);
-		gridBagConstraints2.gridwidth = 0;
+		gridBagConstraints2.insets = new Insets(5, 5, 5, 0);
 		gridBagConstraints2.gridy = 0;
 		currentMonth = new JLabel();
 		currentMonth.setText(formater.format(this.currentDate.getTime()));
 		currentMonth.setHorizontalTextPosition(SwingConstants.CENTER);
 		currentMonth.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-		gridBagConstraints1.gridx = 1;
-		gridBagConstraints1.insets = new Insets(5, 5, 5, 5);
-		gridBagConstraints1.gridy = 1;
-		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-		gridBagConstraints.gridy = 1;
 		this.setSize(400, 200);
 		this.setLayout(new GridBagLayout());
-		this.add(getPreviousYear(), gridBagConstraints);
-		this.add(getPreviousMonth(), gridBagConstraints1);
+		GridBagConstraints gbc_buttonsPanel = new GridBagConstraints();
+		gbc_buttonsPanel.gridx = 0;
+		gbc_buttonsPanel.gridy = 1;
+		add(getButtonsPanel(), gbc_buttonsPanel);
 		this.add(currentMonth, gridBagConstraints2);
-		this.add(getNextMonth(), gridBagConstraints3);
-		this.add(getNextYear(), gridBagConstraints4);
-		this.add(getNow(), gridBagConstraints11);
 	}
 
 	/**
@@ -220,5 +198,43 @@ public class MonthWidget extends JPanel {
 			});
 		}
 		return now;
+	}
+	private JPanel getButtonsPanel() {
+		if (buttonsPanel == null) {
+			buttonsPanel = new JPanel();
+			GridBagLayout gbl_buttonsPanel = new GridBagLayout();
+			gbl_buttonsPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+			gbl_buttonsPanel.rowHeights = new int[]{0, 0};
+			gbl_buttonsPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+			gbl_buttonsPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+			buttonsPanel.setLayout(gbl_buttonsPanel);
+			GridBagConstraints gbc_previousYear = new GridBagConstraints();
+			gbc_previousYear.insets = new Insets(0, 0, 0, 5);
+			gbc_previousYear.gridx = 0;
+			gbc_previousYear.gridy = 0;
+			buttonsPanel.add(getPreviousYear(), gbc_previousYear);
+			GridBagConstraints gbc_previousMonth = new GridBagConstraints();
+			gbc_previousMonth.insets = new Insets(0, 0, 0, 5);
+			gbc_previousMonth.gridx = 1;
+			gbc_previousMonth.gridy = 0;
+			buttonsPanel.add(getPreviousMonth(), gbc_previousMonth);
+			GridBagConstraints gbc_now = new GridBagConstraints();
+			gbc_now.fill = GridBagConstraints.HORIZONTAL;
+			gbc_now.insets = new Insets(0, 0, 0, 5);
+			gbc_now.gridx = 2;
+			gbc_now.gridy = 0;
+			buttonsPanel.add(getNow(), gbc_now);
+			GridBagConstraints gbc_nextMonth = new GridBagConstraints();
+			gbc_nextMonth.insets = new Insets(0, 0, 0, 5);
+			gbc_nextMonth.gridx = 3;
+			gbc_nextMonth.gridy = 0;
+			buttonsPanel.add(getNextMonth(), gbc_nextMonth);
+			GridBagConstraints gbc_nextYear = new GridBagConstraints();
+			gbc_nextYear.anchor = GridBagConstraints.WEST;
+			gbc_nextYear.gridx = 4;
+			gbc_nextYear.gridy = 0;
+			buttonsPanel.add(getNextYear(), gbc_nextYear);
+		}
+		return buttonsPanel;
 	}
 }
