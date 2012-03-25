@@ -6,12 +6,14 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import net.astesana.ajlib.utilities.LocalizationData;
 
@@ -55,17 +57,41 @@ public abstract class Application {
 	public abstract String getName();
 
 	/** Sets the look and feel.
-	 * <br>This implementation try to install the Nimbus LAF. If an error occurs, it switch to the system LAF. 
+	 * <br>This implementation try to install the LAF whose name is returned by getDefaultLookAndFeelName method.
+	 * If an error occurs, it switches to the system LAF.
+	 * @see #getDefaultLookAndFeelName()
 	 */
-	protected void setLookAndFeel() {
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); //$NON-NLS-1$
-		} catch (Exception e) {
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e1) {
+	private void setLookAndFeel() {
+		// Prior the 0.9.8, the class name were used instead of the generic name.
+		// It caused problem when changing java version (ie: Nimbus in java 1.6 was implemented by a class in com.sun.etc and in javax.swing in java 1.7)
+		// So, we will find which LAF has the searched name.
+		String lookAndFeelName = getDefaultLookAndFeelName();
+		String lookAndFeelClass = null;
+		LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
+		for (LookAndFeelInfo lookAndFeelInfo : installedLookAndFeels) {
+			if (lookAndFeelInfo.getName().equals(lookAndFeelName)) {
+				lookAndFeelClass = lookAndFeelInfo.getClassName();
+				break;
 			}
 		}
+		if (lookAndFeelClass==null) lookAndFeelClass = UIManager.getSystemLookAndFeelClassName();
+		try {
+			UIManager.setLookAndFeel(lookAndFeelClass);
+			UIManager.getLookAndFeelDefaults().setDefaultLocale(Locale.getDefault());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/** Gets the default look and feel name.
+	 * <br>This default implementation return "Nimbus".
+	 * <br>You can override this method to change the startup look and feel of your application.
+	 * <br>If the returned LAF is not available on the platform the system LAF will be used. 
+	 * @return a Look and feel name.
+	 * @see #setLookAndFeel()
+	 */
+	protected String getDefaultLookAndFeelName() {
+		return "Nimbus";
 	}
 
 	/** Saves the application state.
@@ -107,6 +133,8 @@ public abstract class Application {
 	}
 
 	/** Creates the main panel.
+	 * <br>Be aware that the returned panel should be instantiated by this method and not before (for example in the constructor).
+	 * It should be instantiated there because, before, the look and feel may not have been set.
 	 * @return The panel that will by displayed in the application frame.
 	 */
 	protected abstract JPanel buildMainPanel();
@@ -114,6 +142,8 @@ public abstract class Application {
 	/** Builds the application menu bar.
 	 * <br>This implementation returns a menu bar with a single menu and a single item File/Quit that calls the quit method.
 	 * You should override this method to build your own menu bar.
+	 * <br>Be aware that the returned menu bar should be instantiated by this method and not before (for example in the constructor).
+	 * It should be instantiated there because, before, the look and feel may not have been set.
 	 * @return a JMenuBar or null if we want the application not to have one.
 	 * @see #quit()
 	 */

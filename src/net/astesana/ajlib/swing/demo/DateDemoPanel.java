@@ -58,9 +58,9 @@ public class DateDemoPanel extends JPanel {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "CalendarWidget", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel_1.weighty = 1.0;
 		gbc_panel_1.weightx = 1.0;
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
 		gbc_panel_1.gridwidth = 2;
 		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_1.gridx = 0;
@@ -75,8 +75,8 @@ public class DateDemoPanel extends JPanel {
 		
 		CalendarWidget CalendarWidget = new CalendarWidget();
 		GridBagConstraints gbc_CalendarWidget = new GridBagConstraints();
+		gbc_CalendarWidget.anchor = GridBagConstraints.WEST;
 		gbc_CalendarWidget.insets = new Insets(0, 0, 5, 0);
-		gbc_CalendarWidget.fill = GridBagConstraints.BOTH;
 		gbc_CalendarWidget.gridwidth = 2;
 		gbc_CalendarWidget.gridx = 0;
 		gbc_CalendarWidget.gridy = 0;

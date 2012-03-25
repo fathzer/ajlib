@@ -10,9 +10,7 @@ public class AJLibDemo extends Application {
 	
 	private AJLibDemoPanel demoPanel;
 	
-	private AJLibDemo() {
-		demoPanel = new AJLibDemoPanel();
-	}
+	private AJLibDemo() {}
 	
 	@Override
 	public String getName() {
@@ -21,6 +19,9 @@ public class AJLibDemo extends Application {
 
 	@Override
 	protected JPanel buildMainPanel() {
+		if (demoPanel==null) {
+			demoPanel = new AJLibDemoPanel();
+		}
 		return demoPanel;
 	}
 
