@@ -78,7 +78,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 import net.astesana.ajlib.utilities.NullUtils;
 
@@ -86,7 +85,7 @@ import net.astesana.ajlib.utilities.NullUtils;
  * A panel that allows the user to select a date.
  * @author David Gilbert (modified by Jean-Marc Astesana)
  */
-public class CalendarWidget extends JPanel implements ActionListener {
+public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 	private static final long serialVersionUID = 1L;
 	public static final String DATE_PROPERTY = "DATE_PROPERTY";
 
@@ -137,7 +136,7 @@ public class CalendarWidget extends JPanel implements ActionListener {
 	 * 'firstDayOfWeek'.
 	 */
 	private int[] WEEK_DAYS;
-
+		
 	/**
 	 * Constructs a new date chooser panel, using today's date as the initial
 	 * selection.
@@ -145,10 +144,11 @@ public class CalendarWidget extends JPanel implements ActionListener {
 	public CalendarWidget() {
 		super(new BorderLayout());
 
-		this.chosenDateButtonColor = UIManager.getColor("textHighlight");
-		this.chosenMonthButtonColor = UIManager.getColor("control");
-		this.chosenOtherButtonColor = UIManager.getColor("controlShadow");
-
+		//TODO It would be cool to choose colors from the current Look and Feel ... but I didn't succeed in doing that :-(
+		this.chosenDateButtonColor = Color.red;
+		this.chosenMonthButtonColor = Color.white;
+		this.chosenOtherButtonColor = Color.gray;
+		
 		// the default date is today...
 		this.chosenDate = Calendar.getInstance(getLocale());
 		initializeDays();
@@ -219,20 +219,6 @@ public class CalendarWidget extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Handles action-events from the date panel.
-	 * 
-	 * @param e
-	 *          information about the event that occurred.
-	 */
-	public void actionPerformed(final ActionEvent e) {
-		final JButton b = (JButton) e.getSource();
-		final int i = Integer.parseInt(b.getName());
-		final Calendar cal = getFirstVisibleDate();
-		cal.add(Calendar.DATE, i);
-		setDate(cal.getTime());
-	}
-
-	/**
 	 * Returns a panel of buttons, each button representing a day in the month.
 	 * This is a sub-component of the DatePanel.
 	 * 
@@ -257,7 +243,19 @@ public class CalendarWidget extends JPanel implements ActionListener {
 			b.setFont(this.dateFont);
 			b.setFocusPainted(false);
 			b.setActionCommand("dateButtonClicked");
-			b.addActionListener(this);
+			b.addActionListener(new ActionListener() {
+				/**
+				 * Handles action-events from the date panel.
+				 * @param e information about the event that occurred.
+				 */
+				public void actionPerformed(final ActionEvent e) {
+					final JButton b = (JButton) e.getSource();
+					final int i = Integer.parseInt(b.getName());
+					final Calendar cal = getFirstVisibleDate();
+					cal.add(Calendar.DATE, i);
+					setDate(cal.getTime());
+				}
+			});
 			this.buttons[i] = b;
 			p.add(b);
 		}

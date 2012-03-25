@@ -1,9 +1,12 @@
 package net.astesana.ajlib.swing.framework;
 
+import java.awt.AWTEvent;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
@@ -40,13 +43,58 @@ public abstract class Application {
 	public final void launch() {
 		// Set the look and feel
 		setLookAndFeel();
+		// Warning the new event queue may ABSOLUTLY be NOT installed by the event dispatch thread under java 1.6 or the program will never exit
+		if (isJava6()) installEventQueue();
 		// Schedule a job for the event-dispatching thread:
 		// creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				// Install the exceptions logger on the AWT event queue.
+				// Warning the new event queue may ABSOLUTLY be installed by the event dispatch thread under java 1.7 or the program will never exit
+				if (!isJava6()) installEventQueue();
 				start();
 			}
 		});
+	}
+	
+	private static boolean isJava6() {
+		return "1.6".equals(System.getProperty("java.specification.version"));
+	}
+	
+	private void installEventQueue() {
+		EventQueue queue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+		queue.push(new EventQueue() {
+			@Override
+			protected void dispatchEvent(AWTEvent event) {
+				try {
+					super.dispatchEvent(event);
+				} catch (Throwable t) {
+					processException(t);
+					// The following portion of code closes the main window if it is not visible.
+					// This solves the case where a exception is thrown during the call to frame.setVisible(true)
+					// If we do nothing, the window is there, but is invisible, so, the user has no way to close
+					// the window for exiting from application.
+					Window[] windows = Window.getWindows();
+					for (int i = 0; i < windows.length; i++) {
+						if (windows[i] == frame) {
+							if (!windows[i].isVisible()) {
+								windows[i].dispatchEvent(new WindowEvent(windows[i],WindowEvent.WINDOW_CLOSING));
+							}
+						}
+					}
+				}
+			}
+		});
+	}
+
+	/** Process an exception.
+	 * <br>When an exception happens in the dispatching of a swing event, this method is called.
+	 * <br>The default implementation prints the exception stack trace to the error output.
+	 * You may override it to display an alert dialog, to send a bug report by email, etc ...
+	 * @param e The exception
+	 */
+	protected void processException(Throwable e) {
+		e.printStackTrace();
 	}
 
 	/** Gets the application name.
