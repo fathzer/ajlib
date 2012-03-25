@@ -1,6 +1,5 @@
 package net.astesana.ajlib.swing.widget.date;
 
-import java.awt.Color;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -44,9 +43,6 @@ public class DateWidget extends JPanel {
 		super();
 		popup = new JPopupMenu();
 		dateChooser = new CalendarWidget();
-		dateChooser.setChosenDateButtonColor(Color.RED);
-		dateChooser.setChosenOtherButtonColor(Color.GRAY);
-		dateChooser.setChosenMonthButtonColor(Color.WHITE);
 		popup.add(dateChooser);
 		initialize();
 		dateChooser.addPropertyChangeListener(CalendarWidget.DATE_PROPERTY, new PropertyChangeListener() {
