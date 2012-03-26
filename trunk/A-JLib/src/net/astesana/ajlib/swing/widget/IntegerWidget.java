@@ -55,7 +55,6 @@ public class IntegerWidget extends TextWidget {
 				char car = e.getKeyChar();
 				if (car=='-') { // - char is a valid character only if the field accepts value less than zero and in the first place (if there's no other - after the current selection)
 					if ((IntegerWidget.this.minValue==null) || (IntegerWidget.this.minValue.compareTo(BigInteger.ZERO)<0)) {
-//						System.out.println (IntegerWidget.this.getSelectionStart()+" - "+IntegerWidget.this.getSelectionEnd()); //TODO
 						if (IntegerWidget.this.getSelectionStart()!=0) e.consume(); // No - after first position
 					} else {
 						e.consume();
