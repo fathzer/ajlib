@@ -9,8 +9,9 @@ import java.math.BigInteger;
 import net.astesana.ajlib.utilities.NullUtils;
 
 /** This widget is an integer input field.
- *  You can set minimum and maximum values accepted by this field.
- *  It is a java bean, so you can listen to its VALUE_PROPERTY change.
+ *  <br>You can set minimum and maximum values accepted by this field.
+ *  <br>The up and down arrows are shortcuts to increase/decrease the value in the field.
+ *  <br>It is a java bean, so you can listen to its VALUE_PROPERTY change.
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */
