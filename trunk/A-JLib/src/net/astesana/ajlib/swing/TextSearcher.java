@@ -8,12 +8,15 @@ import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
 
-/** A class that searches for a word in a document and highlights all occurrences of that word.
+import net.astesana.ajlib.swing.widget.HTMLPane;
+
+/** A class that searches for a text in a JTextComponent and highlights all occurrences of that text.
  *  <br>It could be used with an HTMLPane.
- *  <br>It supports case and diacritical sensitive/insensitive search.  
- *  This code is inspired by an example from Kim Topley (ISBN: 0 13 083292 8 - Publisher: Prentice Hall).
+ *  <br>It supports case and diacritical sensitive/insensitive search.
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
+ * <br>This code is inspired by an example from Kim Topley (ISBN: 0 13 083292 8 - Publisher: Prentice Hall)
+ * @see HTMLPane
  */
 public class TextSearcher {
   protected JTextComponent comp;
@@ -99,7 +102,7 @@ public class TextSearcher {
 	/** Gets the normalized version of a text.
 	 * <br>The normalized version is lowercased if the TextSearcher is not case sensitive and has no diacritical marks if it is diacritical insensitive.
 	 * @param content
-	 * @return
+	 * @return a String
 	 */
   private String normalize(String content) {
 		if (!isCaseSensitive()) content = content.toLowerCase();
