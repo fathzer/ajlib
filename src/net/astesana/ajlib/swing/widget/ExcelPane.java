@@ -33,6 +33,9 @@ import net.astesana.ajlib.swing.table.TitledRowsTableModel;
 import net.astesana.ajlib.utilities.CSVExporter;
 
 /** A widget with a JTable and a button that is able to save it in csv format.
+ * <br>The table supports row headers.
+ * <br><b>//TODO Should be split in two classes</b>, one for the table, another for that panel
+ * (or, maybe, this panel should be deleted because it is no so hard to implement).
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */ 
@@ -133,6 +136,11 @@ public class ExcelPane extends JPanel {
 		return table;
 	}
 	
+	/** Sets the table model.
+	 * @param model The model.
+	 * If the model implements TitledRowsTableModel, row headers are added to the table.
+	 * @see TitledRowsTableModel
+	 */
 	@SuppressWarnings("serial")
 	public void setModel(TableModel model) {
 		table.setModel(model);

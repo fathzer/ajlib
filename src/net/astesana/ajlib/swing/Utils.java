@@ -29,14 +29,22 @@ public class Utils {
 		return (Window) component;
 	}
 	
-	
+	/** Centers a window relatively to another.
+	 * @param window The window to center
+	 * @param reference The reference window
+	 */
 	public static void centerWindow(Window window, Window reference) {
 		window.setLocation(reference.getLocation().x+(reference.getWidth()-window.getWidth())/2, reference.getLocation().y+(reference.getHeight()-window.getHeight())/2);
 	}
 	
+	/** Packs the columns of a JTable.
+	 * @param table The Jtable to pack
+	 * @param margin the margin in pixels
+	 * @see #packColumn(JTable, int, int)
+	 */
 	public static void packColumns(JTable table, int margin) {
 		for (int i = 0; i < table.getColumnCount(); i++) {
-			packColumn(table, i, 2);
+			packColumn(table, i, margin);
 		}
 	}
 	

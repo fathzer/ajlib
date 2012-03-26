@@ -1,6 +1,3 @@
-/** This class is copied from http://www.chka.de/swing/table/row-headers/JTable.html.
- * Seems to not be copyrighted ? Hope it isn't ...
- */
 package net.astesana.ajlib.swing.table;
 
 import java.awt.Component;
@@ -12,6 +9,10 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 
+/** A table CellRenderer that renders row headers.
+ * <br>This class is copied from http://www.chka.de/swing/table/row-headers/JTable.html.
+ * Seems to not be copyrighted ? Hope it isn't ...
+ */
 @SuppressWarnings("serial")
 public class RowHeaderRenderer extends DefaultTableCellRenderer {
 	protected Border noFocusBorder, focusBorder;
