@@ -15,8 +15,6 @@ import net.astesana.ajlib.swing.framework.Application;
 /** An abstract dialog with a customizable center pane, an Ok and/or a Cancel button.
  * <br>By default, the dialog is not resizable, call this.setResizable(true) to change this behavior
  * (don't forget to call pack and set the minimum size after calling setResizable).
- * @author Jean-Marc Astesana
- * <BR>License : GPL v3
  * @param <T> The class of the parameter of the dialog (information that is useful to build the center pane).
  * @param <V> The class of the result of the dialog
  * @author Jean-Marc Astesana
