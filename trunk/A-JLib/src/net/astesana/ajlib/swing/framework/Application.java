@@ -110,9 +110,9 @@ public abstract class Application {
 	 * @see #getDefaultLookAndFeelName()
 	 */
 	private void setLookAndFeel() {
-		// Prior the 0.9.8, the class name were used instead of the generic name.
+		// In a previous version, the class name were used instead of the generic name.
 		// It caused problem when changing java version (ie: Nimbus in java 1.6 was implemented by a class in com.sun.etc and in javax.swing in java 1.7)
-		// So, we will find which LAF has the searched name.
+		// So, we now use the LAF name.
 		String lookAndFeelName = getDefaultLookAndFeelName();
 		String lookAndFeelClass = null;
 		LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
@@ -143,7 +143,7 @@ public abstract class Application {
 	}
 
 	/** Saves the application state.
-	 * <br>This implementation saves the frame's location.
+	 * <br>This implementation saves the frame's location and dimension.
 	 */
 	protected void saveState() {
 		Preferences prefs = Preferences.userRoot().node(getClass().getCanonicalName());
@@ -159,7 +159,7 @@ public abstract class Application {
 	}
 
 	/** Restores the application state.
-	 * <br>This implementation restores the frame's location.
+	 * <br>This implementation restores the frame's location and dimension.
 	 */
 	protected void restoreState() {
 		Preferences prefs = Preferences.userRoot().node(getClass().getCanonicalName());
@@ -199,7 +199,7 @@ public abstract class Application {
 		return new MainMenu(this);
 	}
 
-	protected void start() {
+	private void start() {
 		frame = new JFrame();
 		frame.setTitle(getName());
 		frame.add(buildMainPanel());
@@ -216,7 +216,12 @@ public abstract class Application {
 		frame.pack();
 		frame.setMinimumSize(frame.getSize());
 		restoreState();
-		frame.setVisible(true);
+		boolean quit = !onStart();
+		if (quit) {
+			quit();
+		} else {
+			frame.setVisible(true);
+		}
 	}
 	
 	/** Gets the main application frame.
@@ -226,11 +231,24 @@ public abstract class Application {
 		return this.frame;
 	}
 	
-	/** Quits the application.
+	/** Asks the application to quit.
 	 * <br>By default this method closes the main application frame.
 	 * You should override this method if you have to close other frames.
 	 */
 	protected void quit() {
-		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {		
+			@Override
+			public void run() {
+				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+			}
+		});
+	}
+
+	/** This method is called one time, at startup, on the eventDispatchThread.
+	 * <br>This default implementation does nothing.
+	 * @return false to quit the application (it means the start process has failed), true to continue.
+	 */
+	protected boolean onStart() {
+		return true;
 	}
 }
