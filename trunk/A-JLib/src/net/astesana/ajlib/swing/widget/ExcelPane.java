@@ -3,11 +3,8 @@ package net.astesana.ajlib.swing.widget;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.LookAndFeel;
 
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import javax.swing.JScrollPane;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 import java.awt.Insets;
@@ -19,33 +16,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 
-import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
-import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.dialog.FileChooser;
 import net.astesana.ajlib.swing.framework.Application;
-import net.astesana.ajlib.swing.table.RowHeaderRenderer;
-import net.astesana.ajlib.swing.table.TitledRowsTableModel;
+import net.astesana.ajlib.swing.table.Table;
 import net.astesana.ajlib.utilities.CSVExporter;
 
 /** A widget with a JTable and a button that is able to save it in csv format.
- * <br>The table supports row headers.
- * <br><b>//TODO Should be split in two classes</b>, one for the table, another for that panel
- * (or, maybe, this panel should be deleted because it is no so hard to implement).
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */ 
 public class ExcelPane extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private JScrollPane scrollPane;
+	private Table table;
 	private JButton button;
-	private JTable table;
-	private JTable rowView;
 
 	private CSVExporter exporter;
 
@@ -67,7 +52,7 @@ public class ExcelPane extends JPanel {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 0;
-		add(getScrollPane(), gbc_scrollPane);
+		add(getTable(), gbc_scrollPane);
 		GridBagConstraints gbc_button = new GridBagConstraints();
 		gbc_button.insets = new Insets(0, 0, 5, 0);
 		gbc_button.anchor = GridBagConstraints.EAST;
@@ -76,30 +61,11 @@ public class ExcelPane extends JPanel {
 		add(getButton(), gbc_button);
 	}
 
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-	    scrollPane.setRowHeaderView(getRowView());
-			scrollPane.setViewportView(getTable());
+	public Table getTable() {
+		if (table == null) {
+			table = new Table();
 		}
-		return scrollPane;
-	}
-	
-	private JTable getRowView() {
-		if (rowView==null) {
-			rowView = new JTable();
-			rowView.setDefaultRenderer(Object.class, new RowHeaderRenderer(true));
-			LookAndFeel.installColorsAndFont (rowView, "TableHeader.background", "TableHeader.foreground", "TableHeader.font"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			setRowViewSize(rowView);
-		}
-		return rowView;
-	}
-	
-	private void setRowViewSize(final JTable rowView) {
-		int width = (rowView.getColumnCount()>0)?Utils.packColumn(rowView, 0, 2):0;
-		Dimension d = rowView.getPreferredScrollableViewportSize();
-		d.width = width;
-		rowView.setPreferredScrollableViewportSize(d);
+		return table;
 	}
 	
 	private JButton getButton() {
@@ -113,7 +79,7 @@ public class ExcelPane extends JPanel {
 						try {
 							BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 							try {
-								exporter.export(writer, table.getModel(), true);
+								exporter.export(writer, getTable().getModel(), true);
 							} finally {
 								writer.close();
 							}
@@ -126,54 +92,6 @@ public class ExcelPane extends JPanel {
 			});
 		}
 		return button;
-	}
-
-	private JTable getTable() {
-		if (table == null) {
-			table = new JTable();
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		}
-		return table;
-	}
-	
-	/** Sets the table model.
-	 * @param model The model.
-	 * If the model implements TitledRowsTableModel, row headers are added to the table.
-	 * @see TitledRowsTableModel
-	 */
-	@SuppressWarnings("serial")
-	public void setModel(TableModel model) {
-		table.setModel(model);
-		if (model instanceof TitledRowsTableModel) {
-			TableModel rowHeaderModel = new AbstractTableModel() {
-				@Override
-				public Object getValueAt(int rowIndex, int columnIndex) {
-					return ((TitledRowsTableModel)table.getModel()).getRowName(rowIndex);
-				}
-				
-				@Override
-				public int getRowCount() {
-					return table.getModel().getRowCount();
-				}
-				
-				@Override
-				public int getColumnCount() {
-					return 1;
-				}
-			};
-			getRowView().setModel(rowHeaderModel);
-			rowHeaderModel.addTableModelListener(new TableModelListener() {
-				@Override
-				public void tableChanged(TableModelEvent e) {
-					setRowViewSize(rowView);
-				}
-			});
-			setRowViewSize(getRowView());
-		}
-	}
-	
-	public void packTable() {
-		Utils.packColumns(table, 2);
 	}
 	
 	/** Gets the CSVExporter used to export the data.
