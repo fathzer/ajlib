@@ -65,7 +65,7 @@ public class Utils {
 		if (renderer == null) {
 			renderer = table.getTableHeader().getDefaultRenderer();
 		}
-		Component comp = renderer.getTableCellRendererComponent( table, col.getHeaderValue(), false, false, 0, 0);
+		Component comp = renderer.getTableCellRendererComponent(table, col.getHeaderValue(), false, false, 0, 0);
 		width = comp.getPreferredSize().width;
 
 		//Get maximum width of column data
