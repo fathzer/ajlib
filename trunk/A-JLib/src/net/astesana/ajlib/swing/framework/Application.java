@@ -172,14 +172,6 @@ public abstract class Application {
 		if ((dimension.width!=0) && (dimension.height!=0)) frame.setSize(dimension);
 	}
 	
-	/** Tests whether the application frame is resizable or not.
-	 * <br>By default, the frame is resizable, you should override this method to return false if you want the frame being not resizable. 
-	 * @return true if the false is resizable.
-	 */
-	protected boolean isFrameResizable() {
-		return true;
-	}
-
 	/** Creates the main panel.
 	 * <br>Be aware that the returned panel should be instantiated by this method and not before (for example in the constructor).
 	 * It should be instantiated there because, before, the look and feel may not have been set.
@@ -212,7 +204,6 @@ public abstract class Application {
 		});
 		// CheckNewReleaseAction.doAutoCheck(frame);
 		frame.setJMenuBar(buildMenuBar());
-		frame.setResizable(isFrameResizable());
 		frame.pack();
 		frame.setMinimumSize(frame.getSize());
 		restoreState();
