@@ -22,7 +22,7 @@ public class DateDemoPanel extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		
-		JLabel lblNewLabel = new JLabel("Date widget :");
+		JLabel lblNewLabel = new JLabel("DateWidget :");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 5, 5, 5);
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;

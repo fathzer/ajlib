@@ -1,5 +1,6 @@
 package net.astesana.ajlib.swing.demo;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,24 +13,18 @@ import net.astesana.ajlib.swing.worker.Worker;
 
 @SuppressWarnings("serial")
 public class WorkerDemoPanel extends JPanel {
+	private JButton btnStartANew_1;
 		
 	/**
 	 * Create the panel.
 	 */
 	public WorkerDemoPanel() {
-		JButton btnStartANew = new JButton("Start a new background task");
+		initialize();
+	}
+	private void initialize() {
+		JButton btnStartANew = getBtnStartANew();
 		add(btnStartANew);
-		btnStartANew.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				WorkerSample worker = new WorkerSample();
-				JobFrame jobFrame = new JobFrame(worker);
-				jobFrame.setTitle("task n°"+worker.taskNumber);
-				jobFrame.setSize(300, jobFrame.getSize().height);
-				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
-				jobFrame.setVisible(true);
-			}
-		});
+		add(getBtnStartANew_1());
 	}
 
 	private static class WorkerSample extends Worker<Void, Void> {
@@ -70,5 +65,38 @@ public class WorkerDemoPanel extends JPanel {
 		protected void done() {
 			AJLibDemo.setMessage("Task n°"+taskNumber+" is finished");
 		}
+	}
+	
+	private JButton getBtnStartANew() {
+		JButton btnStartANew = new JButton("Start a new background task");
+		btnStartANew.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				WorkerSample worker = new WorkerSample();
+				JobFrame jobFrame = new JobFrame(worker);
+				jobFrame.setTitle("task n°"+worker.taskNumber);
+				jobFrame.setSize(300, jobFrame.getSize().height);
+				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
+				jobFrame.setVisible(true);
+			}
+		});
+		return btnStartANew;
+	}
+	
+	private JButton getBtnStartANew_1() {
+		if (btnStartANew_1 == null) {
+			btnStartANew_1 = new JButton("Start a new modal background task");
+			btnStartANew_1.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					WorkerSample worker = new WorkerSample();
+					JobFrame jobFrame = new JobFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
+					jobFrame.setSize(300, jobFrame.getSize().height);
+					Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
+					jobFrame.setVisible(true);
+				}
+			});
+		}
+		return btnStartANew_1;
 	}
 }
