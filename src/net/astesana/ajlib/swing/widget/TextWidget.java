@@ -82,12 +82,14 @@ public class TextWidget extends JTextField {
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			boolean isLimit = false;
-			for (int limit : groupLimitIndexes) {
-				if (index == limit) {
-					isLimit = true;
-					break;
-				} else if (limit > index) {
-					break;
+			if (groupLimitIndexes!=null) {
+				for (int limit : groupLimitIndexes) {
+					if (index == limit) {
+						isLimit = true;
+						break;
+					} else if (limit > index) {
+						break;
+					}
 				}
 			}
 			JComponent label = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -107,6 +109,7 @@ public class TextWidget extends JTextField {
 
 	private void installPopup() {
 		if (popup==null) {
+			groupLimitIndexes = new int[]{3};
 			popup = new JPopupMenu();
 			list = new JList(new PopupListModel());
 			list.setAutoscrolls(true);
@@ -253,7 +256,7 @@ public class TextWidget extends JTextField {
 	}
 
 	private void fillModel(String text) {
-		int maxProbaSorted = groupLimitIndexes.length==0?0:this.groupLimitIndexes[0];
+		int maxProbaSorted = (groupLimitIndexes==null) || (groupLimitIndexes.length==0)?0:this.groupLimitIndexes[0];
 		TextMatcher matcher = new TextMatcher(TextMatcher.Kind.CONTAINS, text, false, false); //TODO Must match "starts with" ... to be implemented in TextMatcher
 		ArrayList<String> okProbaSort = new ArrayList<String>();
 		TreeSet<String> okAlphabeticSort = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
