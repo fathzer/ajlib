@@ -1,6 +1,7 @@
 package net.astesana.ajlib.swing.demo;
 
 import java.awt.Dialog.ModalityType;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +11,7 @@ import javax.swing.JPanel;
 import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.worker.JobFrame;
 import net.astesana.ajlib.swing.worker.Worker;
+import java.awt.GridBagConstraints;
 
 @SuppressWarnings("serial")
 public class WorkerDemoPanel extends JPanel {
@@ -21,10 +23,18 @@ public class WorkerDemoPanel extends JPanel {
 	public WorkerDemoPanel() {
 		initialize();
 	}
+	
 	private void initialize() {
+		setLayout(new GridBagLayout());
 		JButton btnStartANew = getBtnStartANew();
-		add(btnStartANew);
-		add(getBtnStartANew_1());
+		GridBagConstraints gbc_btnStartANew = new GridBagConstraints();
+		gbc_btnStartANew.gridy = 0;
+		gbc_btnStartANew.gridx = 0;
+		add(btnStartANew, gbc_btnStartANew);
+		GridBagConstraints gbc_btnStartANew_1 = new GridBagConstraints();
+		gbc_btnStartANew_1.gridy = 1;
+		gbc_btnStartANew_1.gridx = 0;
+		add(getBtnStartANew_1(), gbc_btnStartANew_1);
 	}
 
 	private static class WorkerSample extends Worker<Void, Void> {
