@@ -52,12 +52,12 @@ public class TextWidget extends JTextField {
 	/** A PropertyChangeEvent of this name is fired when a predefined value is selected.
 	 * The values of the event are the field content.
 	 */
-	public static final String PREDEFINED_VALUE = "PREDEFINED_VALUE";
+	public static final String PREDEFINED_VALUE = "PREDEFINED_VALUE"; //$NON-NLS-1$
 	
 	private JPopupMenu popup;
 	private JList list;
 	private String predefined=null;
-	private String lastText="";
+	private String lastText=""; //$NON-NLS-1$
 	private int unsortedMax;
 	private String[] proposals;
 	
@@ -81,6 +81,7 @@ public class TextWidget extends JTextField {
 
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			if (((String)value).length()==0) value = " "; //$NON-NLS-1$
 			JComponent label = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if ((unsortedMax>0) && (index==unsortedMax)) {
 				Border border = new UpperLineBorder(label.getForeground().brighter());
