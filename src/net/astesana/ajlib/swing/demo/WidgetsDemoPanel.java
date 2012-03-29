@@ -47,7 +47,7 @@ public class WidgetsDemoPanel extends JPanel {
 	private TextWidget getTextWidget() {
 		if (textWidget == null) {
 			textWidget = new TextWidget(10);
-			textWidget.setPredefined(new String[]{"a string", "another one", "dummy", "next one"}, new int[]{2});
+			textWidget.setPredefined(new String[]{"dummy", "this string", "another one", "next one", "last one", "One more"}, 2);
 			textWidget.addPropertyChangeListener(TextWidget.TEXT_PROPERTY, new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {

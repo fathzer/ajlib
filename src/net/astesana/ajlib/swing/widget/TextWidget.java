@@ -58,7 +58,7 @@ public class TextWidget extends JTextField {
 	private JList list;
 	private String predefined=null;
 	private String lastText="";
-	private int[] groupLimitIndexes;
+	private int unsortedMax;
 	private String[] proposals;
 	
 	private static class UpperLineBorder extends AbstractBorder {
@@ -81,19 +81,8 @@ public class TextWidget extends JTextField {
 
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			boolean isLimit = false;
-			if (groupLimitIndexes!=null) {
-				for (int limit : groupLimitIndexes) {
-					if (index == limit) {
-						isLimit = true;
-						break;
-					} else if (limit > index) {
-						break;
-					}
-				}
-			}
 			JComponent label = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			if (isLimit) {
+			if ((unsortedMax>0) && (index==unsortedMax)) {
 				Border border = new UpperLineBorder(label.getForeground().brighter());
 				label.setBorder(new CompoundBorder(border, label.getBorder()));
 			}
@@ -109,7 +98,7 @@ public class TextWidget extends JTextField {
 
 	private void installPopup() {
 		if (popup==null) {
-			groupLimitIndexes = new int[]{3};
+			unsortedMax = Integer.MAX_VALUE;
 			popup = new JPopupMenu();
 			list = new JList(new PopupListModel());
 			list.setAutoscrolls(true);
@@ -213,33 +202,24 @@ public class TextWidget extends JTextField {
 
 	/** Sets the predefined values allowed by the field.
 	 * @param array The predefined values.
-	 * @see #setPredefined(String[], int[])
+	 * @see #setPredefined(String[], int)
 	 */
 	public void setPredefined(String[] array) {
-		setPredefined (array, null);
+		setPredefined (array, Integer.MAX_VALUE);
 	}
 
 	/** Sets the predefined values allowed by the field.
 	 * @param array The predefined values.
-	 * @param groupSizes The values groups sizes.
-	 * <br>The values can be grouped (each will be separated from other by a thin line).
-	 * <br>This argument contains the size of each group.
-	 * @throws IllegalArgumentException if the sum of the group sizes is greater than the array length.
-	 * <br>Note that if that sum is lower than the array length, a group is added containing the extra values.
+	 * @param unsortedMax Maximum number of unsorted values.
+	 * <br>The values can be divided in two groups (which will be separated by a thin line)<ol>.
+	 * <li>A group of values, that matches the current typed text, sorted in the same order as in the array argument.</li>
+	 * <li>A group of values, that matches the current typed text, sorted in alphabetical order.</li>
+	 * </ol>
+	 * <br>This argument contains the size of the first group. Use Integer.MAX_VALUE to always display values in the same order as in the array. 0 to always sorted values.
 	 */
-	public void setPredefined(String[] array, int[] groupSizes) {
+	public void setPredefined(String[] array, int unsortedMax) {
 		installPopup();
-		if (groupSizes!=null){
-			int[] indexes = new int[groupSizes.length];
-			int currentTotal = 0;
-			for (int i=0; i<groupSizes.length; i++) {
-				if (groupSizes[i]!=0) {
-					currentTotal += groupSizes[i];
-					indexes[i] = currentTotal;
-				}
-			}
-			this.groupLimitIndexes = indexes;
-		}
+		this.unsortedMax = unsortedMax;
 		proposals = array;
 		fillModel(this.getText());
 	}
@@ -256,13 +236,12 @@ public class TextWidget extends JTextField {
 	}
 
 	private void fillModel(String text) {
-		int maxProbaSorted = (groupLimitIndexes==null) || (groupLimitIndexes.length==0)?0:this.groupLimitIndexes[0];
 		TextMatcher matcher = new TextMatcher(TextMatcher.Kind.CONTAINS, text, false, false); //TODO Must match "starts with" ... to be implemented in TextMatcher
 		ArrayList<String> okProbaSort = new ArrayList<String>();
 		TreeSet<String> okAlphabeticSort = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		for (String value : this.proposals) {
 			if (matcher.matches(value)) {
-				if (okProbaSort.size()<maxProbaSorted) {
+				if (okProbaSort.size()<=unsortedMax) {
 					okProbaSort.add(value);
 				} else {
 					okAlphabeticSort.add(value);
