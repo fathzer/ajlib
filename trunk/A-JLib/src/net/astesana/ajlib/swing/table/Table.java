@@ -1,7 +1,6 @@
 package net.astesana.ajlib.swing.table;
 
 import javax.swing.JPanel;
-import javax.swing.LookAndFeel;
 
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
@@ -40,17 +39,19 @@ public class Table extends JPanel {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-	    scrollPane.setRowHeaderView(getRowView());
+	    scrollPane.setRowHeaderView(getRowJTable());
 			scrollPane.setViewportView(getJTable());
 		}
 		return scrollPane;
 	}
 	
-	private JTable getRowView() {
+	/** Gets the internal table that is used to display table rows.
+	 * @return a JTable
+	 */
+	public JTable getRowJTable() {
 		if (rowView==null) {
 			rowView = new JTable();
 			rowView.setDefaultRenderer(Object.class, new RowHeaderRenderer(true));
-			LookAndFeel.installColorsAndFont (rowView, "TableHeader.background", "TableHeader.foreground", "TableHeader.font"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			setRowViewSize(rowView);
 		}
 		return rowView;
@@ -86,14 +87,14 @@ public class Table extends JPanel {
 		table.setModel(model);
 		if (model instanceof TitledRowsTableModel) {
 			final TableModel rowHeaderModel = new RowModel((TitledRowsTableModel) model);
-			getRowView().setModel(rowHeaderModel);
+			getRowJTable().setModel(rowHeaderModel);
 			rowHeaderModel.addTableModelListener(new TableModelListener() {
 				@Override
 				public void tableChanged(TableModelEvent e) {
 					setRowViewSize(rowView);
 				}
 			});
-			setRowViewSize(getRowView());
+			setRowViewSize(getRowJTable());
 		}
 	}
 	
