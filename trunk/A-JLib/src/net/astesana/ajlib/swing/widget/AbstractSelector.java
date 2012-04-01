@@ -63,8 +63,17 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 * @return The argument passed to the constructor.
 	 * @see #AbstractSelector(Object)
 	 */
-	protected V getParameters() {
+	public V getParameters() {
 		return this.parameters;
+	}
+	
+	/** Sets the parameters of the widget.
+	 * <br>The refresh method is called.
+	 * @param parameters The new parameters
+	 */
+	public void setParameters(V parameters) {
+		this.parameters = parameters;
+		refresh();
 	}
 	
 	/** Populates the combo.
@@ -75,13 +84,25 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 */
 	protected abstract void populateCombo();
 	
-	protected void refresh() {
+	/** Refreshes the widget when the parameters has changed.
+	 * <br>This method should be called when the widget parameters changes.
+	 * It removes all old combo items, then calls populateCombo.
+	 */
+	public void refresh() {
 		T old = get();
 		getCombo().setActionEnabled(false);
 		getCombo().removeAllItems();
 		populateCombo();
-		if (getCombo().contains(old)) getCombo().setSelectedItem(old);
+		setSelectionAfterRefresh(old);
 		getCombo().setActionEnabled(true);
+	}
+
+	/** Sets the combo selection during a refresh.
+	 * <br>By default, this method selects the last item selected, if it is still available.
+	 * @param old the last selected item before refresh was performed.
+	 */
+	protected void setSelectionAfterRefresh(T old) {
+		if (getCombo().contains(old)) getCombo().setSelectedItem(old);
 	}
 
 	private void initialize() {
@@ -237,7 +258,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 * @param value The value to select
 	 */
 	public void set(T value) {
-		Object oldValue = this.get();
-		if (!value.equals(oldValue)) getCombo().setSelectedItem(value);
+		T oldValue = this.get();
+		if (!NullUtils.areEquals(value,oldValue)) getCombo().setSelectedItem(value);
 	}
 }
