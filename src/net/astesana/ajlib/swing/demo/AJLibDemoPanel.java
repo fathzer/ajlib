@@ -5,8 +5,7 @@ import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
+import javax.swing.JTabbedPane;
 
 @SuppressWarnings("serial")
 public class AJLibDemoPanel extends JPanel {
@@ -22,45 +21,32 @@ public class AJLibDemoPanel extends JPanel {
 	}
 	private void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0};
-		gridBagLayout.columnWeights = new double[]{1.0, 0.0};
 		setLayout(gridBagLayout);
 		
-		WorkerDemoPanel workerPanel = new WorkerDemoPanel();
-		workerPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "net.astesana.ajlib.swing.worker", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_workerPanel = new GridBagConstraints();
-		gbc_workerPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_workerPanel.anchor = GridBagConstraints.WEST;
-		gbc_workerPanel.gridx = 1;
-		gbc_workerPanel.gridy = 1;
-		add(workerPanel, gbc_workerPanel);
+		JTabbedPane panel = new JTabbedPane();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.weightx = 1.0;
+		gbc_panel.weighty = 1.0;
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 0;
+		gbc_panel.gridy = 0;
+		add(panel, gbc_panel);
 		
-		DateDemoPanel datePanel = new DateDemoPanel();
-		datePanel.setBorder(new TitledBorder(null, "net.astesana.ajlib.swing.widget.date", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_datePanel = new GridBagConstraints();
-		gbc_datePanel.insets = new Insets(0, 0, 5, 0);
-		gbc_datePanel.fill = GridBagConstraints.BOTH;
-		gbc_datePanel.gridx = 0;
-		gbc_datePanel.gridy = 1;
-		add(datePanel, gbc_datePanel);
+		panel.add("widget", new WidgetsDemoPanel());
+		
+		panel.add("widget.date", new DateDemoPanel());
+		
+		panel.add("worker", new WorkerDemoPanel());
 		
 		messageLabel = new JLabel(" ");
 		GridBagConstraints gbc_messageLabel = new GridBagConstraints();
-		gbc_messageLabel.insets = new Insets(5, 5, 5, 0);
+		gbc_messageLabel.insets = new Insets(5, 5, 0, 5);
 		gbc_messageLabel.weightx = 1.0;
 		gbc_messageLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_messageLabel.anchor = GridBagConstraints.NORTHWEST;
 		gbc_messageLabel.gridx = 0;
-		gbc_messageLabel.gridy = 2;
+		gbc_messageLabel.gridy = 1;
 		add(messageLabel, gbc_messageLabel);
-		
-		WidgetsDemoPanel widgetPanel = new WidgetsDemoPanel();
-		widgetPanel.setBorder(new TitledBorder(null, "net.astesana.widget", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_widgetPanel = new GridBagConstraints();
-		gbc_widgetPanel.gridwidth = 0;
-		gbc_widgetPanel.gridx = 0;
-		gbc_widgetPanel.gridy = 0;
-		add(widgetPanel, gbc_widgetPanel);
 	}
 
 	public void setMessage(String text) {
