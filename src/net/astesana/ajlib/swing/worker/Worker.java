@@ -45,4 +45,8 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 		long percent = (progress*100)/phaseLength;
 		super.setProgress((int)percent);
 	}
+
+	public String getPhase() {
+		return phase;
+	}
 }
