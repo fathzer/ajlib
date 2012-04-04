@@ -108,6 +108,13 @@ public class JobFrame extends JDialog {
 		setContentPane(contentPane);
 	}
 	
+	/** Gets the progress panel used by this dialog.
+	 * @return a JPanel
+	 */
+	public WorkInProgressPanel getWorkInProgressPanel() {
+		return progressPanel;
+	}
+	
 	/** Sets the delay before the dialog is shown.
 	 * <BR>This class allows you to specify a delay in opening the dialog.
 	 * @param delay The delay in ms. Long.MAX_VALUE to prevent the dialog to be shown.
