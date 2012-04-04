@@ -21,6 +21,25 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import net.astesana.ajlib.utilities.LocalizationData;
 
 /** A basic canvas to create simple java application.
+ * <br>Here is a sample code of a very basic application.
+ * <br><code>
+ * import javax.swing.JLabel;<br>
+ * import javax.swing.JPanel;<br>
+ *<br>
+ * import net.astesana.ajlib.swing.framework.Application;<br>
+ * <br>
+ * public class HelloWorld extends Application {<br>
+ * &nbsp;&nbsp;protected JPanel buildMainPanel() {<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;JPanel panel = new JPanel();<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;panel.add(new JLabel ("The simplest panel"));<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;return panel;<br>
+ * &nbsp;&nbsp;}<br>
+ * <br>
+ * &nbsp;&nbsp;public static void main (String[] args) {<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;new HelloWorld().launch();<br>
+ * &nbsp;&nbsp;}<br>
+ * }<br>
+ * </code>
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */
@@ -98,11 +117,13 @@ public abstract class Application {
 	}
 
 	/** Gets the application name.
-	 * <br>You should implement this method to define the name of your application.
+	 * <br>You should override this method to define the name of your application.
 	 * <br>This name will be displayed in the main window of the application
 	 * @return The application's name
 	 */
-	public abstract String getName();
+	public String getName() {
+		return "";
+	}
 
 	/** Sets the look and feel.
 	 * <br>This implementation try to install the LAF whose name is returned by getDefaultLookAndFeelName method.

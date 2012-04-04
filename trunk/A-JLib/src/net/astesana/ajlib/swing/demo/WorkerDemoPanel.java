@@ -58,7 +58,7 @@ public class WorkerDemoPanel extends JPanel {
 				if (isCancelled()) return null;
 			}
 			int nb = 30;
-			setPhase("Other may have defined length", nb);
+			setPhase("Other may have a defined length", nb);
 			for (int i=0;i<nb;i++) {
 				Thread.sleep(100);
 				try {

@@ -94,7 +94,7 @@ public class JobFrame extends JDialog {
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		contentPane.setLayout(gbl_contentPane);
 		
-		progressPanel = new WorkInProgressPanel();
+		progressPanel = getWorkInProgressPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.weightx = 1.0;
 		gbc_panel.insets = new Insets(5, 5, 5, 5);
@@ -112,6 +112,9 @@ public class JobFrame extends JDialog {
 	 * @return a JPanel
 	 */
 	public WorkInProgressPanel getWorkInProgressPanel() {
+		if (progressPanel==null) {
+			progressPanel = new DefaultWorkInProgressPanel();
+		}
 		return progressPanel;
 	}
 	
