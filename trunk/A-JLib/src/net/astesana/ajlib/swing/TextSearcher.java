@@ -16,7 +16,7 @@ import net.astesana.ajlib.swing.widget.HTMLPane;
 /**
  * A class that searches for a text in a JTextComponent and highlights all
  * occurrences of that text. <br>
- * It could be used with an HTMLPane. <br>
+ * It could be used, for instance, with an HTMLPane. <br>
  * It supports case and diacritical sensitive/insensitive search.
  * 
  * @author Jean-Marc Astesana <BR>
@@ -149,23 +149,23 @@ public class TextSearcher {
 	}
 
 	/** Gets the offsets of the searched text.
-	 * <br>These offsets can be passed to the highLight methods
+	 * <br>These offsets can be passed to the highlight methods
 	 * @return a int array (its dimension is 0 if the text was not found)
-	 * @see #highLight(int, javax.swing.text.Highlighter.HighlightPainter)
-	 * @see #highLight(int[], javax.swing.text.Highlighter.HighlightPainter)
+	 * @see #highlight(int, javax.swing.text.Highlighter.HighlightPainter)
+	 * @see #highlight(int[], javax.swing.text.Highlighter.HighlightPainter)
 	 */
 	public int[] getOffsets() {
 		return offsets;
 	}
 
-	/** highLights some portions of the text.
+	/** Highlights some portions of the text.
 	 * @param offsets the start of the portions to highlight (these offsets are returned by getOffsets method).
 	 * null to remove all highlights.
 	 * @param painter The painter to be used (or null to use the default one).
 	 * @throws BadLocationException if offsets are out of text bounds
 	 * @see #getOffsets()
 	 */
-	public void highLight(int[] offsets, Highlighter.HighlightPainter painter) throws BadLocationException {
+	public void highlight(int[] offsets, Highlighter.HighlightPainter painter) throws BadLocationException {
   	if (painter==null) painter = DefaultHighlighter.DefaultPainter;
 		// Remove any existing highlights for last word
 		Highlighter highlighter = comp.getHighlighter();
@@ -174,24 +174,24 @@ public class TextSearcher {
 			for (int i = 0; i < offsets.length; i++) {
 				highlighter.addHighlight(offsets[i], offsets[i] + this.searchedNormalizedLength, painter);
 			}
-			// Scroll the text pane in order to view the first occurence.
+			// Scroll the text pane in order to view the first occurrence.
 			if (offsets.length>0) comp.scrollRectToVisible(comp.modelToView(offsets[0]));
 		}
 	}
 
-	/** highLights a portion of the text. 
+	/** Highlights a portion of the text. 
 	 * @param offset the start of the portion to highlight (one of the offsets returned by getOffsets method).
 	 * @param painter The painter to be used (or null to use the default one).
 	 * @throws BadLocationException if offset is out of text bounds
 	 * @see #getOffsets()
 	 */
-	public void highLight(int offset, Highlighter.HighlightPainter painter) throws BadLocationException {
+	public void highlight(int offset, Highlighter.HighlightPainter painter) throws BadLocationException {
   	if (painter==null) painter = DefaultHighlighter.DefaultPainter;
 		// Remove any existing highlights for last word
 		Highlighter highlighter = comp.getHighlighter();
 		highlighter.removeAllHighlights();
 		highlighter.addHighlight(offset, offset + this.searchedNormalizedLength, painter);
-		// Scroll the text pane in order to view the first occurence.
+		// Scroll the text pane in order to view the first occurrence.
 		comp.scrollRectToVisible(comp.modelToView(offset));
 	}
 }
