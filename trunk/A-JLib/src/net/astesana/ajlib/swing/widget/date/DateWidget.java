@@ -29,7 +29,7 @@ public class DateWidget extends JPanel {
 	 */
 	public static final String CONTENT_VALID_PROPERTY = DateField.CONTENT_VALID_PROPERTY;
 	
-	private DateField dateWidget = null;
+	private DateField dateField = null;
 	private CalendarWidget dateChooser;
 	private JPopupMenu popup;
 	private JLabel jLabel = null;
@@ -48,25 +48,25 @@ public class DateWidget extends JPanel {
 		dateChooser.addPropertyChangeListener(CalendarWidget.DATE_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				getDateWidget().setDate((Date)evt.getNewValue());
+				getDateField().setDate((Date)evt.getNewValue());
 				popup.setVisible(false);
 			}
 		});
 	}
 	
-	/** Get the currently choosen date.
-	 * @return the currently choosen date. It is guaranteed that the hours, minutes, seconds,
+	/** Get the currently chosen date.
+	 * @return the currently chosen date (null if the date is wrong). It is guaranteed that the hours, minutes, seconds,
 	 * milliseconds of the date are set to 0.
 	 */
 	public Date getDate() {
-		return getDateWidget().getDate();
+		return getDateField().getDate();
 	}
 	
-	/** Set the currently choosen date.
+	/** Set the currently chosen date.
 	 * @param date the date to be set.
 	 */
 	public void setDate(Date date) {
-		getDateWidget().setDate(date);
+		getDateField().setDate(date);
 		// No need to fire a property change.
 		// The change property event will be sent by the property change listener
 		// that is waiting for change of the DateWidget
@@ -76,14 +76,14 @@ public class DateWidget extends JPanel {
 	 * @param nb number of columns of the text field
 	 */
 	public void setColumns(int nb) {
-		this.getDateWidget().setColumns(nb);
+		this.getDateField().setColumns(nb);
 	}
 	
 	/** Set the locale.
 	 * Changes the calendar popup appearence and the text field format.
 	 */
 	public void setLocale(Locale locale) {
-		getDateWidget().setLocale(locale);
+		getDateField().setLocale(locale);
 		dateChooser.setLocale(locale);
 	}
 
@@ -92,7 +92,7 @@ public class DateWidget extends JPanel {
 	 */
 	@Override
 	public void setToolTipText(String text) {
-		getDateWidget().setToolTipText(text);
+		getDateField().setToolTipText(text);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class DateWidget extends JPanel {
 		jLabel.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (jLabel.isEnabled() && !popup.isVisible()) {
-					DateField widget = getDateWidget();
+					DateField widget = getDateField();
 					dateChooser.setDate(widget.getDate());
 					popup.show(widget, 0, widget.getHeight());
 				}
@@ -122,7 +122,7 @@ public class DateWidget extends JPanel {
 		gridBagConstraints.gridx = 0;
 		this.setSize(300, 200);
 		this.setLayout(new GridBagLayout());
-		this.add(getDateWidget(), gridBagConstraints);
+		this.add(getDateField(), gridBagConstraints);
 		this.add(jLabel, gridBagConstraints11);
 	}
 
@@ -130,32 +130,32 @@ public class DateWidget extends JPanel {
 	 * Gets the DateWidget used by this component.
 	 * @return a DateWidget instance
 	 */
-	public DateField getDateWidget() {
-		if (dateWidget == null) {
-			dateWidget = new DateField();
+	public DateField getDateField() {
+		if (dateField == null) {
+			dateField = new DateField();
 			PropertyChangeListener listener = new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 				}
 			};
-			dateWidget.addPropertyChangeListener(DateField.DATE_PROPERTY, listener);
-			dateWidget.addPropertyChangeListener(DateField.CONTENT_VALID_PROPERTY, listener);
+			dateField.addPropertyChangeListener(DateField.DATE_PROPERTY, listener);
+			dateField.addPropertyChangeListener(DateField.CONTENT_VALID_PROPERTY, listener);
 		}
-		return dateWidget;
+		return dateField;
 	}
 
 	/**
 	 * @see DateField#setIsEmptyNullDateIsValid(boolean)
 	 */
 	public void setIsEmptyNullDateIsValid(boolean valid) {
-		this.getDateWidget().setIsEmptyNullDateIsValid(valid);
+		this.getDateField().setIsEmptyNullDateIsValid(valid);
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		dateWidget.setEnabled(enabled);
+		dateField.setEnabled(enabled);
 		jLabel.setEnabled(enabled);
 	}
 	
@@ -163,6 +163,6 @@ public class DateWidget extends JPanel {
 	 * @return true if the content is valid, false if it is not.
 	 */
 	public boolean isContentValid() {
-		return this.dateWidget.isContentValid();
+		return this.dateField.isContentValid();
 	}
 }
