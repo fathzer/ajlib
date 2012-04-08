@@ -21,7 +21,7 @@ import net.astesana.ajlib.swing.widget.HTMLPane;
  * 
  * @author Jean-Marc Astesana <BR>
  *         License : GPL v3 <br>
- *         This code is inspired by an example from Kim Topley (ISBN: 0 13
+ *         This code was inspired by an example from Kim Topley (ISBN: 0 13
  *         083292 8 - Publisher: Prentice Hall)
  * @see HTMLPane
  */
@@ -92,7 +92,6 @@ public class TextSearcher {
 	 * Gets the normalized version of a text. <br>
 	 * The normalized version is lowercased if the TextSearcher is not case
 	 * sensitive and has no diacritical marks if it is diacritical insensitive.
-	 * 
 	 * @param content
 	 * @return a String
 	 */
