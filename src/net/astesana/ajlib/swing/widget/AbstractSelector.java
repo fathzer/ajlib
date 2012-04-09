@@ -227,14 +227,14 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 		return null;
 	}
 	
-	/** Gets the combo's tooltip.
+	/** Gets the combo's initial tooltip.
 	 * @return a String, null to have no tooltip.
 	 */
 	protected String getComboTip() {
 		return null;
 	}
 	
-	/** Gets the new button's tooltip.
+	/** Gets the new button's initial tooltip.
 	 * @return a String, null to have no tooltip.
 	 */
 	protected String getNewButtonTip() {
@@ -260,5 +260,13 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	public void set(T value) {
 		T oldValue = this.get();
 		if (!NullUtils.areEquals(value,oldValue)) getCombo().setSelectedItem(value);
+	}
+	
+	/** Sets the combo tooltip.
+	 * <br>This method is a shortcut to this.getCombo().setToolTipText(text)
+	 * @param tip The tooltip text.
+	 */
+	public void setToolTipText(String text) {
+		getCombo().setToolTipText(text);
 	}
 }
