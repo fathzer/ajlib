@@ -8,16 +8,20 @@ import javax.swing.JTable;
  * A table CellRenderer that renders row headers.
  */
 public class RowHeaderRenderer implements TableCellRenderer {
-	private boolean hideSelection;
 	private TableCellRenderer renderer;
 
-	public RowHeaderRenderer(boolean hideSelection) {
-		renderer = new JTable().getTableHeader().getDefaultRenderer();
+	public RowHeaderRenderer() {
+	}
+
+	private TableCellRenderer getRenderer() {
+		if (renderer==null) {
+			renderer = new JTable().getTableHeader().getDefaultRenderer();
+		}
+		return renderer;
 	}
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-		if (hideSelection) isSelected = false;
-		return renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+		return getRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 	}
 }
