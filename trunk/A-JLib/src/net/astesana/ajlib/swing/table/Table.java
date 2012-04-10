@@ -51,7 +51,9 @@ public class Table extends JPanel {
 	public JTable getRowJTable() {
 		if (rowView==null) {
 			rowView = new JTable();
-			rowView.setDefaultRenderer(Object.class, new RowHeaderRenderer(true));
+			rowView.setDefaultRenderer(Object.class, new RowHeaderRenderer());
+			rowView.setFocusable(false);
+			rowView.setCellSelectionEnabled(false);
 			setRowViewSize(rowView);
 		}
 		return rowView;
