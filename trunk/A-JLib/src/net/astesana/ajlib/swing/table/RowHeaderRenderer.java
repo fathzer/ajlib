@@ -1,6 +1,8 @@
 package net.astesana.ajlib.swing.table;
 
 import java.awt.Component;
+
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JTable;
 
@@ -11,17 +13,18 @@ public class RowHeaderRenderer implements TableCellRenderer {
 	private TableCellRenderer renderer;
 
 	public RowHeaderRenderer() {
-	}
-
-	private TableCellRenderer getRenderer() {
-		if (renderer==null) {
-			renderer = new JTable().getTableHeader().getDefaultRenderer();
-		}
-		return renderer;
+		renderer = new JTable().getTableHeader().getDefaultRenderer();
 	}
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-		return getRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+		try {
+			Component result = renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+			return result;
+		} catch (NullPointerException e) {
+			// Bug workaround: Under some unclear circumstances (Launch Yapbam, Menu File/New, then choose Windows look and feel, then Windows Classic,
+			// then Nimbus, then, open a non empty file ... a NullPointerException occured :-(
+			return new DefaultTableCellRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+		}
 	}
 }
