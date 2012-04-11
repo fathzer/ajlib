@@ -67,10 +67,6 @@ public class DateDemoPanel extends JPanel {
 		gbc_panel_1.gridy = 2;
 		add(panel_1, gbc_panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0, 0, 0};
-		gbl_panel_1.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		CalendarWidget CalendarWidget = new CalendarWidget();
