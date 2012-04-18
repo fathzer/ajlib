@@ -15,8 +15,12 @@ import net.astesana.ajlib.utilities.LocalizationData;
 public class FileChooser extends JFileChooser {
 	private static final long serialVersionUID = 1L;
 
-	public FileChooser(String title) {
-		super(title);
+	public FileChooser() {
+		super();
+	}
+
+	public FileChooser(String path) {
+		super(path);
 	}
 
 	@Override
