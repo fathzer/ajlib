@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.astesana.ajlib.swing.Utils;
-import net.astesana.ajlib.swing.worker.JobFrame;
+import net.astesana.ajlib.swing.worker.WorkInProgressFrame;
 import net.astesana.ajlib.swing.worker.Worker;
 import java.awt.GridBagConstraints;
 
@@ -83,7 +83,7 @@ public class WorkerDemoPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				WorkerSample worker = new WorkerSample();
-				JobFrame jobFrame = new JobFrame(worker);
+				WorkInProgressFrame jobFrame = new WorkInProgressFrame(worker);
 				jobFrame.setTitle("task n°"+worker.taskNumber);
 				jobFrame.setSize(300, jobFrame.getSize().height);
 				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
@@ -100,7 +100,7 @@ public class WorkerDemoPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					WorkerSample worker = new WorkerSample();
-					JobFrame jobFrame = new JobFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
+					WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
 					jobFrame.setSize(300, jobFrame.getSize().height);
 					Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
 					jobFrame.setVisible(true);

@@ -25,7 +25,7 @@ import java.beans.PropertyChangeListener;
  * <BR>License : GPL v3
  */
 @SuppressWarnings("serial")
-public class JobFrame extends JDialog {
+public class WorkInProgressFrame extends JDialog {
 	public static final long DEFAULT_DELAY = 500;
 	public static final long DEFAULT_MINIMUM_TIME_VISIBLE = 1000;
 
@@ -42,9 +42,9 @@ public class JobFrame extends JDialog {
 	 * Constructor.
 	 * <br>Default arguments : owner is null, title is an empty String and modality is ModalityType.MODELESS.
 	 * @param worker The worker that will run in background.
-	 * @see #JobFrame(Window, String, ModalityType, Worker)
+	 * @see #WorkInProgressFrame(Window, String, ModalityType, Worker)
 	 */
-	public JobFrame(Worker<?, ?> worker) {
+	public WorkInProgressFrame(Worker<?, ?> worker) {
 		this(null,"",ModalityType.MODELESS, worker);
 	}
 	
@@ -55,7 +55,7 @@ public class JobFrame extends JDialog {
 	 * @param modality The modality of the dialog
 	 * @param worker The worker that will be executed in background.
 	 */
-	public JobFrame(Window owner, String title, ModalityType modality, Worker<?,?> worker) {
+	public WorkInProgressFrame(Window owner, String title, ModalityType modality, Worker<?,?> worker) {
 		super(owner, title, modality);
 		this.worker = worker;
 		this.delay = DEFAULT_DELAY;
@@ -78,7 +78,7 @@ public class JobFrame extends JDialog {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
 					if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
-						JobFrame.this.dispose();
+						WorkInProgressFrame.this.dispose();
 					}
 				}
 			}

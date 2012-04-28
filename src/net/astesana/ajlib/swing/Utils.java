@@ -15,6 +15,8 @@ import javax.swing.table.TableColumnModel;
  */
 public class Utils {
 	/** Gets the window which contains a component.
+	 * <br>Note that this method, unlike java.swing.SwingUtilities.getAncestor, this method returns the invoker window if the component is a menu item
+	 * (java.swing.SwingUtilities.getAncestor returns null in such a case).
 	 * @param component the component
 	 * @return The window containing the component or null if no window contains the component.
 	 */
