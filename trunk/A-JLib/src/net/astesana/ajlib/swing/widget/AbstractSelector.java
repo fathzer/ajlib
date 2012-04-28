@@ -266,7 +266,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 * <br>This method is a shortcut to this.getCombo().setToolTipText(text)
 	 * @param tip The tooltip text.
 	 */
-	public void setToolTipText(String text) {
-		getCombo().setToolTipText(text);
+	public void setToolTipText(String tip) {
+		getCombo().setToolTipText(tip);
 	}
 }

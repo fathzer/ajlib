@@ -19,6 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 
+/** A month selector.
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 public class MonthWidget extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
