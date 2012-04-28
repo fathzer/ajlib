@@ -1,5 +1,6 @@
 package net.astesana.ajlib.swing.worker;
 
+import javax.swing.Icon;
 import javax.swing.SwingWorker;
 
 import java.awt.GridBagLayout;
@@ -121,14 +122,19 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		this.message.setText(message);
 	}
 	
+	public void setIcon(Icon icon) {
+		this.message.setIcon(icon);
+	}
+	
 	/** Inits the progress bar.
 	 * <br>This method is called every time the worker phase changes (or when the worker itself changes).
-	 * <br>The default implementation sets the progress bar in indeterminate state if the worker's phase length is < 0.
+	 * <br>The default implementation sets the progress bar in indeterminate state if the length of the worker's phase is < 0.
 	 * If it is > 0, then, it sets the maximum to the phase length and turns the StringPainted of the progress bar to true.
+	 * <br>if the phase wording is null, the message text is unchanged.
 	 * <br>You can override this method to change this behavior. 
 	 */
 	protected void initPhase() {
-		setMessage(worker.getPhase());					
+		if (worker.getPhase()!=null) setMessage(worker.getPhase());					
 		int phaseLength = worker.getPhaseLength();
 		getProgressBar().setIndeterminate(phaseLength<0);
 		getProgressBar().setStringPainted(phaseLength>0);
