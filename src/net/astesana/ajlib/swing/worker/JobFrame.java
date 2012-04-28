@@ -20,7 +20,7 @@ import java.beans.PropertyChangeListener;
  * <br>As the running computer may be faster that the developer thought, the long task is maybe a small and fast task !
  * So, instead of displaying immediately the dialog, we wait a little. If the long task completes during this time, the dialog is not displayed
  * (of course, the done method of the swingWorker is invoked).
- * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the search completes just after the pop up delay).
+ * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the task completes just after the pop up delay).
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */
@@ -110,12 +110,20 @@ public class JobFrame extends JDialog {
 	
 	/** Gets the progress panel used by this dialog.
 	 * @return a JPanel
+	 * @see #buildProgressPanel()
 	 */
-	public WorkInProgressPanel getWorkInProgressPanel() {
+	public final WorkInProgressPanel getWorkInProgressPanel() {
 		if (progressPanel==null) {
-			progressPanel = new DefaultWorkInProgressPanel();
+			progressPanel = buildProgressPanel();
 		}
 		return progressPanel;
+	}
+
+	/** Builds the progress panel.
+	 * @return a new instance of DefaultWorkInProgressPanel. If you need a customized panel, you should override this method.
+	 */
+	protected WorkInProgressPanel buildProgressPanel() {
+		return new DefaultWorkInProgressPanel();
 	}
 	
 	/** Sets the delay before the dialog is shown.
