@@ -35,10 +35,10 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	 * @param phaseLength The phase length (a negative number means the length is indeterminate).
 	 */
 	protected void setPhase(String phase, int phaseLength) {
+		this.phaseLength = phaseLength;
 		if (!NullUtils.areEquals(this.phase, phase)) {
 			String old = this.phase;
 			this.phase = phase;
-			this.phaseLength = phaseLength;
 			this.firePropertyChange(JOB_PHASE, old, phase);
 		}
 	}
