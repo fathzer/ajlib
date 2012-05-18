@@ -35,6 +35,39 @@ public class WorkerDemoPanel extends JPanel {
 		gbc_btnStartANew_1.gridy = 1;
 		gbc_btnStartANew_1.gridx = 0;
 		add(getBtnStartANew_1(), gbc_btnStartANew_1);
+		
+		JButton btnNewButton = new JButton("Start a debug task (no phase name)");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WorkerSample worker = new AnonymousWorker();
+				WorkInProgressFrame jobFrame = new WorkInProgressFrame(worker);
+				jobFrame.setTitle("Anonymous task n°"+worker.taskNumber);
+				jobFrame.setSize(300, jobFrame.getSize().height);
+				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
+				jobFrame.setVisible(true);
+			}
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.anchor = GridBagConstraints.NORTH;
+		gbc_btnNewButton.gridx = 0;
+		gbc_btnNewButton.gridy = 2;
+		add(btnNewButton, gbc_btnNewButton);
+		btnNewButton.setVisible(false);
+	}
+	
+	private static class AnonymousWorker extends WorkerSample {
+		@Override
+		protected Void doInBackground() throws Exception {
+			// First ... forget to define the phase
+			Thread.sleep(2000);
+			// Then, define a phase length ... but no name
+			setPhase(null, 1000);
+			for (int i = 0; i < 1000; i++) {
+				Thread.sleep(2);
+				reportProgress(i);
+			}
+			return null;
+		}
 	}
 
 	private static class WorkerSample extends Worker<Void, Void> {
@@ -61,12 +94,8 @@ public class WorkerDemoPanel extends JPanel {
 			setPhase("Other may have a defined length", nb);
 			for (int i=0;i<nb;i++) {
 				Thread.sleep(100);
-				try {
-					reportProgress(i);
-					if (isCancelled()) return null;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				reportProgress(i);
+				if (isCancelled()) return null;
 			}
 			return null;
 		}

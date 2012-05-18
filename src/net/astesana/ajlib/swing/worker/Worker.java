@@ -16,7 +16,10 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	public static String STATE_PROPERTY_NAME = "state"; //$NON-NLS-1$
 	/** The progress property name of the SwingWorker (Should have been defined in SwingWorker by Oracle ?) */
 	public static String PROGRESS_PROPERTY_NAME = "progress"; //$NON-NLS-1$
+	/** The job phase property name */
 	public static final String JOB_PHASE = "phase"; //$NON-NLS-1$
+	/** The phase length property name */
+	public static final String PHASE_LENGTH = "length"; //$NON-NLS-1$
 	
 	private String phase;
 	private int phaseLength;
@@ -35,11 +38,22 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	 * @param phaseLength The phase length (a negative number means the length is indeterminate).
 	 */
 	protected void setPhase(String phase, int phaseLength) {
-		this.phaseLength = phaseLength;
 		if (!NullUtils.areEquals(this.phase, phase)) {
 			String old = this.phase;
 			this.phase = phase;
 			this.firePropertyChange(JOB_PHASE, old, phase);
+		}
+		setPhaseLength(phaseLength);
+	}
+	
+	/** Sets the phase length.
+	 * @param phaseLength The phase length (a negative number means the length is indeterminate)
+	 */
+	protected void setPhaseLength(int phaseLength) {
+		if (phaseLength!=this.phaseLength) {
+			int old = this.phaseLength;
+			this.phaseLength = phaseLength;
+			this.firePropertyChange(PHASE_LENGTH, old, phase);
 		}
 	}
 	
