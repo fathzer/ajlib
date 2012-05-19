@@ -4,12 +4,16 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -26,16 +30,16 @@ import java.beans.PropertyChangeListener;
  */
 @SuppressWarnings("serial")
 public class WorkInProgressFrame extends JDialog {
-	public static final long DEFAULT_DELAY = 500;
-	public static final long DEFAULT_MINIMUM_TIME_VISIBLE = 1000;
+	public static final int DEFAULT_DELAY = 500;
+	public static final int DEFAULT_MINIMUM_TIME_VISIBLE = 1000;
 
 	private JPanel contentPane;
 	private WorkInProgressPanel progressPanel;
 	
 	private long setVisibleTime;
-	private long minimumVisibleTime;
-	private long delay;
-	private SwingWorker<Object, Void> showWorker;
+	private int minimumVisibleTime;
+	private int delay;
+	private Timer timer;
 	private Worker<?, ?> worker;
 
 	/**
@@ -78,7 +82,26 @@ public class WorkInProgressFrame extends JDialog {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
 					if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
-						WorkInProgressFrame.this.dispose();
+						if (timer!=null) {
+							timer.stop();
+//System.out.println ("Timer is stopped at "+System.currentTimeMillis());
+						}
+						// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
+						// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
+						long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
+						if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, wait for the user to see what happens ;-)
+							Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									WorkInProgressFrame.this.dispose();
+								}
+							});
+							disposeTimer.setRepeats(false);
+							disposeTimer.start();
+//System.out.println ("Window will be closed after "+remaining+" ms");
+						} else {
+							WorkInProgressFrame.this.dispose();
+						}
 					}
 				}
 			}
@@ -132,7 +155,7 @@ public class WorkInProgressFrame extends JDialog {
 	 * The default value is DEFAULT_DELAY.
 	 * <BR>Note that this method must be called before calling setVisible with a true argument.
 	 */
-	public void setDelay(long delay) {
+	public void setDelay(int delay) {
 		this.delay = delay;
 	}
 	
@@ -141,47 +164,32 @@ public class WorkInProgressFrame extends JDialog {
 	 * The default value is DEFAULT_MINIMUM_TIME_VISIBLE.
 	 * <BR>Note that this method must be called before calling setVisible with a true argument.
 	 */
-	public void setMinimumVisibleTime(long time) {
+	public void setMinimumVisibleTime(int time) {
 		this.minimumVisibleTime = time;
 	}
 	
 	@Override
 	public void setVisible(boolean visible) {
 		if (visible) { // If the dialog is opened
-			// Start a thread that will delay the dialog display 
-			this.showWorker = new SwingWorker<Object, Void>() {
-				@Override
-				protected Object doInBackground() throws Exception {
-					Thread.sleep(delay);
-					return null;
+			// We will give the illusion that the window is not visible ... but it will be (to have the modal property of modal dialog preserved)
+			// The magic is to display the window ... outside of the screen
+			final Point location = getLocation();
+			setLocation(Integer.MIN_VALUE, Integer.MIN_VALUE);
+			this.timer = new Timer(delay, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+//System.out.println ("Timer expired at "+System.currentTimeMillis());
+					setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+					setLocation(location);
+					timer = null;
 				}
-
-				@Override
-				protected void done() {
-					// This method is called when the showWorker end.
-					// This means it is time to display the dialog.
-					if (!worker.isDone()) { // If the task is not finished (please note we talk about the main task of the dialog, not the "display timer" task)
-						// If main task not ended, show the dialog
-						doShow();
-					}
-				}
-			};
-			this.showWorker.execute();
+			});
+			timer.setRepeats(false);
+			timer.start();
+//System.out.println ("Timer is started at "+System.currentTimeMillis());
+			super.setVisible(true);
 		} else { // If the dialog is made invisible
-			if (this.showWorker!=null) this.showWorker.cancel(true);
-			long delay = this.minimumVisibleTime-(System.currentTimeMillis()-this.setVisibleTime);
-			try {
-				if (delay>0) { // If the dialog is displayed for less than 500 ms, wait for the user to see what happens ;-)
-					Thread.sleep(delay);
-				}
-			} catch (InterruptedException e) {
-			}
+			// This is not called when the worker ends ... so, it's the programmer that ask the window to hide ... so we will allow it without satisfying the minimum visible time
 			super.setVisible(visible);
 		}
-	}
-
-	private void doShow() {
-		this.setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
-		super.setVisible(true);
 	}
 }
