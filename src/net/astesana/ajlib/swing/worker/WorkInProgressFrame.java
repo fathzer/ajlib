@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
+import javax.swing.SwingWorker.StateValue;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridBagLayout;
@@ -19,14 +20,15 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/** A progress dialog, that manages a long background task.
- * <br>When the dialog is constructed, its task is launch in a SwingWorker thread.
+/** A progress dialog, that manages a long background task (a instance of Worker class).
+ * <br>When the setVisible(true) method of the dialog is called, its task is launched in a SwingWorker thread.
  * <br>As the running computer may be faster that the developer thought, the long task is maybe a small and fast task !
  * So, instead of displaying immediately the dialog, we wait a little. If the long task completes during this time, the dialog is not displayed
  * (of course, the done method of the swingWorker is invoked).
  * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the task completes just after the pop up delay).
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
+ * @see Worker
  */
 @SuppressWarnings("serial")
 public class WorkInProgressFrame extends JDialog {
@@ -107,8 +109,6 @@ public class WorkInProgressFrame extends JDialog {
 			}
 		});
 		pack();
-		// Start the job task.
-		worker.execute();
 	}
 
 	private void buildContentPane() {
@@ -168,28 +168,40 @@ public class WorkInProgressFrame extends JDialog {
 		this.minimumVisibleTime = time;
 	}
 	
+	/** Sets the frame visible or not
+	 * <br> if visible is true and the worker is pending, then the execute method is called.
+	 * @param visible true to set the dialog visible.
+	 * @see #execute()
+	 */
 	@Override
 	public void setVisible(boolean visible) {
-		if (visible) { // If the dialog is opened
-			// We will give the illusion that the window is not visible ... but it will be (to have the modal property of modal dialog preserved)
-			// The magic is to display the window ... outside of the screen
-			final Point location = getLocation();
-			setLocation(Integer.MIN_VALUE, Integer.MIN_VALUE);
-			this.timer = new Timer(delay, new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-//System.out.println ("Timer expired at "+System.currentTimeMillis());
-					setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
-					setLocation(location);
-					timer = null;
-				}
-			});
-			timer.setRepeats(false);
-			timer.start();
-//System.out.println ("Timer is started at "+System.currentTimeMillis());
-			super.setVisible(true);
-		} else { // If the dialog is made invisible
-			// This is not called when the worker ends ... so, it's the programmer that ask the window to hide ... so we will allow it without satisfying the minimum visible time
-			super.setVisible(visible);
+		if (visible && !isVisible() && (worker.getState().equals(StateValue.PENDING))) { // If the dialog is opened
+			execute();
 		}
+	}
+	
+	/** Executes the task.
+	 * <br>Starts the worker, and, after getDelay() ms, sets the dialog visible (if the task is not yet completed).
+	 * <br>Once the task is complete, this frame is closed (if it visible, the method ensure that this frame remains visible at least setMinimumVisibleTime ms).
+	 * <br>If this frame is modal, the calling thread is blocked until the task completes (and this frame is hiden).
+	 */
+	public void execute() {
+		// Start the job task.
+		worker.execute();
+		// We will give the illusion that the window is not visible ... but it will be (to have the modal property of modal dialog preserved)
+		// The magic is to display the window ... outside of the screen
+		final Point location = getLocation();
+		setLocation(Integer.MIN_VALUE, Integer.MIN_VALUE);
+		this.timer = new Timer(delay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//System.out.println ("Timer expired at "+System.currentTimeMillis());
+				setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+				setLocation(location);
+				timer = null;
+			}
+		});
+		timer.setRepeats(false);
+		timer.start();
+		super.setVisible(true);
 	}
 }

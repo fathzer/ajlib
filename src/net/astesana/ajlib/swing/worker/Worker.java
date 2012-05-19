@@ -4,9 +4,13 @@ import javax.swing.SwingWorker;
 
 import net.astesana.ajlib.utilities.NullUtils;
 
-/** A Worker that defines phases that can have different lengths.
+/** A SwingWorker that defines phases that can have different lengths.
  * By default, a SwingWorker reports its progress with an integer between 0 and 100 (see method setProgress).
  * This class allows you to define any length then report the progress without having to convert it to percentage.
+ * @param <T> the result type returned by this {@code SwingWorker's}
+ *        {@code doInBackground} and {@code get} methods
+ * @param <V> the type used for carrying out intermediate results by this
+ *        {@code SwingWorker's} {@code publish} and {@code process} methods
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  * @see #reportProgress(int)
