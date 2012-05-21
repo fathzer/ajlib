@@ -2,6 +2,9 @@ package net.astesana.ajlib.utilities;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.swing.table.TableModel;
 
@@ -68,4 +71,22 @@ public class CSVExporter {
 		this.separator = separator;
 	}
 
+	/** Returns a formatter to use to output currencies.
+	 * <br>Excel is very demanding on the number formats. It doesn't tolerate currency suffix or prefix, nor grouping separators.
+	 * <br>This method returns a formatter that outputs strings that will be recognized as numbers by excel. 
+	 * @param locale The locale.
+	 * @return a NumberFormat instance
+	 */
+	public static NumberFormat getCurrencyFormater(Locale locale) {
+		NumberFormat result = NumberFormat.getInstance(locale);
+		if (result instanceof DecimalFormat) {
+			// We don't use the currency instance, because it would have output some currency prefix or suffix, not very easy
+			// to manipulate with an excel like application
+			NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(locale);
+			result.setMinimumFractionDigits(currencyFormat.getMinimumFractionDigits());
+			result.setMaximumFractionDigits(currencyFormat.getMaximumFractionDigits());
+		}
+		result.setGroupingUsed(false);
+		return result;
+	}
 }
