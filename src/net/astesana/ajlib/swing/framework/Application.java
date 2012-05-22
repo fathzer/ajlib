@@ -9,12 +9,14 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -62,15 +64,31 @@ public abstract class Application {
 	public final void launch() {
 		// Set the look and feel
 		setLookAndFeel();
-		// Warning the new event queue may ABSOLUTLY be NOT installed by the event dispatch thread under java 1.6 or the program will never exit
-		if (isJava6()) installEventQueue();
+		// Install the exceptions logger on the AWT event queue.
+		if (isJava6()) {
+			// Warning the new event queue may ABSOLUTLY be NOT installed by the event dispatch thread under java 1.6 or the program will never exit
+			installEventQueue();
+		} else {
+			// Warning the new event queue may ABSOLUTLY be installed by the event dispatch thread under java 1.7 or the program will never exit
+			// Warning - 2, if the new event queue is installed by the Runnable that launches start, it sometimes cause a NullPointerException
+			// at java.awt.EventQueue.getCurrentEventImpl(EventQueue.java:796), for instance when setting the selectedItem of a JComboBox in the start method
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						installEventQueue();
+					}
+				});
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(e.getCause());
+			}
+		}
 		// Schedule a job for the event-dispatching thread:
 		// creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				// Install the exceptions logger on the AWT event queue.
-				// Warning the new event queue may ABSOLUTLY be installed by the event dispatch thread under java 1.7 or the program will never exit
-				if (!isJava6()) installEventQueue();
 				start();
 			}
 		});
