@@ -26,6 +26,9 @@ import java.beans.PropertyChangeListener;
  * So, instead of displaying immediately the dialog, we wait a little. If the long task completes during this time, the dialog is not displayed
  * (of course, the done method of the swingWorker is invoked).
  * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the task completes just after the pop up delay).
+ * <br><br>By default, when the user clicks the frame close box, it cancels the task and dispose the window.
+ * If you set the frame default close operation to "do nothing" (with <code>this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE)</code>)
+ * the close box does nothing at all. You can then listen to window closing event in order to do want you want.
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  * @see Worker
@@ -71,9 +74,11 @@ public class WorkInProgressFrame extends JDialog {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
-				// Cancel the tack if the window is closing
-				SwingWorker<?, ?> worker = progressPanel.getWorker();
-				if (!worker.isDone()) worker.cancel(false);
+				if (getDefaultCloseOperation()!=JFrame.DO_NOTHING_ON_CLOSE) {
+					// Cancel the task if the window is closing
+					SwingWorker<?, ?> worker = progressPanel.getWorker();
+					if (!worker.isDone()) worker.cancel(false);
+				}
 			}
 		});
 		
