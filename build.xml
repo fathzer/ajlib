@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="build" name="Build script for A-JLib project">
-	<property name="ajlibVersion" value="0.0.7"/>
+	<property name="ajlibVersion" value="0.0.8"/>
 	<tstamp><format property="TODAY" pattern="dd/MM/yyyy" locale="fr,FR"/></tstamp>
 	
 	<property name="releaseDir" value="ajlibRelease"/>
