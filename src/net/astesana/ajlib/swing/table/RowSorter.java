@@ -17,7 +17,7 @@ import javax.swing.table.TableRowSorter;
  * <br><code>
  * &nbsp;&nbsp;JTable table;<br>
  * &nbsp;&nbsp;...<br>
- * &nbsp;&nbsp;table.setRowSorter(new RowSorter(table.getModel()))<br>
+ * &nbsp;&nbsp;table.setRowSorter<TableModel>(new RowSorter(table.getModel()))<br>
  * </code>
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
