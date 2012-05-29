@@ -47,6 +47,7 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
 	@Override
 	public void toggleSortOrder(int column) {
 //System.out.println ("toggleSortOrder is called");
+		if (!isSortable(column)) return;
     List<? extends SortKey> sortKeys = getSortKeys();
     ArrayList<SortKey> futureKeys = new ArrayList<SortKey>();
     SortKey theKey = null;
