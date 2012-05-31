@@ -8,6 +8,7 @@ import javax.swing.Timer;
 import javax.swing.SwingWorker.StateValue;
 import javax.swing.border.EmptyBorder;
 
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -26,7 +27,7 @@ import java.beans.PropertyChangeListener;
  * So, instead of displaying immediately the dialog, we wait a little. If the long task completes during this time, the dialog is not displayed
  * (of course, the done method of the swingWorker is invoked).
  * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the task completes just after the pop up delay).
- * <br><br>By default, when the user clicks the frame close box, it cancels the task and dispose the window.
+ * <br><br>By default, when the user clicks the frame close box, it cancels the task and disposes the window.
  * If you set the frame default close operation to "do nothing" (with <code>this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE)</code>)
  * the close box does nothing at all. You can then listen to window closing event in order to do want you want.
  * @author Jean-Marc Astesana
@@ -196,12 +197,15 @@ public class WorkInProgressFrame extends JDialog {
 		// We will give the illusion that the window is not visible ... but it will be (to have the modal property of modal dialog preserved)
 		// The magic is to display the window ... outside of the screen
 		final Point location = getLocation();
-		setLocation(Integer.MIN_VALUE, Integer.MIN_VALUE);
+		final Dimension size = getSize();
+		setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		setSize(0,0);
 		this.timer = new Timer(delay, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //System.out.println ("Timer expired at "+System.currentTimeMillis());
 				setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
 				setLocation(location);
+				setSize(size);
 				timer = null;
 			}
 		});
