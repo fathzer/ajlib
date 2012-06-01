@@ -40,10 +40,8 @@ public class WorkerDemoPanel extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WorkerSample worker = new AnonymousWorker();
-				WorkInProgressFrame jobFrame = new WorkInProgressFrame(worker);
-				jobFrame.setTitle("Anonymous task n°"+worker.taskNumber);
+				WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Anonymous task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
 				jobFrame.setSize(300, jobFrame.getSize().height);
-				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
 				jobFrame.setVisible(true);
 			}
 		});
@@ -112,10 +110,8 @@ public class WorkerDemoPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				WorkerSample worker = new WorkerSample();
-				WorkInProgressFrame jobFrame = new WorkInProgressFrame(worker);
-				jobFrame.setTitle("task n°"+worker.taskNumber);
+				WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.MODELESS, worker);
 				jobFrame.setSize(300, jobFrame.getSize().height);
-				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
 				jobFrame.setVisible(true);
 			}
 		});
