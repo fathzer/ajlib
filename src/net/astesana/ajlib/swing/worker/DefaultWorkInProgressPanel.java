@@ -66,16 +66,14 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		
-		message = new JLabel(" "); //$NON-NLS-1$
 		GridBagConstraints gbc_message = new GridBagConstraints();
 		gbc_message.insets = new Insets(0, 0, 5, 0);
 		gbc_message.anchor = GridBagConstraints.WEST;
 		gbc_message.gridwidth = 0;
 		gbc_message.gridx = 0;
 		gbc_message.gridy = 0;
-		add(message, gbc_message);
+		add(getLabel(), gbc_message);
 		
-		progressBar = new JProgressBar();
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
 		gbc_progressBar.weightx = 1.0;
 		gbc_progressBar.insets = new Insets(0, 0, 5, 0);
@@ -83,16 +81,9 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		gbc_progressBar.gridwidth = 0;
 		gbc_progressBar.gridx = 0;
 		gbc_progressBar.gridy = 1;
-		add(progressBar, gbc_progressBar);
+		add(getProgressBar(), gbc_progressBar);
 		
 		getBtnCancel().setEnabled(false);
-		getBtnCancel().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (worker!=null) {
-					worker.cancel(false);
-				}
-			}
-		});
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.gridx = 0;
 		gbc_btnCancel.gridy = 2;
@@ -141,6 +132,13 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		if (worker.getPhaseLength()>0) getProgressBar().setMaximum(worker.getPhaseLength());
 	}
 
+	public JLabel getLabel() {
+		if (message==null) {
+			message = new JLabel(" "); //$NON-NLS-1$
+		}
+		return message;
+	}
+
 	public JProgressBar getProgressBar() {
 		if (progressBar==null) {
 			progressBar = new JProgressBar();
@@ -151,6 +149,13 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	public JButton getBtnCancel() {
 		if (btnCancel==null) {
 			btnCancel = new JButton(Application.getString("GenericButton.cancel")); //$NON-NLS-1$
+			getBtnCancel().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (worker!=null) {
+						worker.cancel(false);
+					}
+				}
+			});
 		}
 		return btnCancel;
 	}
