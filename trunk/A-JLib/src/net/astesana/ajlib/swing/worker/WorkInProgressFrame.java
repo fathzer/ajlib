@@ -8,6 +8,8 @@ import javax.swing.Timer;
 import javax.swing.SwingWorker.StateValue;
 import javax.swing.border.EmptyBorder;
 
+import net.astesana.ajlib.swing.Utils;
+
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -48,16 +50,6 @@ public class WorkInProgressFrame extends JDialog {
 	private Timer timer;
 	private Worker<?, ?> worker;
 
-	/**
-	 * Constructor.
-	 * <br>Default arguments : owner is null, title is an empty String and modality is ModalityType.MODELESS.
-	 * @param worker The worker that will run in background.
-	 * @see #WorkInProgressFrame(Window, String, ModalityType, Worker)
-	 */
-	public WorkInProgressFrame(Worker<?, ?> worker) {
-		this(null,"",ModalityType.MODELESS, worker);
-	}
-	
 	/**
 	 * Constructor.
 	 * @param owner The owner of the dialog
@@ -115,6 +107,7 @@ public class WorkInProgressFrame extends JDialog {
 			}
 		});
 		pack();
+		if (owner!=null) Utils.centerWindow(this, owner);
 	}
 
 	private void buildContentPane() {
