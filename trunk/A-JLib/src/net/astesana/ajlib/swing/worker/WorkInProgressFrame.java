@@ -86,21 +86,23 @@ public class WorkInProgressFrame extends JDialog {
 							timer.stop();
 //System.out.println ("Timer is stopped at "+System.currentTimeMillis());
 						}
-						// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
-						// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
-						long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
-						if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, wait for the user to see what happens ;-)
-							Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									WorkInProgressFrame.this.dispose();
-								}
-							});
-							disposeTimer.setRepeats(false);
-							disposeTimer.start();
-//System.out.println ("Window will be closed after "+remaining+" ms");
-						} else {
-							WorkInProgressFrame.this.dispose();
+						if (minimumVisibleTime!=Integer.MAX_VALUE) {
+							// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
+							// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
+							long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
+							if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, wait for the user to see what happens ;-)
+								Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent e) {
+										WorkInProgressFrame.this.dispose();
+									}
+								});
+								disposeTimer.setRepeats(false);
+								disposeTimer.start();
+	//System.out.println ("Window will be closed after "+remaining+" ms");
+							} else {
+								WorkInProgressFrame.this.dispose();
+							}
 						}
 					}
 				}
@@ -159,7 +161,7 @@ public class WorkInProgressFrame extends JDialog {
 	}
 	
 	/** Sets the minimum time the dialog will be visible if it is shown.
-	 * @param time The time in ms.
+	 * @param time The time in ms. Integer.MAX_VALUE to prevent the dialog from closing when the worker is done.
 	 * The default value is DEFAULT_MINIMUM_TIME_VISIBLE.
 	 * <BR>Note that this method must be called before calling setVisible with a true argument.
 	 */
@@ -181,7 +183,7 @@ public class WorkInProgressFrame extends JDialog {
 	
 	/** Executes the task.
 	 * <br>Starts the worker, and, after getDelay() ms, sets the dialog visible (if the task is not yet completed).
-	 * <br>Once the task is complete, this frame is closed (if it visible, the method ensure that this frame remains visible at least setMinimumVisibleTime ms).
+	 * <br>Once the task is complete, this frame is closed (if it is visible, the method ensure that this frame remains visible at least setMinimumVisibleTime ms).
 	 * <br>If this frame is modal, the calling thread is blocked until the task completes (and this frame is hiden).
 	 */
 	public void execute() {
@@ -189,21 +191,25 @@ public class WorkInProgressFrame extends JDialog {
 		worker.execute();
 		// We will give the illusion that the window is not visible ... but it will be (to have the modal property of modal dialog preserved)
 		// The magic is to display the window ... outside of the screen
-		final Point location = getLocation();
-		final Dimension size = getSize();
-		setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
-		setSize(0,0);
-		this.timer = new Timer(delay, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//System.out.println ("Timer expired at "+System.currentTimeMillis());
-				setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
-				setLocation(location);
-				setSize(size);
-				timer = null;
-			}
-		});
-		timer.setRepeats(false);
-		timer.start();
+		if (delay>0) {
+			final Point location = getLocation();
+			final Dimension size = getSize();
+			setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
+			setSize(0,0);
+			this.timer = new Timer(delay, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+	//System.out.println ("Timer expired at "+System.currentTimeMillis());
+					setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+					setLocation(location);
+					setSize(size);
+					timer = null;
+				}
+			});
+			timer.setRepeats(false);
+			timer.start();
+		} else {
+			setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+		}
 		super.setVisible(true);
 	}
 }
