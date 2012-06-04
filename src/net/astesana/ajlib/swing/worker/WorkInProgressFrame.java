@@ -10,11 +10,9 @@ import javax.swing.border.EmptyBorder;
 
 import net.astesana.ajlib.swing.Utils;
 
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -85,6 +83,11 @@ public class WorkInProgressFrame extends JDialog {
 						if (timer!=null) {
 							timer.stop();
 //System.out.println ("Timer is stopped at "+System.currentTimeMillis());
+						}
+						if (getModalityType().equals(ModalityType.MODELESS)) {
+							synchronized (this) {
+								this.notify();
+							}
 						}
 						if (minimumVisibleTime!=Integer.MAX_VALUE) {
 							// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
@@ -176,7 +179,7 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	@Override
 	public void setVisible(boolean visible) {
-		if (visible && !isVisible() && (worker.getState().equals(StateValue.PENDING))) { // If the dialog is opened
+		if (visible && !isVisible() && (worker.getState().equals(StateValue.PENDING))) { // If we try to open the dialog and the task is not already started
 			execute();
 		}
 	}
@@ -189,27 +192,38 @@ public class WorkInProgressFrame extends JDialog {
 	public void execute() {
 		// Start the job task.
 		worker.execute();
-		// We will give the illusion that the window is not visible ... but it will be (to have the modal property of modal dialog preserved)
-		// The magic is to display the window ... outside of the screen
-		if (delay>0) {
-			final Point location = getLocation();
-			final Dimension size = getSize();
-			setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
-			setSize(0,0);
-			this.timer = new Timer(delay, new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-	//System.out.println ("Timer expired at "+System.currentTimeMillis());
-					setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
-					setLocation(location);
-					setSize(size);
-					timer = null;
+		if (delay>0) { // If the window display should be delayed
+			if (getModalityType().equals(ModalityType.MODELESS)) {
+				// If the dialog is not modal, then create a timer to show the window and returns immediatly 
+				this.timer = new Timer(delay, new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+		//System.out.println ("Timer expired at "+System.currentTimeMillis());
+						showIt();
+					}
+				});
+				timer.setRepeats(false);
+				timer.start();
+			} else {
+				// If the dialog is modal wait until the delay is expired or the task is completed (the method should not return immediately to conform with modal dialogs behavior
+				try {
+					synchronized (this) {
+						this.wait(delay);
+					}
+					showIt();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			});
-			timer.setRepeats(false);
-			timer.start();
+			}
 		} else {
-			setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+			showIt();
 		}
-		super.setVisible(true);
+	}
+	
+	private void showIt() {
+		if (worker.getState()!=StateValue.DONE) {
+			setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+			super.setVisible(true);
+		}
 	}
 }
