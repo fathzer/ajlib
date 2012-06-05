@@ -226,4 +226,8 @@ public class WorkInProgressFrame extends JDialog {
 			super.setVisible(true);
 		}
 	}
+	
+	protected Worker<?,?> getWorker() {
+		return this.worker;
+	}
 }
