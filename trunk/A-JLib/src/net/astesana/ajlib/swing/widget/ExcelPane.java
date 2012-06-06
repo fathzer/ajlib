@@ -30,7 +30,7 @@ public class ExcelPane extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private Table table;
-	private JButton button;
+	private JButton saveButton;
 
 	private CSVExporter exporter;
 
@@ -53,12 +53,12 @@ public class ExcelPane extends JPanel {
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 0;
 		add(getTable(), gbc_scrollPane);
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.insets = new Insets(0, 0, 5, 0);
-		gbc_button.anchor = GridBagConstraints.EAST;
-		gbc_button.gridx = 0;
-		gbc_button.gridy = 1;
-		add(getButton(), gbc_button);
+		GridBagConstraints gbc_saveButton = new GridBagConstraints();
+		gbc_saveButton.insets = new Insets(0, 0, 5, 0);
+		gbc_saveButton.anchor = GridBagConstraints.EAST;
+		gbc_saveButton.gridx = 0;
+		gbc_saveButton.gridy = 1;
+		add(getSaveButton(), gbc_saveButton);
 	}
 
 	public Table getTable() {
@@ -68,10 +68,10 @@ public class ExcelPane extends JPanel {
 		return table;
 	}
 	
-	private JButton getButton() {
-		if (button == null) {
-			button = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
-			button.addActionListener(new ActionListener() {
+	public JButton getSaveButton() {
+		if (saveButton == null) {
+			saveButton = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
+			saveButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser chooser = new FileChooser(Application.getString("ExcelPane.dialog.title")); //$NON-NLS-1$
 					File file = chooser.showSaveDialog(ExcelPane.this)==JFileChooser.APPROVE_OPTION?chooser.getSelectedFile():null;
@@ -91,7 +91,7 @@ public class ExcelPane extends JPanel {
 				}
 			});
 		}
-		return button;
+		return saveButton;
 	}
 	
 	/** Gets the CSVExporter used to export the data.
