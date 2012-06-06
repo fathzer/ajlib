@@ -67,7 +67,7 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		setLayout(gridBagLayout);
 		
 		GridBagConstraints gbc_message = new GridBagConstraints();
-		gbc_message.insets = new Insets(0, 0, 5, 0);
+		gbc_message.insets = new Insets(5, 5, 5, 5);
 		gbc_message.anchor = GridBagConstraints.WEST;
 		gbc_message.gridwidth = 0;
 		gbc_message.gridx = 0;
@@ -76,15 +76,15 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
 		gbc_progressBar.weightx = 1.0;
-		gbc_progressBar.insets = new Insets(0, 0, 5, 0);
+		gbc_progressBar.insets = new Insets(0, 5, 5, 5);
 		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_progressBar.gridwidth = 0;
 		gbc_progressBar.gridx = 0;
 		gbc_progressBar.gridy = 1;
 		add(getProgressBar(), gbc_progressBar);
 		
-		getBtnCancel().setEnabled(false);
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
+		gbc_btnCancel.insets = new Insets(0, 5, 5, 5);
 		gbc_btnCancel.gridx = 0;
 		gbc_btnCancel.gridy = 2;
 		add(getBtnCancel(), gbc_btnCancel);
@@ -149,6 +149,7 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	public JButton getBtnCancel() {
 		if (btnCancel==null) {
 			btnCancel = new JButton(Application.getString("GenericButton.cancel")); //$NON-NLS-1$
+			btnCancel.setEnabled(false);
 			getBtnCancel().addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (worker!=null) {

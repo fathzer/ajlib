@@ -2,17 +2,12 @@ package net.astesana.ajlib.swing.worker;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.SwingWorker.StateValue;
-import javax.swing.border.EmptyBorder;
 
 import net.astesana.ajlib.swing.Utils;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,7 +34,6 @@ public class WorkInProgressFrame extends JDialog {
 	public static final int DEFAULT_DELAY = 500;
 	public static final int DEFAULT_MINIMUM_TIME_VISIBLE = 1000;
 
-	private JPanel contentPane;
 	private WorkInProgressPanel progressPanel;
 	
 	private long setVisibleTime;
@@ -116,23 +110,9 @@ public class WorkInProgressFrame extends JDialog {
 	}
 
 	private void buildContentPane() {
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		contentPane.setLayout(gbl_contentPane);
-		
 		progressPanel = getWorkInProgressPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.weightx = 1.0;
-		gbc_panel.insets = new Insets(5, 5, 5, 5);
-		gbc_panel.gridwidth = 0;
-		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
-		contentPane.add(progressPanel, gbc_panel);
-		
 		progressPanel.setSwingWorker(worker);
-		setContentPane(contentPane);
+		setContentPane(progressPanel);
 	}
 	
 	/** Gets the progress panel used by this dialog.
