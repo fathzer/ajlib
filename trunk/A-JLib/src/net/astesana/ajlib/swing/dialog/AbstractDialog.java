@@ -142,6 +142,7 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 * This default implementation closes the dialog.
 	 */
 	protected void cancel() {
+		result = null;
 		setVisible(false);
 	}
 
