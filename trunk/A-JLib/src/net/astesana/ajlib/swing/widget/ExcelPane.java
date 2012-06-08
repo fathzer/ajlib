@@ -38,14 +38,12 @@ public class ExcelPane extends JPanel {
 	 * Create the panel.
 	 */
 	public ExcelPane() {
-		exporter = new CSVExporter('\t',false);
+		exporter = new CSVExporter(';',false);
 		initialize();
 	}
 	
 	private void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.rowWeights = new double[]{1.0, 0.0};
-		gridBagLayout.columnWeights = new double[]{1.0};
 		setLayout(gridBagLayout);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
@@ -73,7 +71,7 @@ public class ExcelPane extends JPanel {
 			saveButton = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
 			saveButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JFileChooser chooser = new FileChooser(Application.getString("ExcelPane.dialog.title")); //$NON-NLS-1$
+					JFileChooser chooser = new FileChooser(null);
 					File file = chooser.showSaveDialog(ExcelPane.this)==JFileChooser.APPROVE_OPTION?chooser.getSelectedFile():null;
 					if (file!=null) {
 						try {
