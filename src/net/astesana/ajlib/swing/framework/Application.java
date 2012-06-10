@@ -249,8 +249,7 @@ public abstract class Application {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
-				saveState();
-				event.getWindow().dispose();
+				onClose(event);
 			}
 		});
 		// CheckNewReleaseAction.doAutoCheck(frame);
@@ -292,5 +291,15 @@ public abstract class Application {
 	 */
 	protected boolean onStart() {
 		return true;
+	}
+	
+	/** This method is called when the application frame is closed.
+	 * <br>The default implementation calls saveState, then disposes the window.
+	 * @param event the Window event received
+	 * @see #saveState()
+	 */
+	protected void onClose(WindowEvent event) {
+		saveState();
+		event.getWindow().dispose();
 	}
 }
