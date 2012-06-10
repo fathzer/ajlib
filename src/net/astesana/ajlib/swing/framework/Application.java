@@ -206,9 +206,21 @@ public abstract class Application {
 		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
 		if (location.x+frame.getWidth()>screenSize.width) location.x = screenSize.width-frame.getWidth();
 		if (location.y+frame.getHeight()>screenSize.height) location.y = screenSize.height-frame.getHeight();
-		frame.setLocation(location);
 		Dimension dimension = new Dimension(prefs.getInt(SIZE_X_PROPERTY, 0), prefs.getInt(SIZE_Y_PROPERTY, 0));
-		if ((dimension.width!=0) && (dimension.height!=0)) frame.setSize(dimension);
+		frame.setLocation(location);
+		int extendedState = Frame.NORMAL;
+		if ((dimension.width!=0) && (dimension.height!=0)) {
+			if (dimension.height<0) {
+				extendedState = extendedState | Frame.MAXIMIZED_VERT;
+				dimension.height = frame.getSize().height;
+			}
+			if (dimension.width<0) {
+				extendedState = extendedState | Frame.MAXIMIZED_HORIZ;
+				dimension.width = frame.getSize().width;
+			}
+			frame.setSize(dimension);
+			getJFrame().setExtendedState(extendedState);
+		}
 	}
 	
 	/** Creates the main panel.
