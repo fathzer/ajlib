@@ -74,7 +74,6 @@ public class Table extends JPanel {
 	public JTable getJTable() {
 		if (table == null) {
 			table = new JTable();
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
 		return table;
 	}
