@@ -46,13 +46,14 @@ public class ExcelPane extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.weighty = 1.0;
+		gbc_scrollPane.weightx = 1.0;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 0;
 		add(getTable(), gbc_scrollPane);
 		GridBagConstraints gbc_saveButton = new GridBagConstraints();
-		gbc_saveButton.insets = new Insets(0, 0, 5, 0);
+		gbc_saveButton.insets = new Insets(5, 0, 5, 0);
 		gbc_saveButton.anchor = GridBagConstraints.EAST;
 		gbc_saveButton.gridx = 0;
 		gbc_saveButton.gridy = 1;
