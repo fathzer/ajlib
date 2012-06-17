@@ -1,6 +1,7 @@
 package net.astesana.ajlib.swing.framework;
 
 import java.awt.AWTEvent;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -15,7 +16,6 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -203,11 +203,7 @@ public abstract class Application {
 	protected void restoreState() {
 		Preferences prefs = Preferences.userRoot().node(getClass().getCanonicalName());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
-		if (location.x+frame.getWidth()>screenSize.width) location.x = screenSize.width-frame.getWidth();
-		if (location.y+frame.getHeight()>screenSize.height) location.y = screenSize.height-frame.getHeight();
 		Dimension dimension = new Dimension(prefs.getInt(SIZE_X_PROPERTY, 0), prefs.getInt(SIZE_Y_PROPERTY, 0));
-		frame.setLocation(location);
 		int extendedState = Frame.NORMAL;
 		if ((dimension.width!=0) && (dimension.height!=0)) {
 			if (dimension.height<0) {
@@ -221,6 +217,10 @@ public abstract class Application {
 			frame.setSize(dimension);
 			getJFrame().setExtendedState(extendedState);
 		}
+		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
+		if (location.x+frame.getWidth()>screenSize.width) location.x = screenSize.width-frame.getWidth();
+		if (location.y+frame.getHeight()>screenSize.height) location.y = screenSize.height-frame.getHeight();
+		frame.setLocation(location);
 	}
 	
 	/** Creates the main panel.
@@ -228,7 +228,7 @@ public abstract class Application {
 	 * It should be instantiated there because, before, the look and feel may not have been set.
 	 * @return The panel that will by displayed in the application frame.
 	 */
-	protected abstract JPanel buildMainPanel();
+	protected abstract Container buildMainPanel();
 	
 	/** Builds the application menu bar.
 	 * <br>This implementation returns a menu bar with a single menu and a single item File/Quit that calls the quit method.
@@ -255,7 +255,7 @@ public abstract class Application {
 		// CheckNewReleaseAction.doAutoCheck(frame);
 		frame.setJMenuBar(buildMenuBar());
 		frame.pack();
-		frame.setMinimumSize(frame.getSize());
+//		frame.setMinimumSize(frame.getSize());
 		restoreState();
 		boolean quit = !onStart();
 		if (quit) {
