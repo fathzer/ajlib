@@ -46,6 +46,7 @@ public class Table extends JPanel {
 	}
 	
 	/** Gets the internal table that is used to display table rows.
+	 * <br>You can override this method in order to create a customized row table.
 	 * @return a JTable
 	 */
 	public JTable getRowJTable() {
@@ -69,6 +70,7 @@ public class Table extends JPanel {
 	/** Gets the internal JTable.
 	 * <br>It is useful to customize the table (for example to change its CellRenderer).
 	 * <br>This table doesn't not contains the row titles.
+	 * <br>You can override this method in order to create a customized table.
 	 * @return a JTable
 	 */
 	public JTable getJTable() {

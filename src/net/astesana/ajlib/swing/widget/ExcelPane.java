@@ -35,7 +35,7 @@ public class ExcelPane extends JPanel {
 	private CSVExporter exporter;
 
 	/**
-	 * Create the panel.
+	 * Creates the panel.
 	 */
 	public ExcelPane() {
 		exporter = new CSVExporter(';',false);
@@ -60,6 +60,10 @@ public class ExcelPane extends JPanel {
 		add(getSaveButton(), gbc_saveButton);
 	}
 
+	/** Gets the table.
+	 * <br>You can override this method in order to create a customized Table.
+	 * @return a Table
+	 */
 	public Table getTable() {
 		if (table == null) {
 			table = new Table();
@@ -67,6 +71,9 @@ public class ExcelPane extends JPanel {
 		return table;
 	}
 	
+	/** Gets the save button.
+	 * @return a button
+	 */
 	public JButton getSaveButton() {
 		if (saveButton == null) {
 			saveButton = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
