@@ -31,7 +31,7 @@ public class Table extends JPanel {
 		initialize();
 	}
 	
-	private void initialize() {
+	protected void initialize() {
 		setLayout(new BorderLayout(0, 0));
 		add(getScrollPane());
 	}
@@ -49,7 +49,7 @@ public class Table extends JPanel {
 	 * <br>You can override this method in order to create a customized row table.
 	 * @return a JTable
 	 */
-	public JTable getRowJTable() {
+	public final JTable getRowJTable() {
 		if (rowView==null) {
 			rowView = new JTable();
 			rowView.setDefaultRenderer(Object.class, new RowHeaderRenderer());
@@ -73,11 +73,15 @@ public class Table extends JPanel {
 	 * <br>You can override this method in order to create a customized table.
 	 * @return a JTable
 	 */
-	public JTable getJTable() {
+	public final JTable getJTable() {
 		if (table == null) {
 			table = new JTable();
 		}
 		return table;
+	}
+	
+	protected JTable buildJTable() {
+		return new JTable();
 	}
 	
 	/** Sets the table model.
