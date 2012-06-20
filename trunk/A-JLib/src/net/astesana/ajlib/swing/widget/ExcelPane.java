@@ -38,11 +38,15 @@ public class ExcelPane extends JPanel {
 	 * Creates the panel.
 	 */
 	public ExcelPane() {
-		exporter = new CSVExporter(';',false);
 		initialize();
 	}
-	
-	private void initialize() {
+
+	/** Initializes the panel.
+	 * <br>This method is called once by the constructor.
+	 * <br>This implementation sets the layout to a new GridBagLayout and adds the table and the button to it.
+	 * <br>You can override this method in order to create a custom panel (for example, if you want to change the button position). 
+	 */
+	protected void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -61,10 +65,9 @@ public class ExcelPane extends JPanel {
 	}
 
 	/** Gets the table.
-	 * <br>You can override this method in order to create a customized Table.
 	 * @return a Table
 	 */
-	public Table getTable() {
+	public final Table getTable() {
 		if (table == null) {
 			table = new Table();
 		}
@@ -74,7 +77,7 @@ public class ExcelPane extends JPanel {
 	/** Gets the save button.
 	 * @return a button
 	 */
-	public JButton getSaveButton() {
+	public final JButton getSaveButton() {
 		if (saveButton == null) {
 			saveButton = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
 			saveButton.addActionListener(new ActionListener() {
@@ -85,7 +88,7 @@ public class ExcelPane extends JPanel {
 						try {
 							BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 							try {
-								exporter.export(writer, getTable().getModel(), true);
+								getCSVExporter().export(writer, getTable().getModel(), true);
 							} finally {
 								writer.close();
 							}
@@ -103,7 +106,29 @@ public class ExcelPane extends JPanel {
 	/** Gets the CSVExporter used to export the data.
 	 * @return a CSVExporter
 	 */
-	public CSVExporter getCSVExporter() {
+	public final CSVExporter getCSVExporter() {
+		if (this.exporter == null) {
+			exporter = buildExporter();
+		}
 		return this.exporter;
+	}
+
+	/** Builds the table.
+	 * <br>This method is called once.
+	 * <br>You can override this method in order to create a customized Table.
+	 * @return a Table
+	 */
+	protected Table buildTable() {
+		return new Table();
+	}
+	
+	/** Builds the table.
+	 * <br>This method is called once.
+	 * <br>The default implementation returns a new CSVEXporter(';', false);
+	 * <br>You can override this method in order to create a customized Table.
+	 * @return a CSVExporter
+	 */
+	protected CSVExporter buildExporter() {
+		return new CSVExporter(';',false);
 	}
 }
