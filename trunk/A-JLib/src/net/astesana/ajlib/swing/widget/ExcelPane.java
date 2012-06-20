@@ -69,7 +69,7 @@ public class ExcelPane extends JPanel {
 	 */
 	public final Table getTable() {
 		if (table == null) {
-			table = new Table();
+			table = buildTable();
 		}
 		return table;
 	}
