@@ -68,18 +68,23 @@ public class Table extends JPanel {
 	}
 
 	/** Gets the internal JTable.
-	 * <br>It is useful to customize the table (for example to change its CellRenderer).
-	 * <br>This table doesn't not contains the row titles.
-	 * <br>You can override this method in order to create a customized table.
 	 * @return a JTable
+	 * @see #buildJTable()
 	 */
 	public final JTable getJTable() {
 		if (table == null) {
-			table = new JTable();
+			table = buildJTable();
 		}
 		return table;
 	}
 	
+	/** Builds the internal JTable.
+	 * <br>This table doesn't not contains the row titles.
+	 * <br>This method is called once and creates the internal JTable.
+	 * <br>It is useful to customize the table (for example to change its CellRenderer).
+	 * <br>So, you can override this method in order to create a customized table.
+	 * @return a JTable
+	 */
 	protected JTable buildJTable() {
 		return new JTable();
 	}
@@ -93,16 +98,20 @@ public class Table extends JPanel {
 	public void setModel(TableModel model) {
 		table.setModel(model);
 		if (model instanceof TitledRowsTableModel) {
-			final TableModel rowHeaderModel = new RowModel((TitledRowsTableModel) model);
-			getRowJTable().setModel(rowHeaderModel);
-			rowHeaderModel.addTableModelListener(new TableModelListener() {
-				@Override
-				public void tableChanged(TableModelEvent e) {
-					setRowViewSize(rowView);
-				}
-			});
-			setRowViewSize(getRowJTable());
+			installModelInRowJTable((TitledRowsTableModel) model);
 		}
+	}
+
+	protected void installModelInRowJTable(TitledRowsTableModel model) {
+		final TableModel rowHeaderModel = new RowModel(model);
+		getRowJTable().setModel(rowHeaderModel);
+		rowHeaderModel.addTableModelListener(new TableModelListener() {
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				setRowViewSize(rowView);
+			}
+		});
+		setRowViewSize(getRowJTable());
 	}
 	
 	/** Gets the table model.
