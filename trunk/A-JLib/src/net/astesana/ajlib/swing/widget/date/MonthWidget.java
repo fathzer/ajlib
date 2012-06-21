@@ -14,7 +14,6 @@ import java.util.Locale;
 
 import javax.swing.SwingConstants;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -101,7 +100,6 @@ public class MonthWidget extends JPanel {
 		currentMonth.setText(formater.format(this.currentDate.getTime()));
 		currentMonth.setHorizontalTextPosition(SwingConstants.CENTER);
 		currentMonth.setHorizontalAlignment(SwingConstants.CENTER);
-		this.setSize(400, 200);
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc_buttonsPanel = new GridBagConstraints();
 		gbc_buttonsPanel.gridx = 0;
@@ -137,7 +135,6 @@ public class MonthWidget extends JPanel {
 		if (previousMonth == null) {
 			previousMonth = new JButton();
 			previousMonth.setIcon(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/date/rewind.png")));
-			previousMonth.setPreferredSize(new Dimension(41, 26));
 			previousMonth.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(-1);
@@ -207,10 +204,6 @@ public class MonthWidget extends JPanel {
 		if (buttonsPanel == null) {
 			buttonsPanel = new JPanel();
 			GridBagLayout gbl_buttonsPanel = new GridBagLayout();
-			gbl_buttonsPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-			gbl_buttonsPanel.rowHeights = new int[]{0, 0};
-			gbl_buttonsPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-			gbl_buttonsPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 			buttonsPanel.setLayout(gbl_buttonsPanel);
 			GridBagConstraints gbc_previousYear = new GridBagConstraints();
 			gbc_previousYear.insets = new Insets(0, 0, 0, 5);
