@@ -271,24 +271,6 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 	}
 
 	/**
-	 * Returns the button color according to the specified date.
-	 * 
-	 * @param theDate
-	 *          the date.
-	 * @return the color.
-	 */
-	private Color getButtonColor(final Calendar theDate, final Calendar currentMonth) {
-		if (equalDates(theDate, this.chosenDate)) {
-			return this.chosenDateButtonColor;
-		} else if ((theDate.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH))
-				&& (theDate.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR))) {
-			return this.chosenMonthButtonColor;
-		} else {
-			return this.chosenOtherButtonColor;
-		}
-	}
-
-	/**
 	 * Returns true if the two dates are equal (time of day is ignored).
 	 * 
 	 * @param c1
@@ -343,10 +325,37 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 		current.setTime(this.monthSelector.getMonth());
 		for (int i = 0; i < 42; i++) {
 			final JButton b = this.buttons[i];
-			b.setText(Integer.toString(c.get(Calendar.DATE)));
-			b.setBackground(getButtonColor(c, current));
+			setButtonAppearance(b, c, current);
 			c.add(Calendar.DATE, 1);
 		}
+	}
+	
+	/** Sets a date button appearance.
+	 * @param button The button to be set up
+	 * @param date The date represented by the button
+	 * @param currentMonth The currently displayed month
+	 */
+	private void setButtonAppearance(JButton button, Calendar date, Calendar currentMonth) {
+		String day = Integer.toString(date.get(Calendar.DATE));
+		Color color;
+		if (equalDates(date, this.chosenDate)) {
+			color = this.chosenDateButtonColor;
+		} else if ((date.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH))
+				&& (date.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR))) {
+			color = this.chosenMonthButtonColor;
+		} else {
+			color = this.chosenOtherButtonColor;
+		}
+		button.setBackground(color);
+		Font font;
+		if (equalDates(date, Calendar.getInstance())) {
+			font = dateFont.deriveFont(Font.BOLD);
+			day = "<html><u>"+day+"</u></html>";
+		} else {
+			font = dateFont;
+		}
+		button.setFont(font);
+		button.setText(day);
 	}
 
 	/**
