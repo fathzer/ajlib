@@ -74,6 +74,9 @@ public class Table extends JPanel {
 	public final JTable getJTable() {
 		if (table == null) {
 			table = buildJTable();
+			if (table.getModel() instanceof TitledRowsTableModel) {
+				installModelInRowJTable((TitledRowsTableModel) table.getModel());
+			}
 		}
 		return table;
 	}
@@ -102,7 +105,7 @@ public class Table extends JPanel {
 		}
 	}
 
-	protected void installModelInRowJTable(TitledRowsTableModel model) {
+	private void installModelInRowJTable(TitledRowsTableModel model) {
 		final TableModel rowHeaderModel = new RowModel(model);
 		getRowJTable().setModel(rowHeaderModel);
 		rowHeaderModel.addTableModelListener(new TableModelListener() {
