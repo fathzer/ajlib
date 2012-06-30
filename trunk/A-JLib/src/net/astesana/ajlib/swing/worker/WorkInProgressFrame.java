@@ -24,7 +24,7 @@ import java.beans.PropertyChangeListener;
  * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the task completes just after the pop up delay).
  * <br><br>By default, when the user clicks the frame close box, it cancels the task and disposes the window.
  * If you set the frame default close operation to "do nothing" (with <code>this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE)</code>)
- * the close box does nothing at all. You can then listen to window closing event in order to do want you want.
+ * the close box does nothing at all. You can then listen to window closing event in order to do what you want.
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  * @see Worker
