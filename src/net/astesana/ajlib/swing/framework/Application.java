@@ -262,6 +262,7 @@ public abstract class Application {
 			quit();
 		} else {
 			frame.setVisible(true);
+			onVisible();
 		}
 	}
 	
@@ -285,13 +286,18 @@ public abstract class Application {
 		});
 	}
 
-	/** This method is called one time, at startup, on the eventDispatchThread.
+	/** This method is called one time, at startup, before the frame is made visible, on the eventDispatchThread.
 	 * <br>This default implementation does nothing.
 	 * @return false to quit the application (it means the start process has failed), true to continue.
 	 */
 	protected boolean onStart() {
 		return true;
 	}
+	
+	/** This method is called one time, at startup, after the frame is made visible, on the eventDispatchThread.
+	 * <br>This default implementation does nothing.
+	 */
+	protected void onVisible() {}
 	
 	/** This method is called when the application frame is closed.
 	 * <br>The default implementation calls saveState, then disposes the window.
