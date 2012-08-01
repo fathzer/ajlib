@@ -35,9 +35,17 @@ public class TextSearcher {
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param comp
-	 *          The text component in which to search
+	 * <br>The searched text is set to null.
+	 * @see #TextSearcher(JTextComponent, String)
+	 */
+	public TextSearcher(JTextComponent comp) {
+		this(comp, null);
+	}
+
+	/**
+	 * Constructor.
+	 * <br>By default, the searcher is not case sensitive nor diacritical sensitive.
+	 * @param comp The text component in which to search
 	 */
 	public TextSearcher(JTextComponent comp, String searchedText) {
 		this.comp = comp;
@@ -48,7 +56,7 @@ public class TextSearcher {
 	}
 
 	/**
-	 * Searches for a text and returns the offset of all the occurrences.
+	 * Searches for this.text and updates the offset of all the occurrences.
 	 */
 	private void search() {
 		if (text == null || text.equals("")) {
@@ -192,5 +200,10 @@ public class TextSearcher {
 		highlighter.addHighlight(offset, offset + this.searchedNormalizedLength, painter);
 		// Scroll the text pane in order to view the first occurrence.
 		comp.scrollRectToVisible(comp.modelToView(offset));
+	}
+	
+	public void setSearchedText(String text) {
+		this.text = text;
+		search();
 	}
 }
