@@ -26,11 +26,17 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/** A panel with every need to search text in a text component.
+ * <br>It provides a text field to enter the searched text, buttons to navigate through occurrences and setting buttons.
+ * <br>When text is entered in search the text field, the first occurrence is automatically highlight in the text component. 
+ * @author Jean-Marc Astesana
+ * <BR>License : GPL v3
+ */
 @SuppressWarnings("serial")
 public class SearchPanel extends JPanel {
 	private JLabel lblNewLabel;
 	private TextWidget searchedTextField;
-	private JPanel panel;
+	private JPanel settingsPanel;
 	private JCheckBox chckbxCase;
 	private JCheckBox chckbxDiacritical;
 	private JTextField resultField;
@@ -43,7 +49,8 @@ public class SearchPanel extends JPanel {
 	private int currentOffset;
 
 	/**
-	 * Create the panel.
+	 * Constructor.
+	 * @param textComponent The component in which to search.
 	 */
 	public SearchPanel(JTextComponent textComponent) {
 		this.textComponent = textComponent;
@@ -71,11 +78,11 @@ public class SearchPanel extends JPanel {
 		gbc_resultPanel.gridx = 2;
 		gbc_resultPanel.gridy = 0;
 		add(getResultPanel(), gbc_resultPanel);
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 3;
-		gbc_panel.gridy = 0;
-		add(getPanel(), gbc_panel);
+		GridBagConstraints gbc_settingsPanel = new GridBagConstraints();
+		gbc_settingsPanel.fill = GridBagConstraints.BOTH;
+		gbc_settingsPanel.gridx = 3;
+		gbc_settingsPanel.gridy = 0;
+		add(getSettingsPanel(), gbc_settingsPanel);
 	}
 	
 	private JLabel getLblNewLabel() {
@@ -85,7 +92,7 @@ public class SearchPanel extends JPanel {
 		return lblNewLabel;
 	}
 	
-	public TextWidget getSearchedTextField() {
+	private TextWidget getSearchedTextField() {
 		if (searchedTextField == null) {
 			searchedTextField = new TextWidget();
 			searchedTextField.addPropertyChangeListener(TextWidget.TEXT_PROPERTY, new PropertyChangeListener() {
@@ -98,7 +105,7 @@ public class SearchPanel extends JPanel {
 		return searchedTextField;
 	}
 	
-	public JCheckBox getCaseInsensitiveCheckBox() {
+	private JCheckBox getCaseInsensitiveCheckBox() {
 		if (chckbxCase == null) {
 			chckbxCase = new JCheckBox("Ignorer la casse");
 			chckbxCase.addItemListener(new ItemListener() {
@@ -112,27 +119,27 @@ public class SearchPanel extends JPanel {
 		return chckbxCase;
 	}
 	
-	private JPanel getPanel() {
-		if (panel == null) {
-			panel = new JPanel();
-			GridBagLayout gbl_panel = new GridBagLayout();
-			panel.setLayout(gbl_panel);
+	private JPanel getSettingsPanel() {
+		if (settingsPanel == null) {
+			settingsPanel = new JPanel();
+			GridBagLayout gbl_settingsPanel = new GridBagLayout();
+			settingsPanel.setLayout(gbl_settingsPanel);
 			GridBagConstraints gbc_chckbxCase = new GridBagConstraints();
 			gbc_chckbxCase.anchor = GridBagConstraints.WEST;
 			gbc_chckbxCase.insets = new Insets(0, 0, 5, 5);
 			gbc_chckbxCase.gridx = 0;
 			gbc_chckbxCase.gridy = 0;
-			panel.add(getCaseInsensitiveCheckBox(), gbc_chckbxCase);
+			settingsPanel.add(getCaseInsensitiveCheckBox(), gbc_chckbxCase);
 			GridBagConstraints gbc_chckbxDiacritical = new GridBagConstraints();
 			gbc_chckbxDiacritical.insets = new Insets(0, 0, 0, 5);
 			gbc_chckbxDiacritical.anchor = GridBagConstraints.WEST;
 			gbc_chckbxDiacritical.gridx = 0;
 			gbc_chckbxDiacritical.gridy = 1;
-			panel.add(getDiacriticalInsensitiveCheckbox(), gbc_chckbxDiacritical);
+			settingsPanel.add(getDiacriticalInsensitiveCheckbox(), gbc_chckbxDiacritical);
 		}
-		return panel;
+		return settingsPanel;
 	}
-	public JCheckBox getDiacriticalInsensitiveCheckbox() {
+	private JCheckBox getDiacriticalInsensitiveCheckbox() {
 		if (chckbxDiacritical == null) {
 			chckbxDiacritical = new JCheckBox("Ignorer les accents");
 			chckbxDiacritical.setSelected(true);
@@ -228,5 +235,13 @@ public class SearchPanel extends JPanel {
 			resultPanel.add(getDownButton(), gbc_downButton);
 		}
 		return resultPanel;
+	}
+	
+	/** Show/hide the search settings.
+	 * @param visible true to show the settings, false to hide them.
+	 */
+	public void setSettingsVisible(boolean visible) {
+		this.getDiacriticalInsensitiveCheckbox().setVisible(visible);
+		this.getCaseInsensitiveCheckBox().setVisible(visible);
 	}
 }
