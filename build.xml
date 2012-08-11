@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="build" name="Build script for A-JLib project">
-	<property name="ajlibVersion" value="0.1.1"/>
+	<property name="ajlibVersion" value="0.1.2"/>
 	<tstamp><format property="TODAY" pattern="dd/MM/yyyy" locale="fr,FR"/></tstamp>
 	
 	<property name="releaseDir" value="ajlibRelease"/>
@@ -23,6 +23,7 @@
 		</jar>
 		<delete dir="${releaseDir}"/>
 		<zip basedir="src" destfile="zip/src.zip"/>
+		<copy todir="zip" file="license.html"/>
 		<zip basedir="zip" destfile="A-JLib-v${ajlibVersion}.zip"/>
 		<delete file="${versionFile}"/>
 		<delete dir="zip"/>
