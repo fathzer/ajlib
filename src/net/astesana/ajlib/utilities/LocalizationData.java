@@ -17,15 +17,14 @@ public class LocalizationData {
 	private boolean translatorMode;
 		
 	public LocalizationData (String bundlePath) {
+		this (ResourceBundle.getBundle(bundlePath));
+	}
+		
+	public LocalizationData (ResourceBundle bundle) {
 		translatorMode = false;
-		ResourceBundle res = ResourceBundle.getBundle(bundlePath); //$NON-NLS-1$
-		setBundle(res);
+		this.bundle = bundle;
 	}
-	
-	private void setBundle(ResourceBundle aBundle) {
-		bundle = aBundle;
-	}
-	
+
 	public String getString(String key) {
 		return translatorMode?key:bundle.getString(key);
 	}
