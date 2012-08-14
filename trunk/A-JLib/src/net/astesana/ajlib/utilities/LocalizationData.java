@@ -19,7 +19,6 @@ public class LocalizationData {
 			locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country")); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (SecurityException e) {
 			locale = Locale.getDefault();
-			System.out.println (locale);
 		}
 		SYS_LOCALE = locale;
 	}
