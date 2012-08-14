@@ -10,8 +10,19 @@ import java.util.ResourceBundle;
  * <BR>License : GPL v3
  */
 public class LocalizationData {
-	public static final Locale SYS_LOCALE = new Locale(System.getProperty("user.language"), System.getProperty("user.country")); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final Locale SYS_LOCALE;
 	public static final LocalizationData DEFAULT = new LocalizationData("net.astesana.ajlib.Resources"); //$NON-NLS-1$
+	
+	static {
+		Locale locale;
+		try {
+			locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country")); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (SecurityException e) {
+			locale = Locale.getDefault();
+			System.out.println (locale);
+		}
+		SYS_LOCALE = locale;
+	}
 	
 	private ResourceBundle bundle;
 	private boolean translatorMode;
