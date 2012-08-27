@@ -82,16 +82,11 @@ public class ExcelPane extends JPanel {
 			saveButton = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
 			saveButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JFileChooser chooser = new FileChooser(null);
+					JFileChooser chooser = new FileChooser(getInitialPath());
 					File file = chooser.showSaveDialog(ExcelPane.this)==JFileChooser.APPROVE_OPTION?chooser.getSelectedFile():null;
 					if (file!=null) {
 						try {
-							BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-							try {
-								getCSVExporter().export(writer, getTable().getModel(), true);
-							} finally {
-								writer.close();
-							}
+							save(file);
 						} catch(IOException ex) {
 							String message = MessageFormat.format(Application.getString("ExcelPane.error.message"), ex.toString()); //$NON-NLS-1$
 							JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("ExcelPane.error.title"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
@@ -103,6 +98,30 @@ public class ExcelPane extends JPanel {
 		return saveButton;
 	}
 	
+	/** Gets the initial path of the file chooser.
+	 * <br>This method is called every time the save button is clicked.
+	 * <br>By default, this path is null.
+	 * @return The path or null that causes the file chooser to point to the user's default directory
+	 */
+	protected String getInitialPath() {
+		return null;
+	}
+	
+	/** Saves the pane content to a file.
+	 * <br>This method is called every time the save button is clicked and a file is selected.
+	 * <br>By default, the content is save to the file using the csv exporter.
+	 * @param file The file selected by the user to save the data.
+	 * @see #getCSVExporter()
+	 */
+	protected void save(File file) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		try {
+			getCSVExporter().export(writer, getTable().getModel(), true);
+		} finally {
+			writer.close();
+		}
+	}
+
 	/** Gets the CSVExporter used to export the data.
 	 * @return a CSVExporter
 	 */
