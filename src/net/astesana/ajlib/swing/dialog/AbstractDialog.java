@@ -25,16 +25,8 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	
 	private V result;
 
-	/** The cancel button.
-	 * If you want the dialog not to have a cancel button, you may set the visibility of this button to false
-	 * (cancelButton.setVisible(false)).
-	 */
-	protected JButton cancelButton;
-	/** The ok button.
-	 * If you want the dialog not to have an ok button, you may set the visibility of this button to false
-	 * (okButton.setVisible(false)).
-	 */
-	protected JButton okButton;
+	private JButton cancelButton;
+	private JButton okButton;
 	/** The data passed to the dialog's constructor.
 	 */
 	protected T data;
@@ -83,8 +75,8 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 				}
 			}
 		};
-		okButton.addActionListener(listener);
-		cancelButton.addActionListener(listener);
+		getOkButton().addActionListener(listener);
+		getCancelButton().addActionListener(listener);
 		return contentPane;
 	}
 
@@ -96,15 +88,35 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	protected JPanel createButtonsPane() {
 		JPanel buttonsPane = new JPanel();
 		buttonsPane.setOpaque(false);
-		okButton = new JButton(Application.getString("GenericButton.ok"));
-		okButton.setOpaque(false);
-		buttonsPane.add(okButton);
-		cancelButton = new JButton(Application.getString("GenericButton.cancel"));
-		cancelButton.setToolTipText(Application.getString("GenericButton.cancel.toolTip"));
-		cancelButton.setOpaque(false);
-		buttonsPane.add(cancelButton);
+		buttonsPane.add(getOkButton());
+		buttonsPane.add(getCancelButton());
 		getRootPane().setDefaultButton(okButton);
 		return buttonsPane;
+	}
+	
+	/** Gets the ok button.
+	 * If you want the dialog not to have an ok button, you may set the visibility of this button to false
+	 * (okButton.setVisible(false)).
+	 */
+	protected JButton getOkButton() {
+		if (okButton==null) {
+			okButton = new JButton(Application.getString("GenericButton.ok"));
+			okButton.setOpaque(false);
+		}
+		return okButton;
+	}
+	
+	/** Gets the cancel button.
+	 * If you want the dialog not to have a cancel button, you may set the visibility of this button to false
+	 * (cancelButton.setVisible(false)).
+	 */
+	protected JButton getCancelButton() {
+		if (cancelButton==null) {
+			cancelButton = new JButton(Application.getString("GenericButton.cancel"));
+			cancelButton.setToolTipText(Application.getString("GenericButton.cancel.toolTip"));
+			cancelButton.setOpaque(false);
+		}
+		return cancelButton;
 	}
 	
 	/** Gets the center pane of this dialog.
