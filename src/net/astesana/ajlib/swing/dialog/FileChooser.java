@@ -1,9 +1,14 @@
 package net.astesana.ajlib.swing.dialog;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.FileChooserUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
+import javax.swing.text.JTextComponent;
 
 import net.astesana.ajlib.utilities.LocalizationData;
 
@@ -17,6 +22,20 @@ public class FileChooser extends JFileChooser {
 
 	public FileChooser() {
 		super();
+		JTextComponent fileName = getFirstTextComponent(getComponents());
+		System.out.println (fileName);
+	}
+	
+	private static JTextComponent getFirstTextComponent(Component[] components) {
+		for (Component component : components) {
+			if (component instanceof Container) {
+				Component subResult = getFirstTextComponent(((Container)component).getComponents());
+				if (subResult!=null) return (JTextComponent) subResult;
+			} else if (component instanceof JTextComponent) {
+				return (JTextComponent) component;
+			}
+		}
+		return null;
 	}
 
 	public FileChooser(String path) {
