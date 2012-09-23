@@ -110,7 +110,17 @@ public class URIChooser extends JTabbedPane {
 		return selectedURI;
 	}
 
-	public void setCurrent(URI uri) {
-		//TODO
+	/** Sets the current uri.
+	 * @param uri
+	 */
+	public void setSelectedURI(URI uri) {
+		String scheme = uri.getScheme();
+		for (int i=0; i<getComponentCount(); i++) {
+			AbstractURIChooserPanel panel = (AbstractURIChooserPanel)getSelectedComponent();
+			if (scheme.equals(panel.getScheme())) {
+				panel.setSelectedURI(uri);
+				break;
+			}
+		}
 	}
 }
