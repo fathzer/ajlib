@@ -1,9 +1,6 @@
 package net.astesana.ajlib.swing.dialog.urichooser;
 
 import java.awt.Component;
-import java.awt.Window;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URI;
@@ -11,8 +8,6 @@ import java.net.URI;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import net.astesana.ajlib.swing.Utils;
 
 /** An URI chooser.
  * <br>This is a extension to the JFileChooser concept. It allows the user to select not only files,
@@ -27,6 +22,7 @@ public class URIChooser extends JTabbedPane {
 	public static final String URI_APPROVED_PROPERTY = AbstractURIChooserPanel.URI_APPROVED_PROPERTY;
 
 	private URI selectedURI;
+	private boolean isSave;
 	
 	/**
 	 * Creates the chooser.
@@ -50,6 +46,7 @@ public class URIChooser extends JTabbedPane {
 				}
 			});
 		}
+		setDialogType(false);
 		ChangeListener listener = new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -62,45 +59,16 @@ public class URIChooser extends JTabbedPane {
 		addChangeListener(listener);
 	}
 
-	private void setDialogType(boolean save) {
+	public void setDialogType(boolean save) {
+		this.isSave = save;
 		for (int i = 0; i < this.getTabCount(); i++) {
 			AbstractURIChooserPanel tab = (AbstractURIChooserPanel)this.getComponentAt(i);
 			tab.setDialogType(save);
 		}
 	}
 	
-	/** Displays a dialog to open an uri. 
-	 * @param parent The dialog's parent
-	 * @return The selected URI (null if the user cancels).
-	 */
-	public URI showOpenDialog(Component parent) {
-		setDialogType(false);
-		return showDialog(parent);
-	}
-	
-	/** Displays a dialog to save an uri. 
-	 * @param parent The dialog's parent
-	 * @return The selected URI (null if the user cancels).
-	 */
-	public URI showSaveDialog(Component parent) {
-		setDialogType(true);
-		return showDialog(parent);
-	}
-	
-	private URI showDialog(Component parent) {
-		Window owner = Utils.getOwnerWindow(parent);
-		final URIChooserDialog dialog = new URIChooserDialog(owner, "URI Chooser", this);
-		dialog.addWindowListener(new WindowAdapter() {
-			/* (non-Javadoc)
-			 * @see java.awt.event.WindowAdapter#windowOpened(java.awt.event.WindowEvent)
-			 */
-			@Override
-			public void windowOpened(WindowEvent e) {
-				((AbstractURIChooserPanel)getSelectedComponent()).setUp();
-			}
-		});
-		dialog.setVisible(true);
-		return dialog.getResult();
+	public boolean isSaveDialogType() {
+		return isSave;
 	}
 
 	/** Gets the currently selected URI.

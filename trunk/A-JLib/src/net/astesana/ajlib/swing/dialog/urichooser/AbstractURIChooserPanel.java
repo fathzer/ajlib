@@ -48,6 +48,11 @@ public interface AbstractURIChooserPanel {
 	 */
 	public URI getSelectedURI();
 	
+	/** Sets the currently selected URI.
+	 * @param uri an URI
+	 */
+	public void setSelectedURI(URI uri);
+
 	/** Sets the dialog type (save or read).
 	 * @param save true if the dialog is for saving data, false for reading data.
 	 */
@@ -61,5 +66,9 @@ public interface AbstractURIChooserPanel {
 	 */
 	public void setUp();
 	
-	public void setSelectedURI(URI uri);
+	/** Test whether or not a URI file exists.
+	 * @param selectedURI An uri
+	 * @return true if the URI exists
+	 */
+	public boolean exist(URI selectedURI);
 }

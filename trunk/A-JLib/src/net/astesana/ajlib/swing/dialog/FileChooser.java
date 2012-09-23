@@ -1,5 +1,6 @@
 package net.astesana.ajlib.swing.dialog;
 
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -95,7 +96,7 @@ public class FileChooser extends JFileChooser {
 	public void approveSelection() {
 		File file = getSelectedFile();
 		if ((getDialogType() == SAVE_DIALOG) && (file != null) && file.exists()) {
-			boolean cancel = showSaveDisplayQuestion(file);
+			boolean cancel = showSaveDisplayQuestion(this);
 			if (cancel) {
 				// User doesn't want to overwrite the file
 				return;
@@ -105,12 +106,12 @@ public class FileChooser extends JFileChooser {
 	}
 
 	/** Displays a dialog to inform the user that a file is already existing and it will be overwritten if the user continue. 
-	 * @param file The selected file
+	 * @param parent determines the Frame in which the dialog is displayed; if null, or if the parentComponent has no Frame, a default Frame is used
 	 * @return true if the user cancels
 	 */
-	private boolean showSaveDisplayQuestion(File file) {
+	public static boolean showSaveDisplayQuestion(Component parent) {
 		String message = LocalizationData.DEFAULT.getString("saveDialog.FileExist.message"); //$NON-NLS-1$
-		return JOptionPane.showOptionDialog(this, message, LocalizationData.DEFAULT.getString("saveDialog.FileExist.title"), //$NON-NLS-1$
+		return JOptionPane.showOptionDialog(parent, message, LocalizationData.DEFAULT.getString("saveDialog.FileExist.title"), //$NON-NLS-1$
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.NO_OPTION;
 	}
 	
