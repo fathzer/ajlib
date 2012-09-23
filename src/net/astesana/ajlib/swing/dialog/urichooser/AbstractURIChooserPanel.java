@@ -32,11 +32,12 @@ public interface AbstractURIChooserPanel {
 	 * @return a String
 	 */
 	public abstract String getName();
-	/** The tooltip of the panel.
+	/** Gets the tooltip of the panel.
 	 * <br>It will be used as tab tooltip by the URIChooser. 
+	 * @param save true to have the save tooltip, false to have the "open" tooltip
 	 * @return a String
 	 */
-	public abstract String getTooltip();
+	public abstract String getTooltip(boolean save);
 	/** The icon of the panel.
 	 * <br>It will be used as tab icon by the URIChooser. 
 	 * @return a String

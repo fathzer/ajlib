@@ -12,11 +12,13 @@ import javax.swing.JPanel;
 
 import net.astesana.ajlib.swing.dialog.AbstractDialog;
 import net.astesana.ajlib.swing.dialog.FileChooser;
+import net.astesana.ajlib.swing.framework.Application;
 
 @SuppressWarnings("serial")
 public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 	public URIChooserDialog(Window owner, String title, AbstractURIChooserPanel[] choosers) {
 		super(owner, title, new URIChooser(choosers));
+		setSaveDialogType(false);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 
 	@Override
 	protected String getOkDisabledCause() {
-		if (this.data.getSelectedURI()==null) return "This button is disabled because no file is selected";
+		if (this.data.getSelectedURI()==null) return Application.getString("URIChooserDialog.noFileSelected"); //$NON-NLS-1$
 		return null;
 	}
 
@@ -77,7 +79,10 @@ public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 	 * @param save true for a save dialog, false for an open dialog
 	 */
 	public void setSaveDialogType(boolean save) {
-		data.setDialogType(save);
+		if (save!=data.isSaveDialogType()) {
+			getOkButton().setText(save?Application.getString("URIChooserDialog.saveButton.title"):Application.getString("URIChooserDialog.openButton.title")); //$NON-NLS-1$ //$NON-NLS-2$
+			data.setDialogType(save);
+		}
 	}
 
 	/** Shows the dialog and gets its result.
