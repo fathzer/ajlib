@@ -53,7 +53,7 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 
 	@Override
 	public Icon getIcon() {
-		return new ImageIcon(getClass().getResource("computer.png"));
+		return new ImageIcon(getClass().getResource("computer.png")); //$NON-NLS-1$
 	}
 
 	private JFileChooser getFileChooser() {

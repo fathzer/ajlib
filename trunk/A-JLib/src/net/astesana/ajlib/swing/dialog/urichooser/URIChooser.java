@@ -96,7 +96,7 @@ public class URIChooser extends JTabbedPane {
 		return dialog.getResult();
 	}
 
-	/** Gets the currentlu selected URI.
+	/** Gets the currently selected URI.
 	 * @return an URI, or null if the user selected nothing.
 	 */
 	public URI getSelectedURI() {
@@ -107,7 +107,15 @@ public class URIChooser extends JTabbedPane {
 		this.dialog = uriChooserDialog;
 	}
 
+	/** Validates the dialog (in any is opened).
+	 * <br>This method allows the AbstractURIChooserPanel to validate the dialog when, for example,
+	 * the user double clicks an uri.
+	 */
 	public void approveSelection() {
-		this.dialog.confirm();
+		if (this.dialog!=null) this.dialog.confirm();
+	}
+	
+	public void setCurrent(URI uri) {
+		//TODO
 	}
 }

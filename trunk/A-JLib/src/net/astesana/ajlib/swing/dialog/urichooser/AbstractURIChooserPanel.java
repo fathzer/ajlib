@@ -51,5 +51,8 @@ public interface AbstractURIChooserPanel {
 	 */
 	public void setUp();
 
+	/** Sets the chooser that uses that panel.
+	 * @param chooser The 
+	 */
 	public void setURIChooser(URIChooser chooser);
 }
