@@ -30,7 +30,7 @@ public class URIChooser extends JTabbedPane {
 	public URIChooser(AbstractURIChooserPanel[] choosers) {
 		setTabPlacement(JTabbedPane.TOP);
 		for (AbstractURIChooserPanel uiChooser:choosers) {
-			addTab(uiChooser.getName(), uiChooser.getIcon(), (Component)uiChooser, uiChooser.getTooltip());
+			addTab(uiChooser.getName(), uiChooser.getIcon(), (Component)uiChooser, null);
 			((Component)uiChooser).addPropertyChangeListener(AbstractURIChooserPanel.SELECTED_URI_PROPERTY, new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
@@ -63,6 +63,7 @@ public class URIChooser extends JTabbedPane {
 		this.isSave = save;
 		for (int i = 0; i < this.getTabCount(); i++) {
 			AbstractURIChooserPanel tab = (AbstractURIChooserPanel)this.getComponentAt(i);
+			this.setToolTipTextAt(i, tab.getTooltip(save));
 			tab.setDialogType(save);
 		}
 	}
