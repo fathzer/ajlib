@@ -1,6 +1,7 @@
 package net.astesana.ajlib.swing.dialog.urichooser;
 
 import java.net.URI;
+import java.util.Collection;
 
 import javax.swing.Icon;
 
@@ -22,10 +23,10 @@ public interface AbstractURIChooserPanel {
 	 */
 	public static final String URI_APPROVED_PROPERTY = "uriApproved";
 	
-	/** Gets the uri scheme (file, ftp, http, ...) that this component supports.
-	 * @return a String
+	/** Gets the uri schemes (file, ftp, http, ...) that this component supports.
+	 * @return a collection of strings
 	 */
-	public String getScheme();
+	public Collection<String> getSchemes();
 
 	/** The name of the panel.
 	 * <br>This name will be used as tab name by the URIChooser. 
