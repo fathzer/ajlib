@@ -31,9 +31,14 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				File oldFile = (File) evt.getOldValue();
-				File newFile = (File) evt.getNewValue();
 				URI oldURI = oldFile==null?null:oldFile.toURI();
-				URI newURI = newFile==null?null:newFile.toURI();
+				File newFile = (File) evt.getNewValue();
+				URI newURI;
+				if (newFile==null || newFile.isDirectory() || (getFileChooser().getDialogType()==JFileChooser.OPEN_DIALOG && !newFile.isFile())) {
+					newURI = null;
+				} else {
+					newURI = newFile.toURI();
+				}
 				firePropertyChange(SELECTED_URI_PROPERTY, oldURI, newURI);
 			}
 		});
@@ -87,13 +92,13 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 	@Override
 	public void setSelectedURI(URI uri) {
 		File file = new File(uri);
-		if (file.isDirectory()) { // Directory exists and is a directory
-			fileChooser.setSelectedFile(new File(file,""));
-		} else {
-			if (file.isFile()) {
+		if (getFileChooser().getDialogType()==JFileChooser.OPEN_DIALOG) {
+			if (file.isFile()) { // File exists and is a not a directory
 				fileChooser.setSelectedFile(file);
-			} else {
-				// TODO
+			}
+		} else {
+			if (!file.isDirectory()) {
+				fileChooser.setSelectedFile(file);
 			}
 		}
 	}
@@ -101,5 +106,11 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 	@Override
 	public String getScheme() {
 		return "file";
+	}
+
+	@Override
+	public boolean exist(URI uri) {
+		File file = new File(uri);
+		return file.exists();
 	}
 }
