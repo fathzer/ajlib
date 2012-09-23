@@ -86,7 +86,7 @@ public class URIChooser extends JTabbedPane {
 		String scheme = uri.getScheme();
 		for (int i=0; i<getComponentCount(); i++) {
 			AbstractURIChooserPanel panel = (AbstractURIChooserPanel)getSelectedComponent();
-			if (scheme.equals(panel.getScheme())) {
+			if (panel.getSchemes().contains(scheme)) {
 				panel.setSelectedURI(uri);
 				break;
 			}
