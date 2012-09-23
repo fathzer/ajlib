@@ -24,8 +24,9 @@ import net.astesana.ajlib.swing.Utils;
 @SuppressWarnings("serial")
 public class URIChooser extends JTabbedPane {
 	public static final String SELECTED_URI_PROPERTY = AbstractURIChooserPanel.SELECTED_URI_PROPERTY;
+	public static final String URI_APPROVED_PROPERTY = AbstractURIChooserPanel.URI_APPROVED_PROPERTY;
+
 	private URI selectedURI;
-	private URIChooserDialog dialog;
 	
 	/**
 	 * Creates the chooser.
@@ -42,9 +43,14 @@ public class URIChooser extends JTabbedPane {
 					firePropertyChange(SELECTED_URI_PROPERTY, old, selectedURI);
 				}
 			});
-			((AbstractURIChooserPanel)uiChooser).setURIChooser(this);
+			((Component)uiChooser).addPropertyChangeListener(AbstractURIChooserPanel.URI_APPROVED_PROPERTY, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					firePropertyChange(URI_APPROVED_PROPERTY, evt.getOldValue(), evt.getNewValue());
+				}
+			});
 		}
-		addChangeListener(new ChangeListener() {
+		ChangeListener listener = new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				URI old = selectedURI;
@@ -52,7 +58,8 @@ public class URIChooser extends JTabbedPane {
 				firePropertyChange(SELECTED_URI_PROPERTY, old, selectedURI);
 				((AbstractURIChooserPanel)getSelectedComponent()).setUp();
 			}
-		});
+		};
+		addChangeListener(listener);
 	}
 
 	private void setDialogType(boolean save) {
@@ -102,19 +109,7 @@ public class URIChooser extends JTabbedPane {
 	public URI getSelectedURI() {
 		return selectedURI;
 	}
-	
-	void setDialog(URIChooserDialog uriChooserDialog) {
-		this.dialog = uriChooserDialog;
-	}
 
-	/** Validates the dialog (in any is opened).
-	 * <br>This method allows the AbstractURIChooserPanel to validate the dialog when, for example,
-	 * the user double clicks an uri.
-	 */
-	public void approveSelection() {
-		if (this.dialog!=null) this.dialog.confirm();
-	}
-	
 	public void setCurrent(URI uri) {
 		//TODO
 	}

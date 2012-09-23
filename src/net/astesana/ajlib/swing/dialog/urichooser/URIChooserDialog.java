@@ -15,7 +15,14 @@ class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 
 	public URIChooserDialog(Window owner, String title, URIChooser panel) {
 		super(owner, title, panel);
-		panel.setDialog(this);
+		panel.addPropertyChangeListener(URIChooser.URI_APPROVED_PROPERTY, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if ((Boolean)evt.getNewValue()) {
+					confirm();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -40,21 +47,5 @@ class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 	protected String getOkDisabledCause() {
 		if (this.data.getSelectedURI()==null) return "This button is disabled because no file is selected";
 		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.astesana.ajlib.swing.dialog.AbstractDialog#confirm()
-	 */
-	@Override
-	protected void confirm() {
-		super.confirm();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.astesana.ajlib.swing.dialog.AbstractDialog#cancel()
-	 */
-	@Override
-	protected void cancel() {
-		super.cancel();
 	}
 }
