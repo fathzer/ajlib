@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 import net.astesana.ajlib.swing.dialog.FileChooser;
 import net.astesana.ajlib.swing.dialog.urichooser.AbstractURIChooserPanel;
-import net.astesana.ajlib.swing.dialog.urichooser.URIChooser;
 
 /** An AbstractURIChooserPanel that allows the user to select a file.
  * @author Jean-Marc Astesana
@@ -22,7 +21,6 @@ import net.astesana.ajlib.swing.dialog.urichooser.URIChooser;
 @SuppressWarnings("serial")
 public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel {
 	private FileChooser fileChooser;
-	private URIChooser chooser;
 
 	/** Constructor.
 	 */
@@ -60,12 +58,16 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 		if (fileChooser == null) {
 			fileChooser = new FileChooser() {
 				public void approveSelection() {
-					chooser.approveSelection();
+					doApproveSelection();
 				}
 			};
 			fileChooser.setControlButtonsAreShown(false);
 		}
 		return fileChooser;
+	}
+	
+	private void doApproveSelection() {
+		firePropertyChange(URI_APPROVED_PROPERTY, false, true);
 	}
 
 	@Override
@@ -80,10 +82,5 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 	@Override
 	public void setDialogType(boolean save) {
 		this.fileChooser.setDialogType(save?FileChooser.SAVE_DIALOG:FileChooser.OPEN_DIALOG);
-	}
-
-	@Override
-	public void setURIChooser(URIChooser chooser) {
-		this.chooser = chooser;
 	}
 }

@@ -16,6 +16,11 @@ public interface AbstractURIChooserPanel {
 	 * @see #getSelectedURI() 
 	 */
 	public static final String SELECTED_URI_PROPERTY = "selectedUri";
+	/** The name of the approved uri property.
+	 * <br>This component could fire a property change event when the selected uri is approved by the user
+	 * (For example, if the user has double clicked an URI). This will cause the dialog to be validated.
+	 */
+	public static final String URI_APPROVED_PROPERTY = "uriApproved";
 
 	/** The name of the panel.
 	 * <br>This name will be used as tab name by the URIChooser. 
@@ -50,9 +55,4 @@ public interface AbstractURIChooserPanel {
 	 * in this method to perform the setup, in order the component to be displayed fast.
 	 */
 	public void setUp();
-
-	/** Sets the chooser that uses that panel.
-	 * @param chooser The 
-	 */
-	public void setURIChooser(URIChooser chooser);
 }
