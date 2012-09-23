@@ -20,7 +20,7 @@ import net.astesana.ajlib.utilities.NullUtils;
  * <li>In save mode, a confirm dialog is displayed when the selected file already exists.</li>
  * <li>The getSelectedFile methods returns the selected file, even if the file name field has been modified
  * (It's strange but that method in JFileChooser returns the last file selected in the file list until the "ok"
- * button is pressed. For me, this is a bug of JFileChooser</li>
+ * button is pressed. It sounds like a bug of JFileChooser)</li>
  * <li>The SELECTED_FILE_CHANGED_PROPERTY event is thrown accordingly to the previous point.</li>
  * </ul>
  * @author Jean-Marc Astesana

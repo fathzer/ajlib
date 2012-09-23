@@ -21,6 +21,11 @@ public interface AbstractURIChooserPanel {
 	 * (For example, if the user has double clicked an URI). This will cause the dialog to be validated.
 	 */
 	public static final String URI_APPROVED_PROPERTY = "uriApproved";
+	
+	/** Gets the uri scheme (file, ftp, http, ...) that this component supports.
+	 * @return a String
+	 */
+	public String getScheme();
 
 	/** The name of the panel.
 	 * <br>This name will be used as tab name by the URIChooser. 
@@ -55,4 +60,6 @@ public interface AbstractURIChooserPanel {
 	 * in this method to perform the setup, in order the component to be displayed fast.
 	 */
 	public void setUp();
+	
+	public void setSelectedURI(URI uri);
 }

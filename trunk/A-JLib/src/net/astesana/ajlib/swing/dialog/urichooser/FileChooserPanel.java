@@ -83,4 +83,23 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 	public void setDialogType(boolean save) {
 		this.fileChooser.setDialogType(save?FileChooser.SAVE_DIALOG:FileChooser.OPEN_DIALOG);
 	}
+
+	@Override
+	public void setSelectedURI(URI uri) {
+		File file = new File(uri);
+		if (file.isDirectory()) { // Directory exists and is a directory
+			fileChooser.setSelectedFile(new File(file,""));
+		} else {
+			if (file.isFile()) {
+				fileChooser.setSelectedFile(file);
+			} else {
+				// TODO
+			}
+		}
+	}
+
+	@Override
+	public String getScheme() {
+		return "file";
+	}
 }
