@@ -23,7 +23,7 @@ import net.astesana.ajlib.swing.framework.Application;
  */
 @SuppressWarnings("serial")
 public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel {
-	private static final Collection<String> SCHEMES = Arrays.asList(new String[]{"file"});  //$NON-NLS-1$
+	public static final Collection<String> SCHEMES = Arrays.asList(new String[]{"file"});  //$NON-NLS-1$
 	private FileChooser fileChooser;
 
 	/** Constructor.
