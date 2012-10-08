@@ -1,17 +1,22 @@
 package net.astesana.ajlib.swing.demo;
 
+import java.awt.Component;
 import java.awt.Dialog.ModalityType;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker.StateValue;
 
 import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.worker.WorkInProgressFrame;
 import net.astesana.ajlib.swing.worker.Worker;
 import java.awt.GridBagConstraints;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 @SuppressWarnings("serial")
 public class WorkerDemoPanel extends JPanel {
@@ -35,31 +40,76 @@ public class WorkerDemoPanel extends JPanel {
 		gbc_btnStartANew_1.gridy = 1;
 		gbc_btnStartANew_1.gridx = 0;
 		add(getBtnStartANew_1(), gbc_btnStartANew_1);
-		
-		JButton btnNewButton = new JButton("Start a debug task (no phase name)");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnStartChained = getBtnChained();
+		GridBagConstraints gbc_btnStartChained = new GridBagConstraints();
+		gbc_btnStartChained.anchor = GridBagConstraints.NORTH;
+		gbc_btnStartChained.gridx = 0;
+		gbc_btnStartChained.gridy = 2;
+		add(btnStartChained, gbc_btnStartChained);
+	}
+
+	private JButton getBtnChained() {
+		JButton btnStartChained = new JButton("Start many sequential tasks in one JobFrame");
+		btnStartChained.addActionListener(new ActionListener() {
+			private  WorkInProgressFrame jobFrame;
 			public void actionPerformed(ActionEvent e) {
-				WorkerSample worker = new AnonymousWorker();
-				WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Anonymous task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
+				Worker<Void, Void> worker = new AnonymousWorker("First phase");
+//				Worker<Void, Void> worker = new Worker<Void, Void>() {
+//					@Override
+//					protected Void doInBackground() throws Exception {
+//						return null;
+//					}};
+				jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, worker);
 				jobFrame.setSize(300, jobFrame.getSize().height);
+				jobFrame.setAutoDispose(false);
+				worker.addPropertyChangeListener(new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						if (Worker.STATE_PROPERTY_NAME.equals(evt.getPropertyName())) {
+							if (StateValue.DONE.equals(evt.getNewValue())) {
+								String[] phases = new String[]{"Second phase","Another phase"};
+								Component comp = jobFrame.isVisible()?jobFrame:WorkerDemoPanel.this;
+								int answer = JOptionPane.showOptionDialog(comp, "<html>What phase should I execute?</html>", "First phase done",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, phases, phases[0]);
+								if (answer>=0) {
+									doSecondPhase(phases[answer]);
+								} else {
+									jobFrame.dispose();
+								}
+							}
+						}
+					}
+				});
 				jobFrame.setVisible(true);
 			}
+			
+			private void doSecondPhase(String title) {
+				Worker<Void, Void> worker = new AnonymousWorker(title);
+				worker.addPropertyChangeListener(new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						if (Worker.STATE_PROPERTY_NAME.equals(evt.getPropertyName())) {
+							if (StateValue.DONE.equals(evt.getNewValue())) {
+								jobFrame.dispose();
+							}
+						}
+					}
+				});
+				jobFrame.setWorker(worker);
+			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.anchor = GridBagConstraints.NORTH;
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 2;
-		add(btnNewButton, gbc_btnNewButton);
-		btnNewButton.setVisible(false);
+		return btnStartChained;
 	}
 	
-	private static class AnonymousWorker extends WorkerSample {
+	private static class AnonymousWorker extends Worker<Void, Void> {
+		private String title;
+		private AnonymousWorker(String title) {
+			this.title = title;
+		}
 		@Override
 		protected Void doInBackground() throws Exception {
-			// First ... forget to define the phase
-			Thread.sleep(2000);
 			// Then, define a phase length ... but no name
-			setPhase(null, 1000);
+			setPhase(title, 1000);
 			for (int i = 0; i < 1000; i++) {
 				Thread.sleep(2);
 				reportProgress(i);

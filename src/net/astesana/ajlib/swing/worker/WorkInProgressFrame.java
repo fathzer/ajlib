@@ -31,12 +31,50 @@ import java.beans.PropertyChangeListener;
  */
 @SuppressWarnings("serial")
 public class WorkInProgressFrame extends JDialog {
+	private final class AutoClosePropertyChangeListener implements PropertyChangeListener {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
+				if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
+					if (timer!=null) {
+						timer.stop();
+//System.out.println ("Timer is stopped at "+System.currentTimeMillis());
+					}
+					if (getModalityType().equals(ModalityType.MODELESS)) {
+						synchronized (this) {
+							this.notify();
+						}
+					}
+					if (minimumVisibleTime!=Integer.MAX_VALUE) {
+						// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
+						// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
+						long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
+						if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, wait for the user to see what happens ;-)
+							Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
+								}
+							});
+							disposeTimer.setRepeats(false);
+							disposeTimer.start();
+//System.out.println ("Window will be closed after "+remaining+" ms");
+						} else {
+							if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public static final int DEFAULT_DELAY = 500;
 	public static final int DEFAULT_MINIMUM_TIME_VISIBLE = 1000;
 
 	private WorkInProgressPanel progressPanel;
 	
 	private long setVisibleTime;
+	private boolean autoDispose;
 	private int minimumVisibleTime;
 	private int delay;
 	private Timer timer;
@@ -51,6 +89,7 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	public WorkInProgressFrame(Window owner, String title, ModalityType modality, Worker<?,?> worker) {
 		super(owner, title, modality);
+		this.autoDispose = true;
 		this.worker = worker;
 		this.delay = DEFAULT_DELAY;
 		this.minimumVisibleTime = DEFAULT_MINIMUM_TIME_VISIBLE;
@@ -69,42 +108,7 @@ public class WorkInProgressFrame extends JDialog {
 		
 		buildContentPane();
 
-		worker.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
-					if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
-						if (timer!=null) {
-							timer.stop();
-//System.out.println ("Timer is stopped at "+System.currentTimeMillis());
-						}
-						if (getModalityType().equals(ModalityType.MODELESS)) {
-							synchronized (this) {
-								this.notify();
-							}
-						}
-						if (minimumVisibleTime!=Integer.MAX_VALUE) {
-							// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
-							// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
-							long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
-							if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, wait for the user to see what happens ;-)
-								Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent e) {
-										WorkInProgressFrame.this.dispose();
-									}
-								});
-								disposeTimer.setRepeats(false);
-								disposeTimer.start();
-	//System.out.println ("Window will be closed after "+remaining+" ms");
-							} else {
-								WorkInProgressFrame.this.dispose();
-							}
-						}
-					}
-				}
-			}
-		});
+		worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
 		pack();
 		if (owner!=null) Utils.centerWindow(this, owner);
 	}
@@ -177,18 +181,20 @@ public class WorkInProgressFrame extends JDialog {
 				// If the dialog is not modal, then create a timer to show the window and returns immediatly 
 				this.timer = new Timer(delay, new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-		//System.out.println ("Timer expired at "+System.currentTimeMillis());
+//		 System.out.println ("Timer expired at "+System.currentTimeMillis());
 						showIt();
 					}
 				});
 				timer.setRepeats(false);
 				timer.start();
+//				System.out.println ("Timer is set to "+delay);
 			} else {
 				// If the dialog is modal wait until the delay is expired or the task is completed (the method should not return immediately to conform with modal dialogs behavior
 				try {
 					synchronized (this) {
 						this.wait(delay);
 					}
+//		 System.out.println ("Timer expired at "+System.currentTimeMillis());
 					showIt();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -200,7 +206,7 @@ public class WorkInProgressFrame extends JDialog {
 		}
 	}
 	
-	private void showIt() {
+	private synchronized void showIt() {
 		if (worker.getState()!=StateValue.DONE) {
 			setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
 			super.setVisible(true);
@@ -209,5 +215,31 @@ public class WorkInProgressFrame extends JDialog {
 	
 	protected Worker<?,?> getWorker() {
 		return this.worker;
+	}
+
+	/** Sets the auto-dispose attribute.
+	 * <br>This attribute is true by default.
+	 * The auto-dispose set to true means that the window will be disposed when the worker will be completed.
+	 * @param auto true to have the window automatically closed when the worker completes.
+	 */
+	public void setAutoDispose(boolean auto) {
+		this.autoDispose = auto;
+	}
+
+	/** Sets a new worker.
+	 * <br>Used with setAutoDispose(false), this allow to chain workers in the same WorkInProgressFrame.
+	 * <br>The method launches the new worker.
+	 * @param worker The new worker
+	 * @throws IllegalStateException if the current worker is not done.
+	 */
+	public void setWorker(Worker<Void, Void> worker) {
+		synchronized (this) {
+			if (this.timer!=null) this.timer.stop();
+			if (!StateValue.DONE.equals(this.worker.getState())) throw new IllegalStateException("Current worker is not done");
+			this.worker = worker;
+			this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
+		}
+		progressPanel.setSwingWorker(worker);
+		execute();
 	}
 }
