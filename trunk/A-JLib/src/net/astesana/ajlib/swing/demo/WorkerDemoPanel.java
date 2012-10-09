@@ -53,13 +53,14 @@ public class WorkerDemoPanel extends JPanel {
 		btnStartChained.addActionListener(new ActionListener() {
 			private  WorkInProgressFrame jobFrame;
 			public void actionPerformed(ActionEvent e) {
-				Worker<Void, Void> worker = new AnonymousWorker("First phase");
-//				Worker<Void, Void> worker = new Worker<Void, Void>() {
+				final Worker<Void, Void> worker = new AnonymousWorker("First phase");
+//				final Worker<Void, Void> worker = new Worker<Void, Void>() {
 //					@Override
 //					protected Void doInBackground() throws Exception {
 //						return null;
 //					}};
-				jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, worker);
+				//jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, worker);
+				jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, null);
 				jobFrame.setSize(300, jobFrame.getSize().height);
 				jobFrame.setAutoDispose(false);
 				worker.addPropertyChangeListener(new PropertyChangeListener() {
@@ -67,6 +68,10 @@ public class WorkerDemoPanel extends JPanel {
 					public void propertyChange(PropertyChangeEvent evt) {
 						if (Worker.STATE_PROPERTY_NAME.equals(evt.getPropertyName())) {
 							if (StateValue.DONE.equals(evt.getNewValue())) {
+								if (worker.isCancelled()) {
+									jobFrame.dispose();
+									return;
+								}
 								String[] phases = new String[]{"Second phase","Another phase"};
 								Component comp = jobFrame.isVisible()?jobFrame:WorkerDemoPanel.this;
 								int answer = JOptionPane.showOptionDialog(comp, "<html>What phase should I execute?</html>", "First phase done",
@@ -80,7 +85,7 @@ public class WorkerDemoPanel extends JPanel {
 						}
 					}
 				});
-				jobFrame.setVisible(true);
+				jobFrame.setWorker(worker);
 			}
 			
 			private void doSecondPhase(String title) {
@@ -151,6 +156,12 @@ public class WorkerDemoPanel extends JPanel {
 		@Override
 		protected void done() {
 			AJLibDemo.setMessage("Task n°"+taskNumber+" is finished");
+		}
+
+		@Override
+		protected void setPhase(String phase, int phaseLength) {
+			System.out.println (phase+" -> "+phaseLength);
+			super.setPhase(phase, phaseLength);
 		}
 	}
 	
