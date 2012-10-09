@@ -90,7 +90,6 @@ public class WorkInProgressFrame extends JDialog {
 	public WorkInProgressFrame(Window owner, String title, ModalityType modality, Worker<?,?> worker) {
 		super(owner, title, modality);
 		this.autoDispose = true;
-		this.worker = worker;
 		this.delay = DEFAULT_DELAY;
 		this.minimumVisibleTime = DEFAULT_MINIMUM_TIME_VISIBLE;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -101,21 +100,19 @@ public class WorkInProgressFrame extends JDialog {
 				if (getDefaultCloseOperation()!=JFrame.DO_NOTHING_ON_CLOSE) {
 					// Cancel the task if the window is closing
 					SwingWorker<?, ?> worker = progressPanel.getWorker();
-					if (!worker.isDone()) worker.cancel(false);
+					if ((worker != null) && !worker.isDone()) worker.cancel(false);
 				}
 			}
 		});
 		
 		buildContentPane();
-
-		worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
 		pack();
 		if (owner!=null) Utils.centerWindow(this, owner);
+		if (worker!=null) setWorker(worker);
 	}
 
 	private void buildContentPane() {
 		progressPanel = getWorkInProgressPanel();
-		progressPanel.setSwingWorker(worker);
 		setContentPane(progressPanel);
 	}
 	
@@ -163,7 +160,7 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	@Override
 	public void setVisible(boolean visible) {
-		if (visible && !isVisible() && (worker.getState().equals(StateValue.PENDING))) { // If we try to open the dialog and the task is not already started
+		if (visible) { // If we try to open the dialog, start the task if it is not already started
 			execute();
 		}
 	}
@@ -175,6 +172,7 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	public void execute() {
 		// Start the job task.
+		if (worker!=null && !worker.getState().equals(StateValue.PENDING)) return;
 		worker.execute();
 		if (delay>0) { // If the window display should be delayed
 			if (getModalityType().equals(ModalityType.MODELESS)) {
@@ -207,10 +205,8 @@ public class WorkInProgressFrame extends JDialog {
 	}
 	
 	private synchronized void showIt() {
-		if (worker.getState()!=StateValue.DONE) {
-			setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
-			super.setVisible(true);
-		}
+		setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+		super.setVisible(true);
 	}
 	
 	protected Worker<?,?> getWorker() {
@@ -232,10 +228,10 @@ public class WorkInProgressFrame extends JDialog {
 	 * @param worker The new worker
 	 * @throws IllegalStateException if the current worker is not done.
 	 */
-	public void setWorker(Worker<Void, Void> worker) {
+	public void setWorker(Worker<?, ?> worker) {
 		synchronized (this) {
 			if (this.timer!=null) this.timer.stop();
-			if (!StateValue.DONE.equals(this.worker.getState())) throw new IllegalStateException("Current worker is not done");
+			if (this.worker!=null && !StateValue.DONE.equals(this.worker.getState())) throw new IllegalStateException("Current worker is not done");
 			this.worker = worker;
 			this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
 		}
