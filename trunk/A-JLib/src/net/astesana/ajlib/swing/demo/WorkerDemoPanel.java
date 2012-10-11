@@ -86,6 +86,7 @@ public class WorkerDemoPanel extends JPanel {
 					}
 				});
 				jobFrame.setWorker(worker);
+				jobFrame.setVisible(true);
 			}
 			
 			private void doSecondPhase(String title) {
@@ -101,6 +102,7 @@ public class WorkerDemoPanel extends JPanel {
 					}
 				});
 				jobFrame.setWorker(worker);
+				jobFrame.execute();
 			}
 		});
 		return btnStartChained;
@@ -134,19 +136,19 @@ public class WorkerDemoPanel extends JPanel {
 		@Override
 		protected Void doInBackground() throws Exception {
 			setPhase("A task may define phases", -1);
-			for (int i=0;i<30;i++) {
-				Thread.sleep(100);
+			for (int i=0;i<40;i++) {
+				Thread.sleep(50);
 				if (isCancelled()) return null;
 			}
 			setPhase("Some may not have a fixed length", -1);
-			for (int i=0;i<20;i++) {
-				Thread.sleep(100);
+			for (int i=0;i<30;i++) {
+				Thread.sleep(50);
 				if (isCancelled()) return null;
 			}
 			int nb = 30;
 			setPhase("Other may have a defined length", nb);
 			for (int i=0;i<nb;i++) {
-				Thread.sleep(100);
+				Thread.sleep(50);
 				reportProgress(i);
 				if (isCancelled()) return null;
 			}
@@ -160,7 +162,7 @@ public class WorkerDemoPanel extends JPanel {
 
 		@Override
 		protected void setPhase(String phase, int phaseLength) {
-			System.out.println (phase+" -> "+phaseLength);
+//			System.out.println (phase+" -> "+phaseLength);
 			super.setPhase(phase, phaseLength);
 		}
 	}
@@ -189,7 +191,6 @@ public class WorkerDemoPanel extends JPanel {
 					WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
 					jobFrame.setSize(300, jobFrame.getSize().height);
 					Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
-					jobFrame.setMinimumVisibleTime(20000);
 					jobFrame.setVisible(true);
 				}
 			});
