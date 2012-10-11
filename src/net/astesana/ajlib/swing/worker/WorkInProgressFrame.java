@@ -84,6 +84,10 @@ public class WorkInProgressFrame extends JDialog {
 					// Cancel the task if the window is closing
 					SwingWorker<?, ?> worker = progressPanel.getWorker();
 					if ((worker != null) && !worker.isDone()) worker.cancel(false);
+					
+					if (getDefaultCloseOperation()==JFrame.DISPOSE_ON_CLOSE) {
+						forceDispose();
+					}
 				}
 			}
 		});
@@ -143,7 +147,6 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	@Override
 	public void setVisible(boolean visible) {
-		System.out.println ("setVisible("+visible+") at "+System.currentTimeMillis()+"  setVisibleTime="+setVisibleTime);
 		if (visible) { // If we try to open the dialog, start the task if it is not already started
 			execute();
 		}
@@ -159,22 +162,20 @@ public class WorkInProgressFrame extends JDialog {
 			Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					autoDispose();
+					forceDispose();
 				}
 			});
 			disposeTimer.setRepeats(false);
 			disposeTimer.start();
-System.out.println ("Window will be closed after "+remaining+" ms");
+//System.out.println ("Window will be closed after "+remaining+" ms");
 		} else {
-			autoDispose();
+			forceDispose();
 		}
 	}
 
-	private void autoDispose() {
-		if (WorkInProgressFrame.this.autoDispose) {
-			System.out.println ("Window disposed at "+System.currentTimeMillis());
-			WorkInProgressFrame.super.dispose();
-		}
+	private void forceDispose() {
+//		System.out.println ("Window disposed at "+System.currentTimeMillis());
+		super.dispose();
 	}
 	
 	/** Executes the task.
@@ -183,41 +184,45 @@ System.out.println ("Window will be closed after "+remaining+" ms");
 	 * <br>If this frame is modal, the calling thread is blocked until the task completes (and this frame is hiden).
 	 */
 	public void execute() {
+		if (worker==null || !worker.getState().equals(StateValue.PENDING)) return;
 		// Start the job task.
-		if (worker!=null && !worker.getState().equals(StateValue.PENDING)) return;
+//		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
 		worker.execute();
-		if (delay>0) { // If the window display should be delayed
-			if (getModalityType().equals(ModalityType.MODELESS)) {
-				// If the dialog is not modal, then create a timer to show the window and returns immediatly 
-				this.timer = new Timer(delay, new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-//		 System.out.println ("Timer expired at "+System.currentTimeMillis());
+		if (!isVisible()) {
+			if (delay>0) { // If the window display should be delayed
+				if (getModalityType().equals(ModalityType.MODELESS)) {
+					// If the dialog is not modal, then create a timer to show the window and returns immediatly 
+					this.timer = new Timer(delay, new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+	//		 System.out.println ("Timer expired at "+System.currentTimeMillis());
+							showIt();
+						}
+					});
+					timer.setRepeats(false);
+					timer.start();
+	//				System.out.println ("Timer is set to "+delay);
+				} else {
+					// If the dialog is modal wait until the delay is expired or the task is completed (the method should not return immediately to conform with modal dialogs behavior
+					try {
+						synchronized (this) {
+							this.wait(delay);
+						}
+//	System.out.println ("Timer expired at "+System.currentTimeMillis());
 						showIt();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				});
-				timer.setRepeats(false);
-				timer.start();
-//				System.out.println ("Timer is set to "+delay);
-			} else {
-				// If the dialog is modal wait until the delay is expired or the task is completed (the method should not return immediately to conform with modal dialogs behavior
-				try {
-					synchronized (this) {
-						this.wait(delay);
-					}
-//		 System.out.println ("Timer expired at "+System.currentTimeMillis());
-					showIt();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			} else {
+				showIt();
 			}
-		} else {
-			showIt();
 		}
 	}
 	
 	private synchronized void showIt() {
 		setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
+//		System.out.println ("setVisible(true) at "+setVisibleTime+". Minimum="+this.minimumVisibleTime);
 		super.setVisible(true);
 	}
 	
@@ -248,6 +253,5 @@ System.out.println ("Window will be closed after "+remaining+" ms");
 			this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
 		}
 		progressPanel.setSwingWorker(worker);
-		execute();
 	}
 }
