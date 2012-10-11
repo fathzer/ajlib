@@ -189,6 +189,7 @@ public class WorkerDemoPanel extends JPanel {
 					WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
 					jobFrame.setSize(300, jobFrame.getSize().height);
 					Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
+					jobFrame.setMinimumVisibleTime(20000);
 					jobFrame.setVisible(true);
 				}
 			});
