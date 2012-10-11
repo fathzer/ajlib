@@ -45,24 +45,7 @@ public class WorkInProgressFrame extends JDialog {
 							this.notify();
 						}
 					}
-					if (minimumVisibleTime!=Integer.MAX_VALUE) {
-						// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
-						// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
-						long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
-						if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, wait for the user to see what happens ;-)
-							Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
-								}
-							});
-							disposeTimer.setRepeats(false);
-							disposeTimer.start();
-//System.out.println ("Window will be closed after "+remaining+" ms");
-						} else {
-							if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
-						}
-					}
+					if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
 				}
 			}
 		}
@@ -145,7 +128,7 @@ public class WorkInProgressFrame extends JDialog {
 	}
 	
 	/** Sets the minimum time the dialog will be visible if it is shown.
-	 * @param time The time in ms. Integer.MAX_VALUE to prevent the dialog from closing when the worker is done.
+	 * @param time The time in ms.
 	 * The default value is DEFAULT_MINIMUM_TIME_VISIBLE.
 	 * <BR>Note that this method must be called before calling setVisible with a true argument.
 	 */
@@ -160,8 +143,37 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	@Override
 	public void setVisible(boolean visible) {
+		System.out.println ("setVisible("+visible+") at "+System.currentTimeMillis()+"  setVisibleTime="+setVisibleTime);
 		if (visible) { // If we try to open the dialog, start the task if it is not already started
 			execute();
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
+		// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
+		long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
+		if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, and the task was not cancelled
+			// Wait for the user to see what happens ;-)
+			Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					autoDispose();
+				}
+			});
+			disposeTimer.setRepeats(false);
+			disposeTimer.start();
+System.out.println ("Window will be closed after "+remaining+" ms");
+		} else {
+			autoDispose();
+		}
+	}
+
+	private void autoDispose() {
+		if (WorkInProgressFrame.this.autoDispose) {
+			System.out.println ("Window disposed at "+System.currentTimeMillis());
+			WorkInProgressFrame.super.dispose();
 		}
 	}
 	
