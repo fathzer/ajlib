@@ -36,13 +36,15 @@ public class WorkInProgressFrame extends JDialog {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
 				if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
+					System.out.println ("End of worker detected at "+System.currentTimeMillis());
 					if (timer!=null) {
 						timer.stop();
 //System.out.println ("Timer is stopped at "+System.currentTimeMillis());
 					}
-					if (getModalityType().equals(ModalityType.MODELESS)) {
+					if (!getModalityType().equals(ModalityType.MODELESS)) {
 						synchronized (this) {
-							this.notify();
+							System.out.println ("Notify all at "+System.currentTimeMillis());
+							this.notifyAll();
 						}
 					}
 					if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
@@ -186,7 +188,7 @@ public class WorkInProgressFrame extends JDialog {
 	public void execute() {
 		if (worker==null || !worker.getState().equals(StateValue.PENDING)) return;
 		// Start the job task.
-//		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
+		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
 		worker.execute();
 		if (!isVisible()) {
 			if (delay>0) { // If the window display should be delayed
