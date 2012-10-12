@@ -148,7 +148,7 @@ public class WorkInProgressFrame extends JDialog {
 	public void dispose() {
 		// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
 		// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
-		long remaining = WorkInProgressFrame.this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
+		long remaining = this.worker==null || this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
 		if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, and the task was not cancelled
 			// Wait for the user to see what happens ;-)
 			Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
