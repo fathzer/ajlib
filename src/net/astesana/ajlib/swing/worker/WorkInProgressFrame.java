@@ -22,7 +22,7 @@ import java.beans.PropertyChangeListener;
  * So, instead of displaying immediately the dialog, we wait a little. If the long task completes during this time, the dialog is not displayed
  * (of course, the done method of the swingWorker is invoked).
  * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the task completes just after the pop up delay).
- * <br><br>By default, when the user clicks the frame close box, it cancels the task and disposes the window.
+ * <br><br>By default, when the user clicks the frame close box, it cancels the task and immediatly disposes the window.
  * If you set the frame default close operation to "do nothing" (with <code>this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE)</code>)
  * the close box does nothing at all. You can then listen to window closing event in order to do what you want.
  * @author Jean-Marc Astesana
@@ -36,17 +36,7 @@ public class WorkInProgressFrame extends JDialog {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
 				if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
-					System.out.println ("End of worker detected at "+System.currentTimeMillis());
-					if (timer!=null) {
-						timer.stop();
-//System.out.println ("Timer is stopped at "+System.currentTimeMillis());
-					}
-					if (!getModalityType().equals(ModalityType.MODELESS)) {
-						synchronized (this) {
-							System.out.println ("Notify all at "+System.currentTimeMillis());
-							this.notifyAll();
-						}
-					}
+//					System.out.println ("End of worker detected at "+System.currentTimeMillis());
 					if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
 				}
 			}
@@ -188,12 +178,12 @@ public class WorkInProgressFrame extends JDialog {
 	public void execute() {
 		if (worker==null || !worker.getState().equals(StateValue.PENDING)) return;
 		// Start the job task.
-		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
+//		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
 		worker.execute();
 		if (!isVisible()) {
 			if (delay>0) { // If the window display should be delayed
 				if (getModalityType().equals(ModalityType.MODELESS)) {
-					// If the dialog is not modal, then create a timer to show the window and returns immediatly 
+					// If the dialog is not modal, then create a timer to show the window and returns immediately 
 					this.timer = new Timer(delay, new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 	//		 System.out.println ("Timer expired at "+System.currentTimeMillis());
@@ -206,10 +196,10 @@ public class WorkInProgressFrame extends JDialog {
 				} else {
 					// If the dialog is modal wait until the delay is expired or the task is completed (the method should not return immediately to conform with modal dialogs behavior
 					try {
-						synchronized (this) {
-							this.wait(delay);
+						synchronized (worker) {
+							worker.wait(delay);
 						}
-//	System.out.println ("Timer expired at "+System.currentTimeMillis());
+//						System.out.println ("Wait expired at "+System.currentTimeMillis());
 						showIt();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -225,7 +215,7 @@ public class WorkInProgressFrame extends JDialog {
 	private synchronized void showIt() {
 		setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
 //		System.out.println ("setVisible(true) at "+setVisibleTime+". Minimum="+this.minimumVisibleTime);
-		super.setVisible(true);
+		if (!isVisible() && (worker!=null) && !StateValue.DONE.equals(worker.getState())) super.setVisible(true);
 	}
 	
 	protected Worker<?,?> getWorker() {
@@ -249,7 +239,6 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	public void setWorker(Worker<?, ?> worker) {
 		synchronized (this) {
-			if (this.timer!=null) this.timer.stop();
 			if (this.worker!=null && !StateValue.DONE.equals(this.worker.getState())) throw new IllegalStateException("Current worker is not done");
 			this.worker = worker;
 			this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());

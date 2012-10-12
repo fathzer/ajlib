@@ -5,8 +5,11 @@ import javax.swing.SwingWorker;
 import net.astesana.ajlib.utilities.NullUtils;
 
 /** A SwingWorker that defines phases that can have different lengths.
- * By default, a SwingWorker reports its progress with an integer between 0 and 100 (see method setProgress).
+ * <br>By default, a SwingWorker reports its progress with an integer between 0 and 100 (see method setProgress).
  * This class allows you to define any length then report the progress without having to convert it to percentage.
+ * <br>Another enhancement is the Worker notifies all the threads waiting for him when it finished is processing.
+ * To perform that, we were obliged to override the doInBackground method of SwingWorker and made it final.
+ * Developers should see doProcessing method has the equivalent of the SwingWorker.doInBackground  
  * @param <T> the result type returned by this {@code SwingWorker's}
  *        {@code doInBackground} and {@code get} methods
  * @param <V> the type used for carrying out intermediate results by this
@@ -27,6 +30,7 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	
 	private String phase;
 	private int phaseLength;
+	private boolean isFinished;
 
 	/** Constructor.
 	 *  <br>The phase is initialize to null and the length is set to -1 (indeterminate length).
@@ -35,6 +39,7 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 		super();
 		this.phase = null;
 		this.phaseLength = -1;
+		this.isFinished = true;
 	}
 	
 	/** Sets the phase.
@@ -84,5 +89,36 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 		if (progress>phaseLength) throw new IllegalArgumentException();
 		long percent = phaseLength==0?100:(progress*100)/phaseLength;
 		super.setProgress((int)percent);
+	}
+
+	/** Overrides the SwingWorker doInBackground method to force the worker
+	 * to notify all threads waiting on this object (by invoking this.wait()) when the
+	 * processing is finished. 
+	 */
+	@Override
+	protected final T doInBackground() throws Exception {
+		T result = doProcessing();
+		synchronized (this) {
+			this.isFinished = true;
+			this.notifyAll();
+		}
+		return result;
+	}
+	
+	/** Performs the task processing and gets its result.
+	 * <br>This method is called by the doInBackground method. 
+	 * @return The task result
+	 * @throws Exception if a error occurs.
+	 */
+	protected abstract T doProcessing() throws Exception;
+	
+	/** Tests whether the doProcessing method has ended.
+	 * <br>This method should be preferred to isDone when testing if the task is done after being awake from a
+	 * this.wait() method, because it is guaranteed that this method returns true after the waiting object is awaked
+	 * (isDone may still returns false, depending on the threads dispatching).
+	 * @return true if the method ended, false if it is still running.
+	 */
+	public boolean isFinished() {
+		return this.isFinished;
 	}
 }
