@@ -74,8 +74,8 @@ public class WorkInProgressFrame extends JDialog {
 			public void windowClosing(WindowEvent event) {
 				if (getDefaultCloseOperation()!=JFrame.DO_NOTHING_ON_CLOSE) {
 					// Cancel the task if the window is closing
-					SwingWorker<?, ?> worker = progressPanel.getWorker();
-					if ((worker != null) && !worker.isDone()) worker.cancel(false);
+					Worker<?, ?> worker = progressPanel.getWorker();
+					if ((worker != null) && !worker.isFinished()) worker.cancel(false);
 					
 					if (getDefaultCloseOperation()==JFrame.DISPOSE_ON_CLOSE) {
 						forceDispose();
@@ -215,7 +215,7 @@ public class WorkInProgressFrame extends JDialog {
 	private synchronized void showIt() {
 		setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
 //		System.out.println ("setVisible(true) at "+setVisibleTime+". Minimum="+this.minimumVisibleTime);
-		if (!isVisible() && (worker!=null) && !StateValue.DONE.equals(worker.getState())) super.setVisible(true);
+		if (!isVisible() && (worker!=null) && !worker.isFinished()) super.setVisible(true);
 	}
 	
 	protected Worker<?,?> getWorker() {
