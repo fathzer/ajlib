@@ -22,7 +22,7 @@ import java.beans.PropertyChangeListener;
  * So, instead of displaying immediately the dialog, we wait a little. If the long task completes during this time, the dialog is not displayed
  * (of course, the done method of the swingWorker is invoked).
  * <br>Once it is displayed, it remains visible for a minimum time (to prevent a flash effect if the task completes just after the pop up delay).
- * <br><br>By default, when the user clicks the frame close box, it cancels the task and immediatly disposes the window.
+ * <br><br>By default, when the user clicks the frame close box, it cancels the task and immediately disposes the window.
  * If you set the frame default close operation to "do nothing" (with <code>this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE)</code>)
  * the close box does nothing at all. You can then listen to window closing event in order to do what you want.
  * @author Jean-Marc Astesana
@@ -87,7 +87,7 @@ public class WorkInProgressFrame extends JDialog {
 		buildContentPane();
 		pack();
 		if (owner!=null) Utils.centerWindow(this, owner);
-		if (worker!=null) setWorker(worker);
+		setWorker(worker);
 	}
 
 	private void buildContentPane() {
@@ -222,14 +222,14 @@ public class WorkInProgressFrame extends JDialog {
 		return this.worker;
 	}
 
-	/** Sets the auto-dispose attribute.
-	 * <br>This attribute is true by default.
-	 * The auto-dispose set to true means that the window will be disposed when the worker will be completed.
-	 * @param auto true to have the window automatically closed when the worker completes.
-	 */
-	public void setAutoDispose(boolean auto) {
-		this.autoDispose = auto;
-	}
+//	/** Sets the auto-dispose attribute.
+//	 * <br>This attribute is true by default.
+//	 * The auto-dispose set to true means that the window will be disposed when the worker will be completed.
+//	 * @param auto true to have the window automatically closed when the worker completes.
+//	 */
+//	public void setAutoDispose(boolean auto) {
+//		this.autoDispose = auto;
+//	}
 
 	/** Sets a new worker.
 	 * <br>Used with setAutoDispose(false), this allow to chain workers in the same WorkInProgressFrame.
@@ -237,7 +237,7 @@ public class WorkInProgressFrame extends JDialog {
 	 * @param worker The new worker
 	 * @throws IllegalStateException if the current worker is not done.
 	 */
-	public void setWorker(Worker<?, ?> worker) {
+	private void setWorker(Worker<?, ?> worker) {
 		synchronized (this) {
 			if (this.worker!=null && !StateValue.DONE.equals(this.worker.getState())) throw new IllegalStateException("Current worker is not done");
 			this.worker = worker;
