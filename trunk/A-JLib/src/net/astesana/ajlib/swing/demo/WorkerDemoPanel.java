@@ -53,16 +53,19 @@ public class WorkerDemoPanel extends JPanel {
 		btnStartChained.addActionListener(new ActionListener() {
 			private  WorkInProgressFrame jobFrame;
 			public void actionPerformed(ActionEvent e) {
-				final Worker<Void, Void> worker = new AnonymousWorker("First phase");
-//				final Worker<Void, Void> worker = new Worker<Void, Void>() {
-//					@Override
-//					protected Void doInBackground() throws Exception {
-//						return null;
-//					}};
-				//jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, worker);
-				jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, null);
+//				final Worker<Void, Void> worker = new AnonymousWorker("First phase");
+				final Worker<Void, Void> worker = new Worker<Void, Void>() {
+					@Override
+					protected Void doProcessing() throws Exception {
+						System.out.println ("end of background task at "+System.currentTimeMillis());
+						return null;
+					}
+				};
+				jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, worker);
+//				jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "Chained tasks", ModalityType.APPLICATION_MODAL, null);
 				jobFrame.setSize(300, jobFrame.getSize().height);
 				jobFrame.setAutoDispose(false);
+				jobFrame.setDelay(1000);
 				worker.addPropertyChangeListener(new PropertyChangeListener() {
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
@@ -85,7 +88,6 @@ public class WorkerDemoPanel extends JPanel {
 						}
 					}
 				});
-				jobFrame.setWorker(worker);
 				jobFrame.setVisible(true);
 			}
 			
@@ -114,7 +116,7 @@ public class WorkerDemoPanel extends JPanel {
 			this.title = title;
 		}
 		@Override
-		protected Void doInBackground() throws Exception {
+		protected Void doProcessing() throws Exception {
 			// Then, define a phase length ... but no name
 			setPhase(title, 1000);
 			for (int i = 0; i < 1000; i++) {
@@ -134,7 +136,7 @@ public class WorkerDemoPanel extends JPanel {
 		}
 		
 		@Override
-		protected Void doInBackground() throws Exception {
+		protected Void doProcessing() throws Exception {
 			setPhase("A task may define phases", -1);
 			for (int i=0;i<40;i++) {
 				Thread.sleep(50);
@@ -175,6 +177,7 @@ public class WorkerDemoPanel extends JPanel {
 				WorkerSample worker = new WorkerSample();
 				WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.MODELESS, worker);
 				jobFrame.setSize(300, jobFrame.getSize().height);
+				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
 				jobFrame.setVisible(true);
 			}
 		});
@@ -191,6 +194,7 @@ public class WorkerDemoPanel extends JPanel {
 					WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
 					jobFrame.setSize(300, jobFrame.getSize().height);
 					Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
+					jobFrame.setMinimumVisibleTime(20000);
 					jobFrame.setVisible(true);
 				}
 			});
