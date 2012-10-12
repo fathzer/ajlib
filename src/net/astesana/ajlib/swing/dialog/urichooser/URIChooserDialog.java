@@ -97,13 +97,17 @@ public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 	 * @param uri
 	 */
 	public void setSelectedURI(URI uri) {
-		String scheme = uri.getScheme();
-		for (int i=0; i<getComponentCount(); i++) {
-			AbstractURIChooserPanel panel = (AbstractURIChooserPanel)data.getSelectedComponent();
-			if (panel.getSchemes().contains(scheme)) {
-				panel.setSelectedURI(uri);
-				break;
+		if (uri != null) {
+			String scheme = uri.getScheme();
+			for (int i=0; i<getComponentCount(); i++) {
+				AbstractURIChooserPanel panel = (AbstractURIChooserPanel)data.getSelectedComponent();
+				if (panel.getSchemes().contains(scheme)) {
+					panel.setSelectedURI(uri);
+					break;
+				}
 			}
+		} else {
+			//TODO
 		}
 	}
 }
