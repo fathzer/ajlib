@@ -39,7 +39,7 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 		super();
 		this.phase = null;
 		this.phaseLength = -1;
-		this.isFinished = true;
+		this.isFinished = false;
 	}
 	
 	/** Sets the phase.
