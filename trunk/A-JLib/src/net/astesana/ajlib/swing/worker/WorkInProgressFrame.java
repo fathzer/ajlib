@@ -37,7 +37,7 @@ public class WorkInProgressFrame extends JDialog {
 			if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
 				if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
 //					System.out.println ("End of worker detected at "+System.currentTimeMillis());
-					if (WorkInProgressFrame.this.autoDispose) WorkInProgressFrame.this.dispose();
+					WorkInProgressFrame.this.dispose();
 				}
 			}
 		}
@@ -49,7 +49,6 @@ public class WorkInProgressFrame extends JDialog {
 	private WorkInProgressPanel progressPanel;
 	
 	private long setVisibleTime;
-	private boolean autoDispose;
 	private int minimumVisibleTime;
 	private int delay;
 	private Timer timer;
@@ -64,7 +63,6 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	public WorkInProgressFrame(Window owner, String title, ModalityType modality, Worker<?,?> worker) {
 		super(owner, title, modality);
-		this.autoDispose = true;
 		this.delay = DEFAULT_DELAY;
 		this.minimumVisibleTime = DEFAULT_MINIMUM_TIME_VISIBLE;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -75,7 +73,7 @@ public class WorkInProgressFrame extends JDialog {
 				if (getDefaultCloseOperation()!=JFrame.DO_NOTHING_ON_CLOSE) {
 					// Cancel the task if the window is closing
 					Worker<?, ?> worker = progressPanel.getWorker();
-					if ((worker != null) && !worker.isFinished()) worker.cancel(false);
+					if (!worker.isFinished()) worker.cancel(false);
 					
 					if (getDefaultCloseOperation()==JFrame.DISPOSE_ON_CLOSE) {
 						forceDispose();
@@ -84,10 +82,12 @@ public class WorkInProgressFrame extends JDialog {
 			}
 		});
 		
+		this.worker = worker;
 		buildContentPane();
+		this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
+
 		pack();
 		if (owner!=null) Utils.centerWindow(this, owner);
-		setWorker(worker);
 	}
 
 	private void buildContentPane() {
@@ -102,6 +102,7 @@ public class WorkInProgressFrame extends JDialog {
 	public final WorkInProgressPanel getWorkInProgressPanel() {
 		if (progressPanel==null) {
 			progressPanel = buildProgressPanel();
+			progressPanel.setSwingWorker(worker);
 		}
 		return progressPanel;
 	}
@@ -147,8 +148,8 @@ public class WorkInProgressFrame extends JDialog {
 	@Override
 	public void dispose() {
 		// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
-		// If the task was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
-		long remaining = this.worker==null || this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
+		// If the worker was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
+		long remaining = this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
 		if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, and the task was not cancelled
 			// Wait for the user to see what happens ;-)
 			Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
@@ -176,7 +177,7 @@ public class WorkInProgressFrame extends JDialog {
 	 * <br>If this frame is modal, the calling thread is blocked until the task completes (and this frame is hiden).
 	 */
 	public void execute() {
-		if (worker==null || !worker.getState().equals(StateValue.PENDING)) return;
+		if (!worker.getState().equals(StateValue.PENDING)) return;
 		// Start the job task.
 //		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
 		worker.execute();
@@ -215,7 +216,7 @@ public class WorkInProgressFrame extends JDialog {
 	private synchronized void showIt() {
 		setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
 //		System.out.println ("setVisible(true) at "+setVisibleTime+". Minimum="+this.minimumVisibleTime);
-		if (!isVisible() && (worker!=null) && !worker.isFinished()) super.setVisible(true);
+		if (!isVisible() && !worker.isFinished()) super.setVisible(true);
 	}
 	
 	protected Worker<?,?> getWorker() {
@@ -231,18 +232,14 @@ public class WorkInProgressFrame extends JDialog {
 //		this.autoDispose = auto;
 //	}
 
-	/** Sets a new worker.
-	 * <br>Used with setAutoDispose(false), this allow to chain workers in the same WorkInProgressFrame.
-	 * <br>The method launches the new worker.
-	 * @param worker The new worker
-	 * @throws IllegalStateException if the current worker is not done.
-	 */
-	private void setWorker(Worker<?, ?> worker) {
-		synchronized (this) {
-			if (this.worker!=null && !StateValue.DONE.equals(this.worker.getState())) throw new IllegalStateException("Current worker is not done");
-			this.worker = worker;
-			this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
-		}
-		progressPanel.setSwingWorker(worker);
-	}
+//	/** Sets a new worker.
+//	 * <br>Used with setAutoDispose(false), this allow to chain workers in the same WorkInProgressFrame.
+//	 * <br>The method launches the new worker.
+//	 * @param worker The new worker
+//	 * @throws IllegalStateException if the current worker is not done.
+//	 */
+//	private void setWorker(Worker<?, ?> worker) {
+//		synchronized (this) {
+//		}
+//	}
 }
