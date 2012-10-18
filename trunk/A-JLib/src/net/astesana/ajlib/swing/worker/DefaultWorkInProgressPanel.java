@@ -119,7 +119,7 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	
 	/** Inits the progress bar.
 	 * <br>This method is called every time the worker phase or phase length changes (or when the worker itself changes).
-	 * <br>The default implementation sets the progress bar in indeterminate state if the length of the worker's phase is < 0.
+	 * <br>The default implementation sets the progress bar in indeterminate state if the length of the worker's phase is <= 0.
 	 * If it is > 0, then, it sets the maximum to the phase length and turns the StringPainted of the progress bar to true.
 	 * <br>if the phase wording is null, the message text is unchanged.
 	 * <br>You can override this method to change this behavior. 
@@ -127,9 +127,14 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	protected void initPhase() {
 		if (worker.getPhase()!=null) setMessage(worker.getPhase());					
 		int phaseLength = worker.getPhaseLength();
-		getProgressBar().setIndeterminate(phaseLength<0);
-		getProgressBar().setStringPainted(phaseLength>0);
-		if (worker.getPhaseLength()>0) getProgressBar().setMaximum(worker.getPhaseLength());
+		JProgressBar pBar = getProgressBar();
+		pBar.setIndeterminate(phaseLength<=0);
+		pBar.setStringPainted(phaseLength>0);
+		if (phaseLength>0) {
+			pBar.setMaximum(phaseLength);
+		} else {
+			pBar.setValue(0);
+		}
 	}
 
 	public JLabel getLabel() {
