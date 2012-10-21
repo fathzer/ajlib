@@ -37,7 +37,6 @@ public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 			 */
 			@Override
 			public void windowOpened(WindowEvent e) {
-System.out.println ("setup called on "+data.getSelectedComponent()); //TODO
 				((AbstractURIChooserPanel)data.getSelectedComponent()).setUp();
 			}
 		});
