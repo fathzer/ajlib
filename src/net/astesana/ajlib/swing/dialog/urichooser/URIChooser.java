@@ -23,11 +23,14 @@ public class URIChooser extends JTabbedPane {
 
 	private URI selectedURI;
 	private boolean isSave;
+	/** The last tab that was set up (used to prevent a tab from being setup again when the selected uri is set before this component is made visible) */
+	private int lastSetup;
 	
 	/**
 	 * Creates the chooser.
 	 */
 	public URIChooser(AbstractURIChooserPanel[] choosers) {
+		this.lastSetup = -1;
 		setTabPlacement(JTabbedPane.TOP);
 		for (AbstractURIChooserPanel uiChooser:choosers) {
 			addTab(uiChooser.getName(), uiChooser.getIcon(), (Component)uiChooser, null);
@@ -53,10 +56,17 @@ public class URIChooser extends JTabbedPane {
 				URI old = selectedURI;
 				selectedURI = ((AbstractURIChooserPanel)getSelectedComponent()).getSelectedURI();
 				firePropertyChange(SELECTED_URI_PROPERTY, old, selectedURI);
-				((AbstractURIChooserPanel)getSelectedComponent()).setUp();
+				setUp(getSelectedIndex());
 			}
 		};
 		addChangeListener(listener);
+	}
+	
+	void setUp(int index) {
+		if (lastSetup!=index) {
+			lastSetup = index;
+			((AbstractURIChooserPanel)getComponent(index)).setUp();
+		}
 	}
 
 	public void setDialogType(boolean save) {
@@ -83,13 +93,18 @@ public class URIChooser extends JTabbedPane {
 	 * @param uri
 	 */
 	public void setSelectedURI(URI uri) {
-		String scheme = uri.getScheme();
-		for (int i=0; i<getComponentCount(); i++) {
-			AbstractURIChooserPanel panel = (AbstractURIChooserPanel)getSelectedComponent();
-			if (panel.getSchemes().contains(scheme)) {
-				panel.setSelectedURI(uri);
-				break;
+		if (uri!=null) {
+			String scheme = uri.getScheme();
+			for (int i=0; i<getComponentCount(); i++) {
+				AbstractURIChooserPanel panel = (AbstractURIChooserPanel)getComponent(i);
+				if (panel.getSchemes().contains(scheme)) {
+					panel.setSelectedURI(uri);
+					setSelectedIndex(i);
+					break;
+				}
 			}
+		} else {
+			((AbstractURIChooserPanel)getSelectedComponent()).setSelectedURI(uri);
 		}
 	}
 }

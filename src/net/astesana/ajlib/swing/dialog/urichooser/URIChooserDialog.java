@@ -37,6 +37,7 @@ public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 			 */
 			@Override
 			public void windowOpened(WindowEvent e) {
+System.out.println ("setup called on "+data.getSelectedComponent()); //TODO
 				((AbstractURIChooserPanel)data.getSelectedComponent()).setUp();
 			}
 		});
@@ -69,9 +70,8 @@ public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 	protected void confirm() {
 		AbstractURIChooserPanel panel = (AbstractURIChooserPanel)this.data.getSelectedComponent();
 		URI selectedURI = panel.getSelectedURI();
-		if (selectedURI!=null && panel.exist(selectedURI) && data.isSaveDialogType()) {
-			if (FileChooser.showSaveDisplayQuestion(this)) return;
-		}
+		boolean exists = selectedURI!=null && data.isSaveDialogType() && panel.exist(selectedURI);
+		if (exists && FileChooser.showSaveDisplayQuestion(this)) return;
 		super.confirm();
 	}
 	
@@ -97,17 +97,6 @@ public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
 	 * @param uri
 	 */
 	public void setSelectedURI(URI uri) {
-		if (uri != null) {
-			String scheme = uri.getScheme();
-			for (int i=0; i<getComponentCount(); i++) {
-				AbstractURIChooserPanel panel = (AbstractURIChooserPanel)data.getSelectedComponent();
-				if (panel.getSchemes().contains(scheme)) {
-					panel.setSelectedURI(uri);
-					break;
-				}
-			}
-		} else {
-			//TODO
-		}
+		data.setSelectedURI(uri);
 	}
 }
