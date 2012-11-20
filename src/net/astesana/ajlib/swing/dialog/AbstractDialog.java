@@ -158,11 +158,14 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 		setVisible(false);
 	}
 
-	/** Checks if the user input is consistent and return a short explanation of why it is not 
+	/** Checks if the user input is consistent and return a short explanation of why it is not.
+	 * <br>In this implementation, this method returns null. You should override this method if the input can be inconsistent.
 	 * @return a short message explaining why the ok button is disabled or null if the ok button has to be enabled.
 	 * This message will be displayed in the ok button toolTip.
 	 */
-	protected abstract String getOkDisabledCause();
+	protected String getOkDisabledCause() {
+		return null;
+	}
 	
 	/** Gets the result of this dialog.
 	 * @return an object, or null if the dialog was cancelled.
