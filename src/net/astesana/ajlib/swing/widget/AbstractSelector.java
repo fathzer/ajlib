@@ -198,8 +198,23 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 		@SuppressWarnings("unchecked")
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			return super.getListCellRendererComponent(list, getDefaultRenderedValue((T)value), index, isSelected, cellHasFocus);
+			T v = (T)value;
+			Component renderer = super.getListCellRendererComponent(list, getDefaultRenderedValue(v), index, isSelected, cellHasFocus);
+			return getCustomizedRenderer (renderer, v, index, isSelected, cellHasFocus);
     }
+	}
+	
+	/** Returns a customized renderer used to display a specific value.
+	 * <br>Please note that this method is never called when combo's renderer is set by getCombo().setRenderer(...) method.
+	 * @param renderer The default renderer
+	 * @param value The value to be rendered
+	 * @param index The index of the value in the combo
+	 * @param isSelected True if the value is selected 
+	 * @param cellHasFocus True if the value has the focus
+	 * @return a customized renderer, by default this method returns the renderer argument. 
+	 */
+	protected Component getCustomizedRenderer (Component renderer, T value, int index, boolean isSelected, boolean cellHasFocus) {
+		return renderer;
 	}
 	
 	/** Returns the default value displayed in the combo box.
