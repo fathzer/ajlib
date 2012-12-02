@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>javaluatorSrc</name>
+			<type>2</type>
+			<location>C:/Users/Jean-Marc/workspace/Javaluator/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
