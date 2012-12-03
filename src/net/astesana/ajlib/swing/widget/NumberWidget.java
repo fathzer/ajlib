@@ -130,16 +130,20 @@ public class NumberWidget extends TextWidget {
 	 */
 	protected Number parseValue(String text) {
 		Number result = null;
+		// We have to be cautious with parsing. If the text begins with a valid number but is followed by garbage, format.parse(String) will succeed !!!
+		// We will use format.parse(String, ParsePosition) in order to detect garbage placed after a valid number
 		try {
 			ParsePosition pos = new ParsePosition(0);
-			result = format.parse(text, pos);
-			System.out.println (text.length()+" - "+pos.getIndex());
-			if (pos.getIndex()!=text.length()) throw new ParseException(text, 0);
-			//FIXME:If the text begins with a valid number but is followed by garbage, format.parse succeed !!! 
+			Number candidate = format.parse(text, pos);
+			if (pos.getIndex()==text.length()) {
+				result = candidate;
+			} else {
+				throw new ParseException(text, 0);
+			}
 		} catch (ParseException e) {
-			// Parsing with the "official" currency formatter failed.
+			// Parsing with the "official" formatter failed.
 			// It seems that this formatter is quite sensitive. For instance, if you remove the currency sign ... it fails.
-			// We will try to convert what was typed in a "pure" english digital number (only digits and . as decimal separator),
+			// We will try to convert what was typed in a "pure" English digital number (only digits and . as decimal separator),
 			// in order to use the standard decimal parser.
 			DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
 			text = text.replace(new String(new char[]{decimalFormatSymbols.getGroupingSeparator()}), "");
