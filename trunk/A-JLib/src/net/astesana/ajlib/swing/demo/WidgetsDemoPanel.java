@@ -91,22 +91,18 @@ public class WidgetsDemoPanel extends JPanel {
 				 */
 				@Override
 				protected Number parseValue(String text) {
-					if (text.startsWith("=")) {
-						text = text.substring(1);
-						Number result;
+					Number result = super.parseValue(text);
+					if (result==null) {
 						try {
 							result = new DoubleEvaluator().evaluate(text);
 						} catch (IllegalArgumentException e) {
-							result = null;
 						}
 						System.out.println ("evaluating "+text + "="+result);
-						return result;
-					} else {
-						return super.parseValue(text);
 					}
+					return result;
 				}
 			};
-			numberWidget.setToolTipText("<html>This widget allows you to enter a double.<br>As in Excel, if the field starts with =, the field is evaluated as a formula</html>");
+			numberWidget.setToolTipText("<html>This widget allows you to enter a double.<br>The field can also contain a formula (example: 3*4)</html>");
 			numberWidget.setColumns(10);
 			numberWidget.addPropertyChangeListener(NumberWidget.VALUE_PROPERTY, new PropertyChangeListener() {
 				@Override
