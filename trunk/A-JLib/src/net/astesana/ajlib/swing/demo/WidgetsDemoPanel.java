@@ -12,7 +12,6 @@ import java.beans.PropertyChangeListener;
 
 import net.astesana.ajlib.swing.widget.TextWidget;
 import net.astesana.ajlib.swing.widget.NumberWidget;
-import net.astesana.javaluator.DoubleEvaluator;
 
 public class WidgetsDemoPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -82,32 +81,23 @@ public class WidgetsDemoPanel extends JPanel {
 		}
 		return lblNumberWidget;
 	}
-	@SuppressWarnings("serial")
 	private NumberWidget getNumberWidget() {
 		if (numberWidget == null) {
-			numberWidget = new NumberWidget() {
-				/* (non-Javadoc)
-				 * @see net.astesana.ajlib.swing.widget.NumberWidget#parseValue(java.lang.String)
-				 */
-				@Override
-				protected Number parseValue(String text) {
-					Number result = super.parseValue(text);
-					if (result==null) {
-						try {
-							result = new DoubleEvaluator().evaluate(text);
-						} catch (IllegalArgumentException e) {
-						}
-						System.out.println ("evaluating "+text + "="+result);
-					}
-					return result;
-				}
-			};
-			numberWidget.setToolTipText("<html>This widget allows you to enter a double.<br>The field can also contain a formula (example: 3*4)</html>");
+			numberWidget = new NumberWidget();
+			numberWidget.setToolTipText("<html>This widget allows you to enter a double.</html>");
 			numberWidget.setColumns(10);
 			numberWidget.addPropertyChangeListener(NumberWidget.VALUE_PROPERTY, new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
-					AJLibDemo.setMessage("Number changed from "+evt.getOldValue()+" to "+evt.getNewValue());
+					String message;
+					if (evt.getOldValue()==null) {
+						message = "Number is set to "+evt.getNewValue();
+					} else if (evt.getNewValue()==null) {
+						message = "Number is wrong";
+					} else {
+						message = "Number changed from "+evt.getOldValue()+" to "+evt.getNewValue();
+					}
+					AJLibDemo.setMessage(message);
 				}
 			});
 			numberWidget.addPropertyChangeListener(NumberWidget.CONTENT_VALID_PROPERTY, new PropertyChangeListener() {
