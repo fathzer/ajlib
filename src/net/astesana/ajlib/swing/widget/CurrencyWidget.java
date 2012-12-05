@@ -19,6 +19,8 @@ import java.util.Locale;
 public class CurrencyWidget extends NumberWidget {
 	private static final long serialVersionUID = 1L;
 	
+	private DecimalFormat numberFormat;
+	
 	/** Constructor.
 	 *  The local is set to default locale.
 	 *  @see #CurrencyWidget(Locale)
@@ -39,7 +41,8 @@ public class CurrencyWidget extends NumberWidget {
 	
 	@Override
 	protected DecimalFormat buildFormat(Locale locale) {
-		return (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
+		this.numberFormat = super.buildFormat(locale);
+		return patchJavaBug4510618((DecimalFormat) NumberFormat.getCurrencyInstance(locale));
 	}
 
 	
@@ -60,5 +63,17 @@ public class CurrencyWidget extends NumberWidget {
 		getFormat().setMaximumFractionDigits(digits);
 		getFormat().setMinimumFractionDigits(digits);
 		refreshText();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.astesana.ajlib.swing.widget.NumberWidget#parseValue(java.lang.String)
+	 */
+	@Override
+	protected Number parseValue(String text) {
+		Number result = super.parseValue(text);
+		if (result==null) {
+			result = safeParse(numberFormat, text);
+		}
+		return result;
 	}
 }

@@ -12,6 +12,7 @@ import java.beans.PropertyChangeListener;
 
 import net.astesana.ajlib.swing.widget.TextWidget;
 import net.astesana.ajlib.swing.widget.NumberWidget;
+import net.astesana.ajlib.swing.widget.CurrencyWidget;
 
 public class WidgetsDemoPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -19,6 +20,8 @@ public class WidgetsDemoPanel extends JPanel {
 	private TextWidget textWidget;
 	private JLabel lblNumberWidget;
 	private NumberWidget numberWidget;
+	private JLabel lblNewLabel;
+	private CurrencyWidget currencyWidget;
 
 	/**
 	 * Create the panel.
@@ -29,6 +32,7 @@ public class WidgetsDemoPanel extends JPanel {
 	}
 	private void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0};
 		setLayout(gridBagLayout);
 		GridBagConstraints gbc_lblTextwidget = new GridBagConstraints();
 		gbc_lblTextwidget.fill = GridBagConstraints.BOTH;
@@ -43,17 +47,29 @@ public class WidgetsDemoPanel extends JPanel {
 		gbc_textWidget.gridy = 0;
 		add(getTextWidget(), gbc_textWidget);
 		GridBagConstraints gbc_lblNumberWidget = new GridBagConstraints();
-		gbc_lblNumberWidget.anchor = GridBagConstraints.EAST;
-		gbc_lblNumberWidget.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNumberWidget.anchor = GridBagConstraints.WEST;
+		gbc_lblNumberWidget.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNumberWidget.gridx = 0;
 		gbc_lblNumberWidget.gridy = 1;
 		add(getLblNumberWidget(), gbc_lblNumberWidget);
 		GridBagConstraints gbc_numberWidget = new GridBagConstraints();
+		gbc_numberWidget.insets = new Insets(0, 0, 5, 0);
 		gbc_numberWidget.weightx = 1.0;
 		gbc_numberWidget.fill = GridBagConstraints.HORIZONTAL;
 		gbc_numberWidget.gridx = 1;
 		gbc_numberWidget.gridy = 1;
 		add(getNumberWidget(), gbc_numberWidget);
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 2;
+		add(getLblNewLabel(), gbc_lblNewLabel);
+		GridBagConstraints gbc_currencyWidget = new GridBagConstraints();
+		gbc_currencyWidget.fill = GridBagConstraints.HORIZONTAL;
+		gbc_currencyWidget.gridx = 1;
+		gbc_currencyWidget.gridy = 2;
+		add(getCurrencyWidget(), gbc_currencyWidget);
 	}
 
 	private JLabel getLblTextwidget() {
@@ -109,5 +125,39 @@ public class WidgetsDemoPanel extends JPanel {
 			});
 		}
 		return numberWidget;
+	}
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("Currency Widget:");
+		}
+		return lblNewLabel;
+	}
+	private CurrencyWidget getCurrencyWidget() {
+		if (currencyWidget == null) {
+			currencyWidget = new CurrencyWidget();
+			currencyWidget.setColumns(10);
+			currencyWidget.addPropertyChangeListener(NumberWidget.VALUE_PROPERTY, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					String message;
+					if (evt.getOldValue()==null) {
+						message = "Amount is set to "+evt.getNewValue();
+					} else if (evt.getNewValue()==null) {
+						message = "Amount is wrong";
+					} else {
+						message = "Amount changed from "+evt.getOldValue()+" to "+evt.getNewValue();
+					}
+					AJLibDemo.setMessage(message);
+				}
+			});
+			currencyWidget.addPropertyChangeListener(NumberWidget.CONTENT_VALID_PROPERTY, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					Color color = (Boolean) evt.getNewValue()?Color.WHITE:Color.RED;
+					currencyWidget.setBackground(color);
+				}
+			});
+		}
+		return currencyWidget;
 	}
 }
