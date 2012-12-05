@@ -7,7 +7,6 @@ import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Locale;
 
@@ -28,6 +27,8 @@ import net.astesana.ajlib.utilities.NullUtils;
 public class NumberWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;
 	private final static boolean DEBUG = false;
+	private static final char NON_BREAKING_SPACE = 160;
+	private static final char SPACE = ' ';
 	
 	/** Value property identifier. */ 
 	public static final String VALUE_PROPERTY = "value";
@@ -62,16 +63,6 @@ public class NumberWidget extends TextWidget {
 		this.minValue = Double.NEGATIVE_INFINITY;
 		this.maxValue = Double.POSITIVE_INFINITY;
 		format = buildFormat(locale);
-		{
-			// Workaround of a weird java implementation see http://bugs.sun.com/view_bug.do?bug_id=4510618
-			// In some locales, the grouping or decimal separators are a non breaking space ... not a single space.
-			// Users may be very surprised to see that in France, "1 000,00" is not a number.
-			DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
-			char nonBreakingSpace = 160;
-			if ((decimalFormatSymbols.getGroupingSeparator()==nonBreakingSpace)) decimalFormatSymbols.setGroupingSeparator(' ');
-			if ((decimalFormatSymbols.getDecimalSeparator()==nonBreakingSpace)) decimalFormatSymbols.setDecimalSeparator(' ');
-			format.setDecimalFormatSymbols(decimalFormatSymbols);
-		}
 		this.addPropertyChangeListener(TEXT_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -88,8 +79,27 @@ public class NumberWidget extends TextWidget {
 		});
 	}
 	
+	/** Workaround of a weird java implementation (see http://bugs.sun.com/view_bug.do?bug_id=4510618).
+	 * <br>In some locals, the grouping or decimal separators are a non breaking space ... not a single space.
+	 * Users may be very surprised to see that in France, "1 000,00" is not a number.
+	 * <br>This method changes non breaking spaces in the format symbol by simple spaces.
+	 * <br>When the user type a non breaking space, it is automatically converted to a simple space before to be passed
+	 * to the parseValue method. So, it is highly recommended that this method is applied on the format returned by buildFormat.
+	 * @param format The format to patch
+	 * @return the modified input format.
+	 * @see #buildFormat(Locale)
+	 * @see #parseValue(String)
+	 */
+	protected DecimalFormat patchJavaBug4510618 (DecimalFormat format) {
+		DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
+		if ((decimalFormatSymbols.getGroupingSeparator()==NON_BREAKING_SPACE)) decimalFormatSymbols.setGroupingSeparator(SPACE);
+		if ((decimalFormatSymbols.getDecimalSeparator()==NON_BREAKING_SPACE)) decimalFormatSymbols.setDecimalSeparator(SPACE);
+		format.setDecimalFormatSymbols(decimalFormatSymbols);
+		return format;
+	}
+	
 	protected DecimalFormat buildFormat(Locale locale) {
-		return (DecimalFormat) NumberFormat.getNumberInstance(locale);
+		return patchJavaBug4510618((DecimalFormat) NumberFormat.getNumberInstance(locale));
 	}
 	
 	protected void setFormat (DecimalFormat format) {
@@ -115,7 +125,7 @@ public class NumberWidget extends TextWidget {
 		if (text.length()==0) {
 			this.valid = isEmptyAllowed;
 		} else {
-			changed = parseValue(text);
+			changed = parseValue(text.replace(NON_BREAKING_SPACE, SPACE));
 			this.valid = (changed!=null) && (changed.doubleValue()>=minValue.doubleValue()) && (changed.doubleValue()<=maxValue.doubleValue());
 			if (DEBUG) System.out.println (text+"->"+changed+" => this.valid:"+oldValid+"->"+valid);
 		}
@@ -129,32 +139,94 @@ public class NumberWidget extends TextWidget {
 	 * @return The value of the text or null if the text can't be parsed as a number.
 	 */
 	protected Number parseValue(String text) {
-		Number result = null;
-		// We have to be cautious with parsing. If the text begins with a valid number but is followed by garbage, format.parse(String) will succeed !!!
-		// We will use format.parse(String, ParsePosition) in order to detect garbage placed after a valid number
-		try {
-			ParsePosition pos = new ParsePosition(0);
-			Number candidate = format.parse(text, pos);
-			if (pos.getIndex()==text.length()) {
-				result = candidate;
-			} else {
-				throw new ParseException(text, 0);
-			}
-		} catch (ParseException e) {
-			// Parsing with the "official" formatter failed.
+//		
+//		System.out.println ("Number widget is parsing "+text);
+//		System.out.println ("grouping separator "+(int)format.getDecimalFormatSymbols().getGroupingSeparator());
+//		try {
+//			System.out.println ("Double.parseDouble : "+Double.parseDouble(text));
+//		} catch (NumberFormatException e) {
+//			System.out.println ("Double.parseDouble says "+text+" is wrong");
+//		}
+//		try {
+//			DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(/*format.getLocale()*/);
+//			ParsePosition pos = new ParsePosition(0);
+//			Number parse = format.parse(text, pos);
+//			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
+//			System.out.println ("NumberFormat.getInstance().parse : "+parse);
+//		} catch (NumberFormatException e) {
+//			System.out.println ("NumberFormat.getInstance().parse says "+text+" is wrong");
+//		}
+//		try {
+//			DecimalFormat format = (DecimalFormat) NumberFormat.getNumberInstance(/*format.getLocale()*/);
+//			ParsePosition pos = new ParsePosition(0);
+//			Number parse = format.parse(text, pos);
+//			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
+//			System.out.println ("NumberFormat.getNumberInstance().parse : "+parse);
+//		} catch (NumberFormatException e) {
+//			System.out.println ("NumberFormat.getNumberInstance().parse says "+text+" is wrong");
+//		}
+//		try {
+//			DecimalFormat format = (DecimalFormat) NumberFormat.getCurrencyInstance(/*format.getLocale()*/);
+//			ParsePosition pos = new ParsePosition(0);
+//			Number parse = format.parse(text, pos);
+//			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
+//			System.out.println ("NumberFormat.getCurrencyInstance().parse : "+parse);
+//		} catch (NumberFormatException e) {
+//			System.out.println ("NumberFormat.getCurrencyInstance().parse says "+text+" is wrong");
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
+//		System.out.println ("---------------------");
+//		//FIXME
+
+		return safeParse(format, text);
+		
+// 		Number result = null;
+//		// We have to be cautious with grouping separator. In some languages (ie French) Java excepts the separator to be a non-breaking space.
+//		// But, most of the time, people use simple spaces. To prevent this problem, what to DO ????? //TODO
+//		// We have to be cautious with parsing. If the text begins with a valid number but is followed by garbage, format.parse(String) will succeed !!!
+//		// We will use format.parse(String, ParsePosition) in order to detect garbage placed after a valid number
+//		try {
+//			ParsePosition pos = new ParsePosition(0);
+//			Number candidate = format.parse(text, pos);
+//			if (pos.getIndex()==text.length()) {
+//				result = candidate;
+//			} else {
+//				throw new ParseException(text, 0);
+//			}
+//		} catch (ParseException e) {
+//			// Parsing with the "official" formatter failed.
 			// It seems that this formatter is quite sensitive. For instance, if you remove the currency sign ... it fails.
 			// We will try to convert what was typed in a "pure" English digital number (only digits and . as decimal separator),
 			// in order to use the standard decimal parser.
-			DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
-			text = text.replace(new String(new char[]{decimalFormatSymbols.getGroupingSeparator()}), "");
-			text = text.replace(decimalFormatSymbols.getDecimalSeparator(), '.');
-			try {
-				result = Double.valueOf(text);
-			} catch (NumberFormatException e2) {
-				// Ok, now, it's clear, the number is wrong
-			}
+//			DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
+//			text = text.replace(new String(new char[]{decimalFormatSymbols.getGroupingSeparator()}), "");
+//			text = text.replace(decimalFormatSymbols.getDecimalSeparator(), '.');
+//			try {
+//				result = Double.parseDouble(text);
+//			} catch (NumberFormatException e2) {
+//				// Ok, now, it's clear, the number is wrong
+//			}
+//		}
+//		return result;
+	}
+
+	/** Parses a text with a format and ensures the text has no extra characters after valid data.
+	 * <br>We have to be cautious with parsing. If the text begins with a valid number but is followed by garbage,
+	 * format.parse(String) will succeed !!! This method uses format.parse(String, ParsePosition) in order to detect
+	 * garbage placed after a valid number.
+	 * @param format The format to use for parsing
+	 * @param text The text to be parsed
+	 * @return A number, or null if the text is not valid according to the format
+	 */
+	public static Number safeParse(NumberFormat format, String text) {
+		ParsePosition pos = new ParsePosition(0);
+		Number candidate = format.parse(text, pos);
+		if (pos.getIndex()==text.length()) {
+			return candidate;
+		} else {
+			return null;
 		}
-		return result;
 	}
 	
 	/** Determines whether empty text (or blank) are considered as valid or not. 
