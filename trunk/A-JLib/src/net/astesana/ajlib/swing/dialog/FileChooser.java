@@ -63,6 +63,7 @@ public class FileChooser extends JFileChooser {
 					if (!NullUtils.areEquals(old, selectedFile)) {
 						int pos = fileNameField.getCaretPosition();
 						firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old, selectedFile);
+						if (pos>fileNameField.getText().length()) pos = fileNameField.getText().length();
 						fileNameField.setCaretPosition(pos);
 					}
 				}
