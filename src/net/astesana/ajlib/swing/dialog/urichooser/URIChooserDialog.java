@@ -69,7 +69,7 @@ public class URIChooserDialog extends AbstractDialog<MultipleURIChooserPanel, UR
 	protected void confirm() {
 		AbstractURIChooserPanel panel = (AbstractURIChooserPanel)this.data.getSelectedComponent();
 		URI selectedURI = panel.getSelectedURI();
-		boolean exists = selectedURI!=null && data.isSaveDialogType() && panel.exist(selectedURI);
+		boolean exists = selectedURI!=null && data.isSaveDialogType() && panel.isSelectedExist();
 		if (exists && FileChooser.showSaveDisplayQuestion(this)) return;
 		super.confirm();
 	}
