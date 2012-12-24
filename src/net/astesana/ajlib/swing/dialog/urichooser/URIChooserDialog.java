@@ -15,15 +15,15 @@ import net.astesana.ajlib.swing.dialog.FileChooser;
 import net.astesana.ajlib.swing.framework.Application;
 
 @SuppressWarnings("serial")
-public class URIChooserDialog extends AbstractDialog<URIChooser, URI> {
+public class URIChooserDialog extends AbstractDialog<MultipleURIChooserPanel, URI> {
 	public URIChooserDialog(Window owner, String title, AbstractURIChooserPanel[] choosers) {
-		super(owner, title, new URIChooser(choosers));
+		super(owner, title, new MultipleURIChooserPanel(choosers));
 		setSaveDialogType(false);
 	}
 
 	@Override
 	protected JPanel createCenterPane() {
-		data.addPropertyChangeListener(URIChooser.URI_APPROVED_PROPERTY, new PropertyChangeListener() {
+		data.addPropertyChangeListener(MultipleURIChooserPanel.URI_APPROVED_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if ((Boolean)evt.getNewValue()) {

@@ -9,7 +9,7 @@ import javax.swing.Icon;
  * <br><b><u>WARNING</u>:Although there is no indication that the class must be a subclass of Component, this is mandatory.</b>
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
- * @see URIChooser
+ * @see MultipleURIChooserPanel
  */
 public interface AbstractURIChooserPanel {
 	/** The name of the selected uri property.
