@@ -117,8 +117,7 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 	}
 
 	@Override
-	public boolean exist(URI uri) {
-		File file = new File(uri);
-		return file.exists();
+	public boolean isSelectedExist() {
+		return getFileChooser().getSelectedFile().exists();
 	}
 }

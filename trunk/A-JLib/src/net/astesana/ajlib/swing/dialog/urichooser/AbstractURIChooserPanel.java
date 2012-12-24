@@ -39,7 +39,8 @@ public interface AbstractURIChooserPanel {
 	 * @return a String
 	 */
 	public abstract String getTooltip(boolean save);
-	/** The icon of the panel.
+	
+	/** Gets the icon of the panel.
 	 * <br>It will be used as tab icon by the URIChooser. 
 	 * @return a String
 	 */
@@ -60,7 +61,7 @@ public interface AbstractURIChooserPanel {
 	 */
 	public void setDialogType(boolean save);
 	
-	/** Set up the panel.
+	/** Sets up the panel.
 	 * <br>This method is called the each time the panel is becoming selected.
 	 * <br>It is the good place to set up the panel (connect to servers, for instance).
 	 * <br>If the set up is a time consuming task, it is a good practice to use SwingUtilities.invokeLater
@@ -68,9 +69,8 @@ public interface AbstractURIChooserPanel {
 	 */
 	public void setUp();
 	
-	/** Test whether or not a URI file exists.
-	 * @param selectedURI An uri
-	 * @return true if the URI exists
+	/** Tests whether or not the currently selected URI exists.
+	 * @return true if the selected URI exists, false if not or if no URI is selected
 	 */
-	public boolean exist(URI selectedURI);
+	public boolean isSelectedExist();
 }
