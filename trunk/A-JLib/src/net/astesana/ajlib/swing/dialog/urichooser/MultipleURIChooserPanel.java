@@ -11,13 +11,13 @@ import javax.swing.event.ChangeListener;
 
 /** An URI chooser.
  * <br>This is a extension to the JFileChooser concept. It allows the user to select not only files,
- * but uris that can be of any scheme (ftp, http, etc ...), even non standart schemes (for example, yapbam project
+ * but uris that can be of any scheme (ftp, http, etc ...), even non standard schemes (for example, yapbam project
  * implements a dropbox scheme).
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */
 @SuppressWarnings("serial")
-public class URIChooser extends JTabbedPane {
+public class MultipleURIChooserPanel extends JTabbedPane {
 	public static final String SELECTED_URI_PROPERTY = AbstractURIChooserPanel.SELECTED_URI_PROPERTY;
 	public static final String URI_APPROVED_PROPERTY = AbstractURIChooserPanel.URI_APPROVED_PROPERTY;
 
@@ -29,7 +29,7 @@ public class URIChooser extends JTabbedPane {
 	/**
 	 * Creates the chooser.
 	 */
-	public URIChooser(AbstractURIChooserPanel[] choosers) {
+	public MultipleURIChooserPanel(AbstractURIChooserPanel[] choosers) {
 		this.lastSetup = -1;
 		setTabPlacement(JTabbedPane.TOP);
 		for (AbstractURIChooserPanel uiChooser:choosers) {
