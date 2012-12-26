@@ -9,6 +9,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.astesana.ajlib.utilities.NullUtils;
+
 /** An URI chooser.
  * <br>This is a extension to the JFileChooser concept. It allows the user to select not only files,
  * but uris that can be of any scheme (ftp, http, etc ...), even non standard schemes (for example, yapbam project
@@ -40,11 +42,13 @@ public class MultipleURIChooserPanel extends JTabbedPane {
 					URI old = selectedURI;
 					selectedURI = (URI) evt.getNewValue();
 					firePropertyChange(SELECTED_URI_PROPERTY, old, selectedURI);
+					System.out.println (this+" "+SELECTED_URI_PROPERTY+": "+old+" -> "+selectedURI); //TODO
 				}
 			});
 			((Component)uiChooser).addPropertyChangeListener(AbstractURIChooserPanel.URI_APPROVED_PROPERTY, new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
+					System.out.println (this+" "+URI_APPROVED_PROPERTY); //TODO
 					firePropertyChange(URI_APPROVED_PROPERTY, evt.getOldValue(), evt.getNewValue());
 				}
 			});
@@ -54,9 +58,10 @@ public class MultipleURIChooserPanel extends JTabbedPane {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				URI old = selectedURI;
-				selectedURI = ((AbstractURIChooserPanel)getSelectedComponent()).getSelectedURI();
-				firePropertyChange(SELECTED_URI_PROPERTY, old, selectedURI);
-				setUp(getSelectedIndex());
+				boolean hasSelectedTab = getSelectedComponent()!=null;
+				selectedURI = hasSelectedTab?((AbstractURIChooserPanel)getSelectedComponent()).getSelectedURI():null;
+				if (!NullUtils.areEquals(old, selectedURI)) firePropertyChange(SELECTED_URI_PROPERTY, old, selectedURI);
+				if (hasSelectedTab) setUp(getSelectedIndex());
 			}
 		};
 		addChangeListener(listener);
