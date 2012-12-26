@@ -15,22 +15,14 @@ import net.astesana.ajlib.swing.dialog.FileChooser;
 import net.astesana.ajlib.swing.framework.Application;
 
 @SuppressWarnings("serial")
-public class URIChooserDialog extends AbstractDialog<MultipleURIChooserPanel, URI> {
-	public URIChooserDialog(Window owner, String title, AbstractURIChooserPanel[] choosers) {
+public class MultipleURIChooserDialog extends AbstractDialog<MultipleURIChooserPanel, URI> {
+	public MultipleURIChooserDialog(Window owner, String title, AbstractURIChooserPanel[] choosers) {
 		super(owner, title, new MultipleURIChooserPanel(choosers));
 		setSaveDialogType(false);
 	}
 
 	@Override
 	protected JPanel createCenterPane() {
-		data.addPropertyChangeListener(MultipleURIChooserPanel.URI_APPROVED_PROPERTY, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ((Boolean)evt.getNewValue()) {
-					confirm();
-				}
-			}
-		});
 		addWindowListener(new WindowAdapter() {
 			/* (non-Javadoc)
 			 * @see java.awt.event.WindowAdapter#windowOpened(java.awt.event.WindowEvent)
@@ -44,6 +36,14 @@ public class URIChooserDialog extends AbstractDialog<MultipleURIChooserPanel, UR
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				updateOkButtonEnabled();
+			}
+		});
+		this.data.addPropertyChangeListener(MultipleURIChooserPanel.URI_APPROVED_PROPERTY, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if ((Boolean)evt.getNewValue()) {
+					confirm();
+				}
 			}
 		});
 		JPanel result = new JPanel(new BorderLayout());
@@ -68,7 +68,7 @@ public class URIChooserDialog extends AbstractDialog<MultipleURIChooserPanel, UR
 	@Override
 	protected void confirm() {
 		AbstractURIChooserPanel panel = (AbstractURIChooserPanel)this.data.getSelectedComponent();
-		URI selectedURI = panel.getSelectedURI();
+		URI selectedURI = panel!=null?panel.getSelectedURI():null;
 		boolean exists = selectedURI!=null && data.isSaveDialogType() && panel.isSelectedExist();
 		if (exists && FileChooser.showSaveDisplayQuestion(this)) return;
 		super.confirm();
