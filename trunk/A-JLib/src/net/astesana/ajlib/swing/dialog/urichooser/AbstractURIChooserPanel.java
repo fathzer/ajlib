@@ -23,10 +23,10 @@ public interface AbstractURIChooserPanel {
 	 */
 	public static final String URI_APPROVED_PROPERTY = "uriApproved";
 	
-	/** Gets the uri schemes (file, ftp, http, ...) that this component supports.
-	 * @return a collection of strings
+	/** Gets the uri scheme (file, ftp, http, ...) that this component supports.
+	 * @return a string
 	 */
-	public Collection<String> getSchemes();
+	public String getScheme();
 
 	/** The name of the panel.
 	 * <br>This name will be used as tab name by the URIChooser. 

@@ -102,9 +102,9 @@ public class MultipleURIChooserPanel extends JTabbedPane {
 			String scheme = uri.getScheme();
 			for (int i=0; i<getComponentCount(); i++) {
 				AbstractURIChooserPanel panel = (AbstractURIChooserPanel)getComponent(i);
-				if (panel.getSchemes().contains(scheme)) {
-					panel.setSelectedURI(uri);
+				if (panel.getScheme().equals(scheme)) {
 					setSelectedIndex(i);
+					panel.setSelectedURI(uri);
 					break;
 				}
 			}

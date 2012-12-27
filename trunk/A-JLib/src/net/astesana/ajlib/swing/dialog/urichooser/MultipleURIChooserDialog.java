@@ -125,7 +125,7 @@ public class MultipleURIChooserDialog extends AbstractDialog<AbstractURIChooserP
 	public void setSelectedURI(URI uri) {
 		String scheme = uri.getScheme();
 		for (AbstractURIChooserPanel panel : data) {
-			if (panel.getSchemes().contains(scheme)) {
+			if (panel.getScheme().equals(scheme)) {
 				panel.setSelectedURI(uri);
 				if (multiplePanel!=null) {
 					multiplePanel.setSelectedComponent((Component) panel);
