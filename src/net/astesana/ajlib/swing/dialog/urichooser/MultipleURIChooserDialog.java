@@ -64,7 +64,8 @@ public class MultipleURIChooserDialog extends AbstractDialog<AbstractURIChooserP
 			}
 		};
 		JPanel result = new JPanel(new BorderLayout());
-		Component cp = data.length==1 ? (Component) data[0] : new MultipleURIChooserPanel(data);
+		this.multiplePanel = data.length==1 ? null : new MultipleURIChooserPanel(data);
+		Component cp = multiplePanel==null ? (Component) data[0] : multiplePanel;
 		result.add(cp, BorderLayout.CENTER);
 		cp.addPropertyChangeListener(AbstractURIChooserPanel.SELECTED_URI_PROPERTY, selectListener);
 		cp.addPropertyChangeListener(MultipleURIChooserPanel.URI_APPROVED_PROPERTY, confirmListener);
@@ -122,6 +123,14 @@ public class MultipleURIChooserDialog extends AbstractDialog<AbstractURIChooserP
 	 * @param uri
 	 */
 	public void setSelectedURI(URI uri) {
-		getSelectedPanel().setSelectedURI(uri);
+		String scheme = uri.getScheme();
+		for (AbstractURIChooserPanel panel : data) {
+			if (panel.getSchemes().contains(scheme)) {
+				panel.setSelectedURI(uri);
+				if (multiplePanel!=null) {
+					multiplePanel.setSelectedComponent((Component) panel);
+				}
+			}
+		}
 	}
 }
