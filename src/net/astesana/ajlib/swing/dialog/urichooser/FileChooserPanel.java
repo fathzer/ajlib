@@ -5,8 +5,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -23,7 +21,7 @@ import net.astesana.ajlib.swing.framework.Application;
  */
 @SuppressWarnings("serial")
 public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel {
-	public static final Collection<String> SCHEMES = Arrays.asList(new String[]{"file"});  //$NON-NLS-1$
+	public static final String SCHEME = "file";  //$NON-NLS-1$
 	private FileChooser fileChooser;
 
 	/** Constructor.
@@ -112,8 +110,8 @@ public class FileChooserPanel extends JPanel implements AbstractURIChooserPanel 
 	}
 
 	@Override
-	public Collection<String> getSchemes() {
-		return SCHEMES;
+	public String getScheme() {
+		return SCHEME;
 	}
 
 	@Override
