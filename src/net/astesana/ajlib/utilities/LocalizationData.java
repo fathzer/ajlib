@@ -1,10 +1,10 @@
 package net.astesana.ajlib.utilities;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /** This class is the main entry point for localization concerns.
@@ -12,17 +12,12 @@ import java.util.ResourceBundle;
  * <BR>License : GPL v3
  */
 public class LocalizationData {
-	/** @deprecated. */
-	public static final Locale SYS_LOCALE = getSystemLocale();
-	/** @deprecated. */
-	public static final LocalizationData DEFAULT = new LocalizationData(getDefaultBundle(SYS_LOCALE));
-		
-	private List<ResourceBundle> bundle;
-	private boolean translatorMode;
+	public static final String DEFAULT_BUNDLE_NAME = "net.astesana.ajlib.Resources";
+	public static LocalizationData DEFAULT = new LocalizationData(DEFAULT_BUNDLE_NAME);
 	
-	public static ResourceBundle getDefaultBundle(Locale locale) {
-		return ResourceBundle.getBundle("net.astesana.ajlib.Resources", locale); //$NON-NLS-1$
-	}
+	private HashMap<Locale, List<ResourceBundle>> bundles;
+	private List<String> bundleNames;
+	private boolean translatorMode;
 	
 	public static Locale getSystemLocale() {
 		try {
@@ -31,41 +26,70 @@ public class LocalizationData {
 			return Locale.getDefault();
 		}
 	}
-		
-	public LocalizationData (String bundlePath) {
-		this (ResourceBundle.getBundle(bundlePath));
-	}
-		
-	public LocalizationData (ResourceBundle bundle) {
-		translatorMode = false;
-		this.bundle = new ArrayList<ResourceBundle>();
-		this.bundle.add(bundle);
+	
+	/** Constructor.
+	 * @param bundlePath The main bundlePath
+	 * @see #add(String)
+	 */
+	public LocalizationData(String bundlePath) {
+		this.bundleNames = new ArrayList<String>(); this.bundleNames.add(bundlePath);
+		this.bundles = new HashMap<Locale, List<ResourceBundle>>();
+		this.translatorMode = false;
 	}
 	
-	public void add(ResourceBundle bundle) {
-		this.bundle.add(bundle);
+	/** Adds a bundle path to this.
+	 * <br>The application wordings may not be all the same bundle. This method allows you to declare additional bundles.
+	 * <br>If a key is present in two or more bundles, the last added has the priority and its wording will be returned by getString methods.
+	 * This allows developers to redefine some wordings.
+	 * @param bundlePath
+	 */
+	public void add(String bundlePath) {
+		for(Locale locale : bundles.keySet()) {
+			List<ResourceBundle> bundles = this.bundles.get(locale);
+			bundles.add(ResourceBundle.getBundle(bundlePath, locale));
+		}
+		this.bundleNames.add(bundlePath);
 	}
-
-	public String getString(String key) {
+	
+	/** Gets a wording for a locale.
+	 * @param key The wording's key
+	 * @param locale The locale
+	 * @return The wording
+	 * @throws MissingResourceException if the key is unknown 
+	 */
+	public String getString(String key, Locale locale) {
 		// If translator mode is on, return the key
 		if (translatorMode) return key;
 		// Check key in additional bundles
-		for (int i = this.bundle.size()-1; i > 0; i--) {
-			if (this.bundle.get(i).containsKey(key)) return this.bundle.get(i).getString(key);
+		List<ResourceBundle> bundle = this.getBundle(locale);
+		for (int i = bundle.size()-1; i > 0; i--) {
+			if (bundle.get(i).containsKey(key)) return bundle.get(i).getString(key);
 		}
-		return this.bundle.get(0).getString(key);
+		return bundle.get(0).getString(key);
 	}
 	
-	public char getChar(String key) {
-		return getString(key).charAt(0);
+	/** Gets a wording for default locale.
+	 * <br>Same as getString(key, Locale.getDefault())
+	 * @param key The wording's key
+	 * @return a String
+	 * @throws MissingResourceException if the key is unknown
+	 * @see #getString(String, Locale)
+	 */
+	public String getString(String key) {
+		return getString(key, Locale.getDefault());
 	}
-
-	public Locale getLocale() {
-		return Locale.getDefault();
-	}
-
-	public DecimalFormat getCurrencyInstance() {
-		return (DecimalFormat) NumberFormat.getCurrencyInstance(getLocale());
+	
+	private List<ResourceBundle> getBundle(Locale locale) {
+		List<ResourceBundle> result = bundles.get(locale);
+		if (result==null) {
+			System.out.println ("Loading bundle for locale "+locale);
+			result = new ArrayList<ResourceBundle>();
+			for (String bundleName : this.bundleNames) {
+				result.add(ResourceBundle.getBundle(bundleName, locale));
+			}
+			bundles.put(locale, result);
+		}
+		return result;
 	}
 	
 	public void setTranslatorMode(boolean translatorMode) {
