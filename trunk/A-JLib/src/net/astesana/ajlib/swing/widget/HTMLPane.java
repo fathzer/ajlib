@@ -17,6 +17,8 @@ import javax.swing.event.HyperlinkListener;
  */
 @SuppressWarnings("serial")
 public class HTMLPane extends JScrollPane {
+	private static final String HTML_START_TAG = "<html>"; //$NON-NLS-1$
+	private static final String HTML_END_TAG = "</html>"; //$NON-NLS-1$
 	private JTextPane textPane;
 
 	public HTMLPane () {
@@ -32,7 +34,7 @@ public class HTMLPane extends JScrollPane {
 					try {
 						Desktop.getDesktop().browse(url.toURI()); 
 					} catch (IOException e1) {
-						System.err.println("Attempted to read a bad URL: " + url);//FIXME These exceptions must be thrown
+						System.err.println("Attempted to read a bad URL: " + url);//FIXME These exceptions must be thrown //$NON-NLS-1$
 					} catch (URISyntaxException e2) {
 						e2.printStackTrace();
 					}
@@ -53,10 +55,14 @@ public class HTMLPane extends JScrollPane {
 	}
 
 	public void setContent (String text) {
-		textPane.setContentType("text/html"); //$NON-NLS-1$
+		boolean html = text.length()>=HTML_START_TAG.length()+HTML_END_TAG.length();
+		if (html) html = HTML_START_TAG.equalsIgnoreCase(text.substring(0, HTML_START_TAG.length()));
+		if (html) html = HTML_END_TAG.equalsIgnoreCase(text.substring(text.length() - HTML_END_TAG.length()));
+		String type = html?"text/html":"text/plain"; //$NON-NLS-1$ //$NON-NLS-2$
+		textPane.setContentType(type);
 		// We should not use textPane.setText because it scrolls the textPane to the end of the text
 		try {
-			textPane.read(new StringReader(text), "text/html"); //$NON-NLS-1$
+			textPane.read(new StringReader(text), type);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
