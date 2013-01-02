@@ -82,7 +82,7 @@ public class LocalizationData {
 	private List<ResourceBundle> getBundle(Locale locale) {
 		List<ResourceBundle> result = bundles.get(locale);
 		if (result==null) {
-			System.out.println ("Loading bundle for locale "+locale);
+//			System.out.println ("Loading bundle for locale "+locale);
 			result = new ArrayList<ResourceBundle>();
 			for (String bundleName : this.bundleNames) {
 				result.add(ResourceBundle.getBundle(bundleName, locale));
