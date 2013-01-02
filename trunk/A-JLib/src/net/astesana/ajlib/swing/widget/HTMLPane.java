@@ -1,6 +1,5 @@
 package net.astesana.ajlib.swing.widget;
 
-import java.awt.Desktop;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URISyntaxException;
@@ -11,6 +10,9 @@ import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import net.astesana.ajlib.swing.Browser;
+import net.astesana.ajlib.swing.framework.Application;
+
 /** A HTML component.
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
@@ -20,10 +22,14 @@ public class HTMLPane extends JScrollPane {
 	private static final String HTML_START_TAG = "<html>"; //$NON-NLS-1$
 	private static final String HTML_END_TAG = "</html>"; //$NON-NLS-1$
 	private JTextPane textPane;
+	private String contentType;
 
+	/** Constructor.
+	 */
 	public HTMLPane () {
 		super();
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.contentType = null;
 		textPane = new JTextPane();
 		textPane.setEditable(false);
 		textPane.addHyperlinkListener(new HyperlinkListener() {
@@ -32,11 +38,9 @@ public class HTMLPane extends JScrollPane {
 				if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
 					URL url = e.getURL();
 					try {
-						Desktop.getDesktop().browse(url.toURI()); 
-					} catch (IOException e1) {
-						System.err.println("Attempted to read a bad URL: " + url);//FIXME These exceptions must be thrown //$NON-NLS-1$
+						Browser.show(url.toURI(), HTMLPane.this, Application.getString("ExcelPane.error.title")); //$NON-NLS-1$
 					} catch (URISyntaxException e2) {
-						e2.printStackTrace();
+						throw new RuntimeException();
 					}
 				}
 			}
@@ -54,11 +58,25 @@ public class HTMLPane extends JScrollPane {
 		setContent(text);
 	}
 
+	/** Sets the panel content.
+	 * <br>If this panel content type is not set, the content type is determined by the content of the text.
+	 * If it starts with "<html>" and ends with "</html>", the panel assumes the content type is "text/html".
+	 * <br>If not, the content type is assumed to "text/plain".
+	 * <br>If the content type is set, this content type is used. It allows you to display an html code source,
+	 * by invoking this.setContentType("text/plain") before calling this method.  
+	 * @param text The text to be set.
+	 * @see #setContentType(String)
+	 */
 	public void setContent (String text) {
-		boolean html = text.length()>=HTML_START_TAG.length()+HTML_END_TAG.length();
-		if (html) html = HTML_START_TAG.equalsIgnoreCase(text.substring(0, HTML_START_TAG.length()));
-		if (html) html = HTML_END_TAG.equalsIgnoreCase(text.substring(text.length() - HTML_END_TAG.length()));
-		String type = html?"text/html":"text/plain"; //$NON-NLS-1$ //$NON-NLS-2$
+		String type;
+		if (this.contentType==null) {
+			boolean html = text.length()>=HTML_START_TAG.length()+HTML_END_TAG.length();
+			if (html) html = HTML_START_TAG.equalsIgnoreCase(text.substring(0, HTML_START_TAG.length()));
+			if (html) html = HTML_END_TAG.equalsIgnoreCase(text.substring(text.length() - HTML_END_TAG.length()));
+			type = html?"text/html":"text/plain"; //$NON-NLS-1$ //$NON-NLS-2$
+		} else {
+			type = this.contentType;
+		}
 		textPane.setContentType(type);
 		// We should not use textPane.setText because it scrolls the textPane to the end of the text
 		try {
@@ -74,7 +92,18 @@ public class HTMLPane extends JScrollPane {
 		}
 	}
 	
+	/** Gets the internal text pane. */
 	public JTextPane getTextPane() {
 		return this.textPane;
+	}
+
+	/** Sets the content type.
+	 * <br>Please note that this method as no effect on the current content. It should only have an effect on future calls to setContent.
+	 * @param contentType A content type or null for the content type to be automatically set when calling set content.
+	 * @see #setContent(String)
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+		if (contentType!=null) getTextPane().setContentType(contentType);
 	}
 }
