@@ -117,8 +117,8 @@ public abstract class AbstractTitledPanel<T> extends JPanel {
 
 	/**
 	 * Gets the center Component.	
-	 * <br>Please note that this method should always returns the same JComponent instance.
+	 * <br>Please note that this method should always return the same JComponent instance.
 	 * @return a JComponent
 	 */
-	protected abstract JComponent getCenterComponent();
+	public abstract JComponent getCenterComponent();
 }  //  @jve:decl-index=0:visual-constraint="10,10"
