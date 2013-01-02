@@ -70,9 +70,10 @@ public class HTMLPane extends JScrollPane {
 	public void setContent (String text) {
 		String type;
 		if (this.contentType==null) {
-			boolean html = text.length()>=HTML_START_TAG.length()+HTML_END_TAG.length();
-			if (html) html = HTML_START_TAG.equalsIgnoreCase(text.substring(0, HTML_START_TAG.length()));
-			if (html) html = HTML_END_TAG.equalsIgnoreCase(text.substring(text.length() - HTML_END_TAG.length()));
+			String trimmed = text.trim();
+			boolean html = trimmed.length()>=HTML_START_TAG.length()+HTML_END_TAG.length();
+			if (html) html = HTML_START_TAG.equalsIgnoreCase(trimmed.substring(0, HTML_START_TAG.length()));
+			if (html) html = HTML_END_TAG.equalsIgnoreCase(trimmed.substring(trimmed.length() - HTML_END_TAG.length()));
 			type = html?"text/html":"text/plain"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			type = this.contentType;
