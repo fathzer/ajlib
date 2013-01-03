@@ -89,7 +89,7 @@ public class ExcelPane extends JPanel {
 							save(file);
 						} catch(IOException ex) {
 							String message = MessageFormat.format(Application.getString("ExcelPane.error.message"), ex.toString()); //$NON-NLS-1$
-							JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("ExcelPane.error.title"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+							JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("Generic.error"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 						}
 					}
 				}
