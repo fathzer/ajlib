@@ -79,7 +79,7 @@ public class ExcelPane extends JPanel {
 	 */
 	public final JButton getSaveButton() {
 		if (saveButton == null) {
-			saveButton = new JButton(Application.getString("ExcelPane.save")); //$NON-NLS-1$
+			saveButton = new JButton(Application.getString("ExcelPane.save", getLocale())); //$NON-NLS-1$
 			saveButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser chooser = new FileChooser(getInitialPath());
@@ -88,8 +88,8 @@ public class ExcelPane extends JPanel {
 						try {
 							save(file);
 						} catch(IOException ex) {
-							String message = MessageFormat.format(Application.getString("ExcelPane.error.message"), ex.toString()); //$NON-NLS-1$
-							JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("Generic.error"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+							String message = MessageFormat.format(Application.getString("ExcelPane.error.message", getLocale()), ex.toString()); //$NON-NLS-1$
+							JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("Generic.error", getLocale()), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 						}
 					}
 				}

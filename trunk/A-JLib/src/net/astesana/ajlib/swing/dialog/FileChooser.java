@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 import javax.swing.JFileChooser;
@@ -13,7 +14,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import net.astesana.ajlib.utilities.LocalizationData;
+import net.astesana.ajlib.swing.framework.Application;
+import net.astesana.ajlib.utilities.FileUtils;
 import net.astesana.ajlib.utilities.NullUtils;
 
 /** A better file chooser.
@@ -97,15 +99,48 @@ public class FileChooser extends JFileChooser {
 
 	@Override
 	public void approveSelection() {
-		File file = getSelectedFile();
-		if ((getDialogType() == SAVE_DIALOG) && (file != null) && file.exists()) {
-			boolean cancel = showSaveDisplayQuestion(this);
-			if (cancel) {
-				// User doesn't want to overwrite the file
-				return;
+		// Refuse:
+		// The broken links
+		// The non existing files in OPEN_DIALOG mode
+		// Ask what to do if the file exists and we are in SAVE_DIALOG mode
+		System.out.println ("approveSelection is called for "+super.getSelectedFile());
+		File file = super.getSelectedFile();
+		if (file!=null) {
+			try {
+				if (getDialogType() == OPEN_DIALOG) {
+					if (!file.exists()) {
+						JOptionPane.showMessageDialog(this, get("openDialog.fileDoesntExist"), get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$//$NON-NLS-2$
+						return;
+					} else {
+						File canonical = FileUtils.getCanonical(file);
+						if (!canonical.exists()) {
+							JOptionPane.showMessageDialog(this, get("openDialog.targetDoesntExist"), get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$//$NON-NLS-2$
+							return;
+						}
+					}
+				} else {
+					File canonical = FileUtils.getCanonical(file);
+					if (canonical.exists()) {
+						boolean cancel = showSaveDisplayQuestion(this);
+						if (cancel) {
+							// User doesn't want to overwrite the file
+							return;
+						}
+					}
+					if (!FileUtils.isWritable(canonical)) {
+						JOptionPane.showMessageDialog(this, get("saveDialog.fileNotWritable"), get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$//$NON-NLS-2$
+						return;
+					}
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		super.approveSelection();
+	}
+	
+	private String get(String key) {
+		return Application.LOCALIZATION.getString(key, getLocale());
 	}
 
 	/** Displays a dialog to inform the user that a file is already existing and it will be overwritten if the user continue. 
@@ -113,8 +148,8 @@ public class FileChooser extends JFileChooser {
 	 * @return true if the user cancels
 	 */
 	public static boolean showSaveDisplayQuestion(Component parent) {
-		String message = LocalizationData.DEFAULT.getString("saveDialog.FileExist.message"); //$NON-NLS-1$
-		return JOptionPane.showOptionDialog(parent, message, LocalizationData.DEFAULT.getString("saveDialog.FileExist.title"), //$NON-NLS-1$
+		String message = Application.LOCALIZATION.getString("saveDialog.FileExist.message", parent.getLocale()); //$NON-NLS-1$
+		return JOptionPane.showOptionDialog(parent, message, Application.LOCALIZATION.getString("saveDialog.FileExist.title", parent.getLocale()), //$NON-NLS-1$
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.NO_OPTION;
 	}
 	

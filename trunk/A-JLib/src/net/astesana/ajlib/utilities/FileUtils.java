@@ -28,6 +28,7 @@ public class FileUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static File getCanonical(File file) throws IOException {
+		if (!file.exists()) return file;
 		try {
 			// The following lines are equivalent to sf = new sun.awt.shell.Win32ShellFolderManager2().createShellFolder(file);
 			// We use reflection in order the code to compile on non Windows platform (where new sun.awt.shell.Win32ShellFolderManager2

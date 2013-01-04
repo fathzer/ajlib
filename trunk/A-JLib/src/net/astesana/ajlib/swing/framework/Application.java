@@ -54,9 +54,14 @@ public abstract class Application {
 	private JFrame frame;
 	
 	public static LocalizationData LOCALIZATION = LocalizationData.DEFAULT;
-	
+
+	@Deprecated
 	public static String getString(String key) {
 		return LOCALIZATION.getString(key);
+	}
+	
+	public static String getString(String key, Locale locale) {
+		return LOCALIZATION.getString(key, locale);
 	}
 
 	/** Launches the application.

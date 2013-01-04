@@ -40,7 +40,7 @@ public class FileSelectionPane extends JPanel {
 		border = new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null); //$NON-NLS-1$
 		setBorder(border);
 		
-		lblFile = new JLabel(Application.getString("FileSelectionPanel.file")); //$NON-NLS-1$
+		lblFile = new JLabel(Application.getString("FileSelectionPanel.file", getLocale())); //$NON-NLS-1$
 		GridBagConstraints gbc_lblFile = new GridBagConstraints();
 		gbc_lblFile.anchor = GridBagConstraints.WEST;
 		gbc_lblFile.insets = new Insets(0, 0, 0, 5);
@@ -59,7 +59,7 @@ public class FileSelectionPane extends JPanel {
 		add(textField, gbc_textField);
 		textField.setColumns(10);
 		
-		final JButton btnChange = new JButton(Application.getString("FileSelectionPanel.change")); //$NON-NLS-1$
+		final JButton btnChange = new JButton(Application.getString("FileSelectionPanel.change", getLocale())); //$NON-NLS-1$
 		btnChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();

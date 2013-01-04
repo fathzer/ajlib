@@ -38,7 +38,7 @@ public class HTMLPane extends JScrollPane {
 				if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
 					URL url = e.getURL();
 					try {
-						Browser.show(url.toURI(), HTMLPane.this, Application.getString("Generic.error")); //$NON-NLS-1$
+						Browser.show(url.toURI(), HTMLPane.this, Application.getString("Generic.error", getLocale())); //$NON-NLS-1$
 					} catch (URISyntaxException e2) {
 						throw new RuntimeException();
 					}
