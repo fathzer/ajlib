@@ -182,7 +182,10 @@ public class FileUtils {
 	 * @return true if the folder exists and the calling thread can write into it
 	 */
 	public static boolean isWritable(File file) {
-		if (!file.exists()) return isWritable(file.getParentFile());
+		if (!file.exists()) {
+			File parentFile = file.getParentFile();
+			return parentFile==null?false:isWritable(parentFile);
+		}
 		if (!file.canWrite()) return false;
 		if (file.isDirectory()) {
 			// If the file is a folder, the easiest way is to create a temporary file.
