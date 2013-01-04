@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.channels.FileLock;
 
 import sun.awt.shell.ShellFolder;
 
@@ -173,30 +174,49 @@ public class FileUtils {
 		}
 	}
 	
-	/** Tests if the application can write to a folder.
+	/** Tests whether the application can write to a file (or a folder).
 	 * <br>It differs from File.canWrite because File.canWrite ignore the security policies of the platform.
-	 * This method returns true only if the calling thread have all the rights necessary to write to the folder.
-	 * @param folder The folder to test
+	 * This method returns true only if the calling thread have all the rights necessary to write to the file, and the file
+	 * is not already locked.
+	 * @param file The folder to test
 	 * @return true if the folder exists and the calling thread can write into it
-	 * @throws IllegalArgumentException if the parameter is not a directory.
 	 */
-	public static boolean isWritable(File folder) {
-		if (!folder.canWrite()) return false;
-		if (folder.isDirectory()) {
-			for (int i = 0; i < Integer.MAX_VALUE; i++) {
-				File tmpFile = new File(folder,Integer.toString(i));
-				if (!tmpFile.exists()) {
-					try {
-						if (tmpFile.createNewFile()) {
-							tmpFile.delete();
-							return true;
-						}
-					} catch (IOException e) {
+	public static boolean isWritable(File file) {
+		if (!file.exists()) return isWritable(file.getParentFile());
+		if (!file.canWrite()) return false;
+		if (file.isDirectory()) {
+			// If the file is a folder, the easiest way is to create a temporary file.
+			try {
+				File f = File.createTempFile("ajlib", null, file);
+				f.delete();
+				return true;
+			} catch (IOException e) {
+				return false;
+			} catch (SecurityException e) {
+				return false;
+			}
+		} else {
+			// If the argument is a file, we will simply to open it for writing 
+			try {
+				FileOutputStream x = new FileOutputStream(file,true);
+				try {
+					FileLock lock = null;
+					lock = x.getChannel().tryLock();
+					if (lock==null) {
 						return false;
+					} else {
+						lock.release();
+						return true;
 					}
+				} finally {
+					x.close();
 				}
+			} catch (FileNotFoundException e) {
+				// File is locked by another application
+				return false;
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
-		throw new IllegalArgumentException();
 	}
 }
