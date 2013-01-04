@@ -153,7 +153,7 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	
 	public JButton getBtnCancel() {
 		if (btnCancel==null) {
-			btnCancel = new JButton(Application.getString("GenericButton.cancel")); //$NON-NLS-1$
+			btnCancel = new JButton(Application.getString("GenericButton.cancel", getLocale())); //$NON-NLS-1$
 			btnCancel.setEnabled(false);
 			getBtnCancel().addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

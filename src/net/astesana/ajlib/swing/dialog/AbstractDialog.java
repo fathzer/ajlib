@@ -100,7 +100,7 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 */
 	protected JButton getOkButton() {
 		if (okButton==null) {
-			okButton = new JButton(Application.getString("GenericButton.ok"));
+			okButton = new JButton(Application.getString("GenericButton.ok", getLocale()));
 			okButton.setOpaque(false);
 		}
 		return okButton;
@@ -112,8 +112,8 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 */
 	protected JButton getCancelButton() {
 		if (cancelButton==null) {
-			cancelButton = new JButton(Application.getString("GenericButton.cancel"));
-			cancelButton.setToolTipText(Application.getString("GenericButton.cancel.toolTip"));
+			cancelButton = new JButton(Application.getString("GenericButton.cancel", getLocale()));
+			cancelButton.setToolTipText(Application.getString("GenericButton.cancel.toolTip", getLocale()));
 			cancelButton.setOpaque(false);
 		}
 		return cancelButton;
@@ -180,7 +180,7 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	public void updateOkButtonEnabled() {
 		String cause = getOkDisabledCause();
 		this.okButton.setEnabled(cause==null);
-		this.okButton.setToolTipText(cause==null?Application.getString("GenericButton.ok.toolTip"):cause);
+		this.okButton.setToolTipText(cause==null?Application.getString("GenericButton.ok.toolTip", getLocale()):cause);
 	}
 
 	/** Gets the window which contains a component.
