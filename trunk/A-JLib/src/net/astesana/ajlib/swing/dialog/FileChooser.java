@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;
@@ -21,6 +22,10 @@ import net.astesana.ajlib.utilities.NullUtils;
 /** A better file chooser.
  * <br>Here are the improvements:<ul>
  * <li>In save mode, a confirm dialog is displayed when the selected file already exists.</li>
+ * <li>Some classical problem are detected while validating the dialog.<ul>
+ * <li>In open mode, the file does not exist.</li>
+ * <li>The applciation have no right to access the file.</li>
+ * </ul></li>
  * <li>The getSelectedFile methods returns the selected file, even if the file name field has been modified
  * (It's strange but that method in JFileChooser returns the last file selected in the file list until the "ok"
  * button is pressed. It sounds like a bug of JFileChooser)</li>
@@ -33,6 +38,7 @@ public class FileChooser extends JFileChooser {
 	private static final long serialVersionUID = 1L;
 	private JTextField fileNameField;
 	private File selectedFile;
+	private Component fileNameLabel;
 
 	public FileChooser() {
 		this(null);
@@ -52,6 +58,18 @@ public class FileChooser extends JFileChooser {
 			}
 		} catch (NoSuchFieldException e) {
 			// If there's no fileNameField ... we will suppose there's no problem with this field updates !
+		}
+		
+		try {
+			Field field = getUI().getClass().getDeclaredField("fileNameLabel"); //$NON-NLS-1$
+			try {
+				field.setAccessible(true);
+				fileNameLabel = (JLabel) field.get(getUI());
+			} catch (Throwable e) {
+				throw new RuntimeException (e);
+			}
+		} catch (NoSuchFieldException e) {
+			// If there's no fileNameLabel ... ok, then we will not do anything with it !
 		}
 
 		if (fileNameField != null) {
@@ -103,23 +121,13 @@ public class FileChooser extends JFileChooser {
 		// The broken links
 		// The non existing files in OPEN_DIALOG mode
 		// Ask what to do if the file exists and we are in SAVE_DIALOG mode
-		System.out.println ("approveSelection is called for "+super.getSelectedFile());
-		File file = super.getSelectedFile();
+System.out.println ("approveSelection is called for "+getSelectedFile()); //FIXME
+		File file = getSelectedFile();
 		if (file!=null) {
-			try {
-				if (getDialogType() == OPEN_DIALOG) {
-					if (!file.exists()) {
-						JOptionPane.showMessageDialog(this, get("openDialog.fileDoesntExist"), get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$//$NON-NLS-2$
-						return;
-					} else {
-						File canonical = FileUtils.getCanonical(file);
-						if (!canonical.exists()) {
-							JOptionPane.showMessageDialog(this, get("openDialog.targetDoesntExist"), get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$//$NON-NLS-2$
-							return;
-						}
-					}
-				} else {
-					File canonical = FileUtils.getCanonical(file);
+			if (getDialogType()==SAVE_DIALOG) {
+				File canonical;
+				try {
+					canonical = FileUtils.getCanonical(file);
 					if (canonical.exists()) {
 						boolean cancel = showSaveDisplayQuestion(this);
 						if (cancel) {
@@ -127,16 +135,44 @@ public class FileChooser extends JFileChooser {
 							return;
 						}
 					}
-					if (!FileUtils.isWritable(canonical)) {
-						JOptionPane.showMessageDialog(this, get("saveDialog.fileNotWritable"), get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$//$NON-NLS-2$
-						return;
-					}
+				} catch (IOException e) {
+					throw new RuntimeException(e);
 				}
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+			}
+			String error = getDisabledCause();
+			if (error!=null) {
+				JOptionPane.showMessageDialog(this, error, get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$
+				return;
 			}
 		}
 		super.approveSelection();
+	}
+	
+	public String getDisabledCause() {
+		File file = getSelectedFile();
+		if (file==null) return null;
+		try {
+			if (getDialogType() == OPEN_DIALOG) {
+				if (!file.exists()) {
+					return get("openDialog.fileDoesntExist");  //$NON-NLS-1$
+				} else {
+					File canonical = FileUtils.getCanonical(file);
+					if (!canonical.exists()) {
+						return get("openDialog.targetDoesntExist"); //$NON-NLS-1$
+					} else if (!FileUtils.isReadable(file)) {
+						return get("openDialog.fileNotReadable"); //$NON-NLS-1$
+					}
+				}
+			} else {
+				File canonical = FileUtils.getCanonical(file);
+				if (!FileUtils.isWritable(canonical)) {
+					return get("saveDialog.fileNotWritable"); //$NON-NLS-1$
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return null;
 	}
 	
 	private String get(String key) {
@@ -153,6 +189,19 @@ public class FileChooser extends JFileChooser {
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.NO_OPTION;
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.JFileChooser#setDialogType(int)
+	 */
+	@Override
+	public void setDialogType(int dialogType) {
+		if ((fileNameField!=null) && (fileNameLabel!=null)) {
+			boolean visible = dialogType!=JFileChooser.OPEN_DIALOG;
+			fileNameField.setVisible(visible);
+			fileNameLabel.setVisible(visible);
+		}
+		super.setDialogType(dialogType);
+	}
+
 	private class MyDocument extends PlainDocument {
 		private static final long serialVersionUID = 1L;
 		private static final String TEXT_PROPERTY = "text"; //$NON-NLS-1$

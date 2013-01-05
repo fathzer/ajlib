@@ -1,6 +1,7 @@
 package net.astesana.ajlib.utilities;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -221,6 +222,22 @@ public class FileUtils {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
+		}
+	}
+
+	public static boolean isReadable(File file) {
+		if (!file.canRead()) return false;
+		if (file.isDirectory()) return true;
+		// If the argument is a file, we will simply to open it for reading 
+		try {
+			FileInputStream x = new FileInputStream(file);
+			x.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			// The application have the right to read the file
+			return false;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
