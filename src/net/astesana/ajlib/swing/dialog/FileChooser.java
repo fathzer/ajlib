@@ -24,7 +24,7 @@ import net.astesana.ajlib.utilities.NullUtils;
  * <li>In save mode, a confirm dialog is displayed when the selected file already exists.</li>
  * <li>Some classical problem are detected while validating the dialog.<ul>
  * <li>In open mode, the file does not exist.</li>
- * <li>The applciation have no right to access the file.</li>
+ * <li>The application have no right to access the file.</li>
  * </ul></li>
  * <li>The getSelectedFile methods returns the selected file, even if the file name field has been modified
  * (It's strange but that method in JFileChooser returns the last file selected in the file list until the "ok"
@@ -39,6 +39,7 @@ public class FileChooser extends JFileChooser {
 	private JTextField fileNameField;
 	private File selectedFile;
 	private Component fileNameLabel;
+	private boolean selectionTestEnabled;
 
 	public FileChooser() {
 		this(null);
@@ -46,6 +47,7 @@ public class FileChooser extends JFileChooser {
 
 	public FileChooser(String path) {
 		super(path);
+		this.selectionTestEnabled = true;
 		this.selectedFile = null;
 	  fileNameField = null;
 		try {
@@ -72,33 +74,26 @@ public class FileChooser extends JFileChooser {
 			// If there's no fileNameLabel ... ok, then we will not do anything with it !
 		}
 
-		if (fileNameField != null) {
-			new MyDocument(fileNameField);
-			addPropertyChangeListener(MyDocument.TEXT_PROPERTY, new PropertyChangeListener() {
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					File old = selectedFile;
-					String name = fileNameField.getText();
-					File selectedFile = name.length()==0 ? null : new File(FileChooser.super.getCurrentDirectory(), name);
-					if (!NullUtils.areEquals(old, selectedFile)) {
-						int pos = fileNameField.getCaretPosition();
-						firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old, selectedFile);
-						if (pos>fileNameField.getText().length()) pos = fileNameField.getText().length();
-						fileNameField.setCaretPosition(pos);
-					}
-				}
-			});
-		}
-		
-		addPropertyChangeListener(DIRECTORY_CHANGED_PROPERTY, new PropertyChangeListener() {
+		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (selectedFile!=null) {
-					File old = selectedFile;
-					firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old, new File(getCurrentDirectory(), selectedFile.getName()));
+				File old = selectedFile;
+				String name = fileNameField.getText();
+				File selectedFile = name.length()==0 ? null : new File(FileChooser.super.getCurrentDirectory(), name);
+				if (!NullUtils.areEquals(old, selectedFile)) {
+					int pos = fileNameField.getCaretPosition();
+					firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old, selectedFile);
+					if (pos>fileNameField.getText().length()) pos = fileNameField.getText().length();
+					fileNameField.setCaretPosition(pos);
 				}
 			}
-		});
+		};
+
+		if (fileNameField != null) {
+			new MyDocument(fileNameField);
+			addPropertyChangeListener(MyDocument.TEXT_PROPERTY, listener);
+		}
+		addPropertyChangeListener(DIRECTORY_CHANGED_PROPERTY, listener);
 	}
 	
 	@Override
@@ -117,35 +112,45 @@ public class FileChooser extends JFileChooser {
 
 	@Override
 	public void approveSelection() {
-		// Refuse:
-		// The broken links
-		// The non existing files in OPEN_DIALOG mode
-		// Ask what to do if the file exists and we are in SAVE_DIALOG mode
-System.out.println ("approveSelection is called for "+getSelectedFile()); //FIXME
-		File file = getSelectedFile();
-		if (file!=null) {
-			if (getDialogType()==SAVE_DIALOG) {
-				File canonical;
-				try {
-					canonical = FileUtils.getCanonical(file);
-					if (canonical.exists()) {
-						boolean cancel = showSaveDisplayQuestion(this);
-						if (cancel) {
-							// User doesn't want to overwrite the file
-							return;
+		if (selectionTestEnabled) {
+			// Refuse:
+			// The broken links
+			// The non existing files in OPEN_DIALOG mode
+			// Non readable/writable files
+			// Ask what to do if the file exists and we are in SAVE_DIALOG mode
+			File file = getSelectedFile();
+			if (file!=null) {
+				if (getDialogType()==SAVE_DIALOG) {
+					File canonical;
+					try {
+						canonical = FileUtils.getCanonical(file);
+						if (canonical.exists()) {
+							boolean cancel = showSaveDisplayQuestion(this);
+							if (cancel) {
+								// User doesn't want to overwrite the file
+								return;
+							}
 						}
+					} catch (IOException e) {
+						throw new RuntimeException(e);
 					}
-				} catch (IOException e) {
-					throw new RuntimeException(e);
 				}
-			}
-			String error = getDisabledCause();
-			if (error!=null) {
-				JOptionPane.showMessageDialog(this, error, get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$
-				return;
+				String error = getDisabledCause();
+				if (error!=null) {
+					JOptionPane.showMessageDialog(this, error, get("Generic.error"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$
+					return;
+				}
 			}
 		}
 		super.approveSelection();
+	}
+	
+	/** Activate/Deactivate the test made on the selected file during in approveSelection method.
+	 * <br>The default value is true.
+	 * @param enabled true to perform tests, false to skip them.
+	 */
+	public void setSelectionTestEnabled(boolean enabled) {
+		this.selectionTestEnabled = enabled;
 	}
 	
 	public String getDisabledCause() {
