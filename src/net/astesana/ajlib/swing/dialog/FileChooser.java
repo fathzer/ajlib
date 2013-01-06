@@ -29,7 +29,9 @@ import net.astesana.ajlib.utilities.NullUtils;
  * <li>The getSelectedFile methods returns the selected file, even if the file name field has been modified
  * (It's strange but that method in JFileChooser returns the last file selected in the file list until the "ok"
  * button is pressed. It sounds like a bug of JFileChooser)</li>
+ * <li>setSelectedFile(null) clears the current selection.</li>
  * <li>The SELECTED_FILE_CHANGED_PROPERTY event is thrown accordingly to the previous point.</li>
+ * <br><br><b>Here is the bad news</b>: This component is design to allow selection of individual files, not folder, not multiple files :-(
  * </ul>
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
@@ -205,6 +207,21 @@ public class FileChooser extends JFileChooser {
 			fileNameLabel.setVisible(visible);
 		}
 		super.setDialogType(dialogType);
+	}
+	
+	/* (non-Javadoc)
+	 * @see javax.swing.JFileChooser#setSelectedFile(java.io.File)
+	 */
+	@Override
+	public void setSelectedFile(File file) {
+		if ((file==null) && (selectedFile!=null)) {
+			File parent = selectedFile.getParentFile();
+			super.setSelectedFile(new File("")); //$NON-NLS-1$
+			super.setCurrentDirectory(parent);
+			selectedFile = null;
+		} else {
+			super.setSelectedFile(file);
+		}
 	}
 
 	private class MyDocument extends PlainDocument {
