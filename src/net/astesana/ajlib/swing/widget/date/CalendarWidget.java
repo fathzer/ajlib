@@ -236,6 +236,19 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 		}
 
 		this.buttons = new JButton[42];
+		ActionListener listener = new ActionListener() {
+			/**
+			 * Handles action-events from the date panel.
+			 * @param e information about the event that occurred.
+			 */
+			public void actionPerformed(final ActionEvent e) {
+				final JButton b = (JButton) e.getSource();
+				final int i = Integer.parseInt(b.getName());
+				final Calendar cal = getFirstVisibleDate();
+				cal.add(Calendar.DATE, i);
+				setDate(cal.getTime());
+			}
+		};
 		for (int i = 0; i < 42; i++) {
 			final JButton b = new JButton("");
 			b.setMargin(new Insets(1, 1, 1, 1));
@@ -243,19 +256,7 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 			b.setFont(this.dateFont);
 			b.setFocusPainted(false);
 			b.setActionCommand("dateButtonClicked");
-			b.addActionListener(new ActionListener() {
-				/**
-				 * Handles action-events from the date panel.
-				 * @param e information about the event that occurred.
-				 */
-				public void actionPerformed(final ActionEvent e) {
-					final JButton b = (JButton) e.getSource();
-					final int i = Integer.parseInt(b.getName());
-					final Calendar cal = getFirstVisibleDate();
-					cal.add(Calendar.DATE, i);
-					setDate(cal.getTime());
-				}
-			});
+			b.addActionListener(listener);
 			this.buttons[i] = b;
 			p.add(b);
 		}
