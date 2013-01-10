@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
@@ -138,24 +139,24 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	protected abstract V buildResult();
 
 	/** This method is called when the user clicks the ok button.
-	 * <br>This method should return the object, result of the dialog, that will be returned
-	 * by getResult.
-	 * <br>Note that it is not a good practice to override this method and set its visibility to public.
-	 * You should prefer calling the getResult method as buildResult may instantiate a new object each
-	 * time it is called.
+	 * <br>It calls the buildResult method, stores the result, then closes the dialog.
 	 * @see #getResult()
 	 */
 	protected void confirm() {
 		result = buildResult();
-		setVisible(false);
+		close();
 	}
 
 	/** This method is called when the user clicks the cancel button.
-	 * This default implementation closes the dialog.
+	 * <br>This default implementation closes the dialog.
 	 */
 	protected void cancel() {
 		result = null;
-		setVisible(false);
+		close();
+	}
+	
+	private void close() {
+		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 
 	/** Checks if the user input is consistent and return a short explanation of why it is not.
