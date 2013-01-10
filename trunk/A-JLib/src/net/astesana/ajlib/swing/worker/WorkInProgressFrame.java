@@ -6,8 +6,6 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.SwingWorker.StateValue;
 
-import net.astesana.ajlib.swing.Utils;
-
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,7 +85,7 @@ public class WorkInProgressFrame extends JDialog {
 		this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
 
 		pack();
-		if (owner!=null) Utils.centerWindow(this, owner);
+		if (owner!=null) this.setLocationRelativeTo(owner);
 	}
 
 	private void buildContentPane() {

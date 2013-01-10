@@ -172,7 +172,7 @@ public class WorkerDemoPanel extends JPanel {
 				WorkerSample worker = new WorkerSample();
 				WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.MODELESS, worker);
 				jobFrame.setSize(300, jobFrame.getSize().height);
-				Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
+				jobFrame.setLocationRelativeTo(Utils.getOwnerWindow(WorkerDemoPanel.this));
 				jobFrame.setVisible(true);
 			}
 		});
@@ -188,7 +188,7 @@ public class WorkerDemoPanel extends JPanel {
 					WorkerSample worker = new WorkerSample();
 					WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
 					jobFrame.setSize(300, jobFrame.getSize().height);
-					Utils.centerWindow(jobFrame, Utils.getOwnerWindow(WorkerDemoPanel.this));
+					jobFrame.setLocationRelativeTo(Utils.getOwnerWindow(WorkerDemoPanel.this));
 					jobFrame.setMinimumVisibleTime(1500);
 					jobFrame.setVisible(true);
 				}
