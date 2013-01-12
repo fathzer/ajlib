@@ -14,8 +14,10 @@ import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.framework.Application;
 
 /** An abstract dialog with a customizable center pane, an Ok and/or a Cancel button.
- * <br>By default, the dialog is not resizable, call this.setResizable(true) to change this behavior
- * (don't forget to call pack and set the minimum size after calling setResizable).
+ * <br>By default, the dialog:<ul>
+ * <li>is not resizable, call this.setResizable(true) to change this behavior (don't forget to call pack
+ * and set the minimum size after calling setResizable).</li>
+ * <li>has deafult close operation sets to DISPOSE_ON_CLOSE.</li>
  * @param <T> The class of the parameter of the dialog (information that is useful to build the center pane).
  * @param <V> The class of the result of the dialog
  * @author Jean-Marc Astesana
@@ -38,8 +40,9 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 * @param title Dialog's title
 	 * @param data optional data (will be transfered to createContentPane)
 	 */
-	public AbstractDialog(Window owner, String title, T data) {
+	 public AbstractDialog(Window owner, String title, T data) {
 		super(owner, title, ModalityType.APPLICATION_MODAL);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.data = data;
 		this.result = null;
 		this.setContentPane(this.createContentPane());

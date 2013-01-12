@@ -38,7 +38,7 @@ public class Utils {
 	 * @see Window#setLocationRelativeTo(Component)
 	 */
 	public static void centerWindow(Window window, Window reference) {
-		window.setLocation(reference.getLocation().x+(reference.getWidth()-window.getWidth())/2, reference.getLocation().y+(reference.getHeight()-window.getHeight())/2);
+		window.setLocationRelativeTo(reference);
 	}
 	
 	/** Packs the columns of a JTable.
