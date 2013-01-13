@@ -37,7 +37,9 @@ public class AJLibDemoPanel extends JPanel {
 		panel.add("widget.date", new DateDemoPanel());
 		
 		panel.add("worker", new WorkerDemoPanel());
-		
+
+		panel.add("dialog", new DialogsPanel());
+
 		messageLabel = new JLabel(" ");
 		GridBagConstraints gbc_messageLabel = new GridBagConstraints();
 		gbc_messageLabel.insets = new Insets(5, 5, 0, 5);
