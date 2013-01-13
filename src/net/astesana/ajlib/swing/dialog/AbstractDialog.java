@@ -18,6 +18,7 @@ import net.astesana.ajlib.swing.framework.Application;
  * <li>is not resizable, call this.setResizable(true) to change this behavior (don't forget to call pack
  * and set the minimum size after calling setResizable).</li>
  * <li>has deafult close operation sets to DISPOSE_ON_CLOSE.</li>
+ * </ul>
  * @param <T> The class of the parameter of the dialog (information that is useful to build the center pane).
  * @param <V> The class of the result of the dialog
  * @author Jean-Marc Astesana
@@ -190,6 +191,8 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	/** Gets the window which contains a component.
 	 * @param component the component
 	 * @return The window containing the component or null if no window contains the component.
+	 * @deprecated
+	 * @see Utils#getOwnerWindow(Component)
 	 */
 	public static Window getOwnerWindow(Component component) {
 		return Utils.getOwnerWindow(component);
