@@ -64,8 +64,7 @@ public class FileChooser extends JFileChooser {
 		this.selectedFile = null;
 		fileNameField = null;
 		try {
-			Field field = getUI().getClass().getDeclaredField(
-					"fileNameTextField"); //$NON-NLS-1$
+			Field field = getUI().getClass().getDeclaredField("fileNameTextField"); //$NON-NLS-1$
 			try {
 				field.setAccessible(true);
 				fileNameField = (JTextField) field.get(getUI());
@@ -95,18 +94,13 @@ public class FileChooser extends JFileChooser {
 			public void propertyChange(PropertyChangeEvent evt) {
 				File old = selectedFile;
 				File superSelected = FileChooser.super.getSelectedFile();
-				String name = fileNameField != null ? fileNameField.getText()
-						: superSelected.getName();
-				File selectedFile = name.length() == 0 ? null : new File(
-						FileChooser.super.getCurrentDirectory(), name);
+				String name = fileNameField != null ? fileNameField.getText() : superSelected==null?"":superSelected.getName();
+				File selectedFile = name.length() == 0 ? null : new File(FileChooser.super.getCurrentDirectory(), name);
 				if (!NullUtils.areEquals(old, selectedFile)) {
-					int pos = fileNameField != null ? fileNameField
-							.getCaretPosition() : 0;
-					firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old,
-							selectedFile);
+					int pos = fileNameField != null ? fileNameField.getCaretPosition() : 0;
+					firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old, selectedFile);
 					if (fileNameField != null) {
-						if (pos > fileNameField.getText().length())
-							pos = fileNameField.getText().length();
+						if (pos > fileNameField.getText().length()) pos = fileNameField.getText().length();
 						fileNameField.setCaretPosition(pos);
 					}
 				}
@@ -121,11 +115,9 @@ public class FileChooser extends JFileChooser {
 	}
 
 	@Override
-	protected void firePropertyChange(String propertyName, Object oldValue,
-			Object newValue) {
+	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 		// Update the selectedFile attribute
-		if (SELECTED_FILE_CHANGED_PROPERTY.equals(propertyName))
-			selectedFile = (File) newValue;
+		if (SELECTED_FILE_CHANGED_PROPERTY.equals(propertyName)) selectedFile = (File) newValue;
 		super.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
@@ -165,8 +157,7 @@ public class FileChooser extends JFileChooser {
 				}
 				String error = getDisabledCause();
 				if (error != null) {
-					JOptionPane.showMessageDialog(this, error,
-							get("Generic.error"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+					JOptionPane.showMessageDialog(this, error, get("Generic.error"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 					return;
 				}
 			}
@@ -180,7 +171,7 @@ public class FileChooser extends JFileChooser {
 	 * The default value is true.
 	 * 
 	 * @param enabled
-	 *            true to perform tests, false to skip them.
+	 *          true to perform tests, false to skip them.
 	 */
 	public void setSelectionTestEnabled(boolean enabled) {
 		this.selectionTestEnabled = enabled;
@@ -188,8 +179,7 @@ public class FileChooser extends JFileChooser {
 
 	public String getDisabledCause() {
 		File file = getSelectedFile();
-		if (file == null)
-			return null;
+		if (file == null) return null;
 		try {
 			if (getDialogType() == OPEN_DIALOG) {
 				if (!file.exists()) {
@@ -219,24 +209,19 @@ public class FileChooser extends JFileChooser {
 	}
 
 	/**
-	 * Displays a dialog to inform the user that a file is already existing and
-	 * it will be overwritten if the user continue.
+	 * Displays a dialog to inform the user that a file is already existing and it
+	 * will be overwritten if the user continue.
 	 * 
 	 * @param parent
-	 *            determines the Frame in which the dialog is displayed; if
-	 *            null, or if the parentComponent has no Frame, a default Frame
-	 *            is used
+	 *          determines the Frame in which the dialog is displayed; if null, or
+	 *          if the parentComponent has no Frame, a default Frame is used
 	 * @return true if the user cancels
 	 */
 	public static boolean showSaveDisplayQuestion(Component parent) {
-		String message = Application.LOCALIZATION.getString(
-				"saveDialog.FileExist.message", parent.getLocale()); //$NON-NLS-1$
-		return JOptionPane.showOptionDialog(parent,
-				message,
-				Application.LOCALIZATION.getString(
-						"saveDialog.FileExist.title", parent.getLocale()), //$NON-NLS-1$
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null,
-				null, null) == JOptionPane.NO_OPTION;
+		String message = Application.LOCALIZATION.getString("saveDialog.FileExist.message", parent.getLocale()); //$NON-NLS-1$
+		return JOptionPane.showOptionDialog(parent, message,
+				Application.LOCALIZATION.getString("saveDialog.FileExist.title", parent.getLocale()), //$NON-NLS-1$
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.NO_OPTION;
 	}
 
 	/*
@@ -283,15 +268,13 @@ public class FileChooser extends JFileChooser {
 		}
 
 		@Override
-		public void replace(int offset, int length, String text,
-				AttributeSet attrs) throws BadLocationException {
+		public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
 			String oldValue = field.getText();
 			this.ignoreEvents = true;
 			super.replace(offset, length, text, attrs);
 			this.ignoreEvents = false;
 			String newValue = field.getText();
-			if (!oldValue.equals(newValue))
-				firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!oldValue.equals(newValue)) firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
 		}
 
 		@Override
@@ -299,8 +282,7 @@ public class FileChooser extends JFileChooser {
 			String oldValue = field.getText();
 			super.remove(offs, len);
 			String newValue = field.getText();
-			if (!ignoreEvents && !oldValue.equals(newValue))
-				firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!ignoreEvents && !oldValue.equals(newValue)) firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
 		}
 	}
 }
