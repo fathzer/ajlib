@@ -144,7 +144,6 @@ public class ExcelPane extends JPanel {
 	/** Builds the table.
 	 * <br>This method is called once.
 	 * <br>The default implementation returns a new CSVEXporter(';', false);
-	 * <br>You can override this method in order to create a customized Table.
 	 * @return a CSVExporter
 	 */
 	protected CSVExporter buildExporter() {
