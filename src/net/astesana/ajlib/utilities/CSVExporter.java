@@ -47,12 +47,24 @@ public class CSVExporter {
 			for (int columnIndex = 0; columnIndex < model.getColumnCount(); columnIndex++) {
 				if (!lineIsEmpty) writer.append(separator);
 				Object value = model.getValueAt(rowIndex, columnIndex);
-				writeCell(writer, value==null?"":value.toString()); //$NON-NLS-1$
+				writeCell(writer, getExported(rowIndex, columnIndex, value));
 				lineIsEmpty = false;
 			}
 			writer.newLine();
 		}
 		writer.newLine();
+	}
+
+	/** Gets the representation of a cell content.
+	 * <br>The default implementation returns value.toString() or an empty String if value is null. 
+	 * @param rowIndex the row index of the cell.
+	 * @param columnIndex the column index of the cell.
+	 * @param value The value of the cell (returned by TableModel.getValueAt(rowIndex, columnIndex).
+	 * @return The string representation of the value.
+	 */
+	protected String getExported(int rowIndex, int columnIndex, Object value) {
+		if (value==null) return ""; //$NON-NLS-1$
+		return value.toString();
 	}
 
 	private void writeCell(BufferedWriter writer, String cell) throws IOException {
