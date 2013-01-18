@@ -249,8 +249,8 @@ public abstract class Application {
 
 	private void start() {
 		frame = new JFrame();
-		frame.setTitle(getName());
 		frame.add(buildMainPanel());
+		frame.setTitle(getName());
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
