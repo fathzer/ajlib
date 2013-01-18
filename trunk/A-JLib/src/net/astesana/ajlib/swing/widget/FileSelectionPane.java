@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import net.astesana.ajlib.swing.Utils;
 import net.astesana.ajlib.swing.framework.Application;
 
 import java.awt.event.ActionListener;
@@ -64,7 +65,7 @@ public class FileSelectionPane extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setCurrentDirectory(new File(".")); //$NON-NLS-1$
-				File file = chooser.showOpenDialog(btnChange) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+				File file = chooser.showOpenDialog(Utils.getOwnerWindow(btnChange)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
 				if (file != null) {
 					setSelectedFile(file);
 				}
