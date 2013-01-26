@@ -123,4 +123,20 @@ public class Table extends JPanel {
 	public TableModel getModel() {
 		return this.getJTable().getModel();
 	}
+
+	/** Gets the default row height of this table.
+	 * @return an integer.
+	 */
+	public int getRowHeight() {
+		return this.getJTable().getRowHeight();
+	}
+
+	/** Sets the default row height of this table.
+	 * <br>This method sets the row height of the main table and its title table. 
+	 * @param rowHeight The new row height
+	 */
+	public void setRowHeight(int rowHeight) {
+		this.getJTable().setRowHeight(rowHeight);
+		this.getRowJTable().setRowHeight(rowHeight);
+	}
 }
