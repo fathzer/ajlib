@@ -117,7 +117,7 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 	/**
 	 * The font used to display the date.
 	 */
-	private Font dateFont = new Font("SansSerif", Font.PLAIN, 10);
+	private Float fontRatio = 0.85f;
 
 	/**
 	 * An array of buttons used to display the days-of-the-month.
@@ -249,11 +249,15 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 				setDate(cal.getTime());
 			}
 		};
+		Font bFont = null;
 		for (int i = 0; i < 42; i++) {
 			final JButton b = new JButton("");
+			if (bFont==null) {
+				bFont = b.getFont().deriveFont(fontRatio*b.getFont().getSize());
+			}
 			b.setMargin(new Insets(1, 1, 1, 1));
 			b.setName(Integer.toString(i));
-			b.setFont(this.dateFont);
+			b.setFont(bFont);
 			b.setFocusPainted(false);
 			b.setActionCommand("dateButtonClicked");
 			b.addActionListener(listener);
@@ -348,14 +352,9 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 			color = this.chosenOtherButtonColor;
 		}
 		button.setBackground(color);
-		Font font;
 		if (equalDates(date, Calendar.getInstance())) {
-			font = dateFont.deriveFont(Font.BOLD);
-			day = "<html><u>"+day+"</u></html>";
-		} else {
-			font = dateFont;
+			day = "<html><u><b>"+day+"</b></u></html>";
 		}
-		button.setFont(font);
 		button.setText(day);
 	}
 
