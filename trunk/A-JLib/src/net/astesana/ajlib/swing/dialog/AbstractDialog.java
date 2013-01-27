@@ -3,6 +3,9 @@ package net.astesana.ajlib.swing.dialog;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,14 +20,17 @@ import net.astesana.ajlib.swing.framework.Application;
  * <br>By default, the dialog:<ul>
  * <li>is not resizable, call this.setResizable(true) to change this behavior (don't forget to call pack
  * and set the minimum size after calling setResizable).</li>
- * <li>has deafult close operation sets to DISPOSE_ON_CLOSE.</li>
+ * <li>has default close operation sets to DISPOSE_ON_CLOSE.</li>
  * </ul>
+ * The dialog automatically wrap its center component in a JScollPane to guarantee that the dialog will
+ * never be bigger than the screen (in such a case ok/cancel buttons would be hidden).
  * @param <T> The class of the parameter of the dialog (information that is useful to build the center pane).
  * @param <V> The class of the result of the dialog
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */
 public abstract class AbstractDialog<T,V> extends JDialog {
+	//FIXME The horizontal scroll bar is always shown when the vertical one is shown. 
 	private static final long serialVersionUID = 1L;
 	
 	private V result;
@@ -66,7 +72,15 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 		contentPane.add(southPane, BorderLayout.SOUTH);
 
 		JPanel centerPane = this.createCenterPane();
-		if (centerPane != null) contentPane.add(centerPane, BorderLayout.CENTER);
+		if (centerPane != null) {
+			// As component can be bigger than screen ... and we always want the "ok", "cancel" button to be present,
+			// we will wrap the center pane into a scrollPane
+			Component component = (centerPane instanceof Scrollable) ? centerPane : new DefaultScrollablePanel(centerPane);
+			JScrollPane scrollPane = new JScrollPane(component);
+			scrollPane.setBorder(null);
+			contentPane.add(scrollPane, BorderLayout.CENTER);
+//			contentPane.add(centerPane, BorderLayout.CENTER);
+		}
 		
 		this.updateOkButtonEnabled();
 		
@@ -187,6 +201,18 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 		this.okButton.setEnabled(cause==null);
 		this.okButton.setToolTipText(cause==null?Application.getString("GenericButton.ok.toolTip", getLocale()):cause);
 	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		//We never want the dialog to be bigger than the available screen space
+		//So, we will return the smaller of the preferred size and the available one.
+		Dimension preferred = super.getPreferredSize();
+		Rectangle availableSpace = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		preferred.height = Math.min(preferred.height, availableSpace.height);
+		preferred.width = Math.min(preferred.width, availableSpace.width);
+		return preferred;
+	}
+
 
 	/** Gets the window which contains a component.
 	 * @param component the component
