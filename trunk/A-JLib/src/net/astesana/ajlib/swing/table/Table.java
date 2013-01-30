@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
 
-import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
