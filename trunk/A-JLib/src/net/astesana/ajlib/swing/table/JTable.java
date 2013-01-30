@@ -1,41 +1,31 @@
 package net.astesana.ajlib.swing.table;
 
-import java.awt.Component;
-
 import javax.swing.table.TableModel;
 
 /** A JTable that fix the following bug in the JTable.
- * <br>Bugs fixed :<ul>
- * <li>The row height is not set accordingly to the font (more generally, to the renderers height).
- * <br>When the table is first layed out, its row height is set to the maximum size of its renderers</li>
+ * <br>Bugs fixed:<ul>
+ * <li>Unlike the original swing JTable class, the row height is set accordingly to the font (see setRowHeigth() method).
+ * <br>The method setRowHeight is called in the constructor. You should call it again when changing the font.</li>
  * </ul>
  * @author Jean-Marc Astesana
  * Licence GPL v3
  */
 @SuppressWarnings("serial")
 public class JTable extends javax.swing.JTable {
-	private boolean rowHeightInited;
-
 	public JTable() {
 		super();
+		setRowHeight();
 	}
 	
 	public JTable(TableModel tableModel) {
 		super(tableModel);
+		setRowHeight();
 	}
-
-	@Override
-	public void doLayout() {
-		if (!rowHeightInited && getRowCount()>0) {
-			int height = 1;
-			for (int column = 0; column < getColumnCount(); column++) {
-				Component renderer = this.prepareRenderer(getCellRenderer(0, column), 0, column);
-				height = Math.max(height, renderer.getPreferredSize().height);
-			}
-			setRowHeight(height);
-			rowHeightInited = true;
-		}
-		super.doLayout();
+	
+	/** Sets the row height according to the font size.
+	 * <br>The row height is set to getFont().getSize()*4/3.
+	 */
+	public void setRowHeight() {
+		setRowHeight(getFont().getSize()*4/3);
 	}
-
 }
