@@ -10,8 +10,9 @@ import java.beans.PropertyChangeListener;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import net.astesana.ajlib.swing.Utils;
 
 /** This panel contains a DateWidget and a button that shows a calendar popup.
  * As this widget (especially the DateWidget it contains) represents years with two digits, it can only represent dates near today (ie, impossible to represent a date before 1900) 
@@ -104,8 +105,7 @@ public class DateWidget extends JPanel {
 		gridBagConstraints11.fill = GridBagConstraints.VERTICAL;
 		gridBagConstraints11.gridy = 0;
 		jLabel = new JLabel();
-		jLabel.setText("");
-		jLabel.setIcon(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/date/calendar.png")));
+		jLabel.setIcon(Utils.createIcon(DateWidget.class.getResource("calendar.png"), 16*getFont().getSize()/12));
 		jLabel.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (jLabel.isEnabled() && !popup.isVisible()) {

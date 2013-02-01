@@ -190,7 +190,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JButton getUpButton() {
 		if (upButton == null) {
-			upButton = new JButton(new ImageIcon(SearchPanel.class.getResource("/net/astesana/ajlib/swing/widget/up.png")));
+			upButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/up.png")));
 			upButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					setSelected(currentOffset-1);
@@ -203,7 +203,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JButton getDownButton() {
 		if (downButton == null) {
-			downButton = new JButton(new ImageIcon(SearchPanel.class.getResource("/net/astesana/ajlib/swing/widget/down.png")));
+			downButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/down.png")));
 			downButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					setSelected(currentOffset+1);
