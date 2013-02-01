@@ -1,8 +1,12 @@
 package net.astesana.ajlib.swing;
 
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.Window;
+import java.net.URL;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
@@ -85,5 +89,20 @@ public class Utils {
 		// Set the width
 		col.setPreferredWidth(width);
 		return width;
+	}
+	
+	/** Gets an icon by its URL and resize it if needed.
+	 * @param path The absolute icon path resource
+	 * @param size the required size
+	 * @return the icon or null if the path is 
+	 */
+	public static Icon createIcon(URL path, int size) {
+    ImageIcon imageIcon = new ImageIcon(path);
+		Image img = imageIcon.getImage();
+		int currentSize = imageIcon.getIconHeight();
+		if (size!=currentSize) {
+		  imageIcon = new ImageIcon(img.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH));
+		}
+		return imageIcon;
 	}
 }

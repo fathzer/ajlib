@@ -16,7 +16,8 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
+
+import net.astesana.ajlib.swing.Utils;
 
 /** A month selector.
  * @author Jean-Marc Astesana
@@ -116,7 +117,7 @@ public class MonthWidget extends JPanel {
 	private JButton getPreviousYear() {
 		if (previousYear == null) {
 			previousYear = new JButton();
-			previousYear.setIcon(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/date/fast-rewind.png")));
+			previousYear.setIcon(Utils.createIcon(getClass().getResource("fast-rewind.png"), 16*getFont().getSize()/12));
 			previousYear.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(-12);
@@ -134,7 +135,7 @@ public class MonthWidget extends JPanel {
 	private JButton getPreviousMonth() {
 		if (previousMonth == null) {
 			previousMonth = new JButton();
-			previousMonth.setIcon(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/date/rewind.png")));
+			previousMonth.setIcon(Utils.createIcon(getClass().getResource("rewind.png"), 16*getFont().getSize()/12));
 			previousMonth.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(-1);
@@ -152,8 +153,7 @@ public class MonthWidget extends JPanel {
 	private JButton getNextMonth() {
 		if (nextMonth == null) {
 			nextMonth = new JButton();
-			nextMonth.setText("");
-			nextMonth.setIcon(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/date/forward.png")));
+			nextMonth.setIcon(Utils.createIcon(getClass().getResource("forward.png"), 16*getFont().getSize()/12));
 			nextMonth.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(1);
@@ -171,8 +171,7 @@ public class MonthWidget extends JPanel {
 	private JButton getNextYear() {
 		if (nextYear == null) {
 			nextYear = new JButton();
-			nextYear.setText("");
-			nextYear.setIcon(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/date/fast-forward.png")));
+			nextYear.setIcon(Utils.createIcon(getClass().getResource("fast-forward.png"), 16*getFont().getSize()/12));
 			nextYear.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(12);
@@ -189,8 +188,7 @@ public class MonthWidget extends JPanel {
 	public JButton getNow() {
 		if (now == null) {
 			now = new JButton();
-			now.setText("");
-			now.setIcon(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/date/stop.png")));
+			now.setIcon(Utils.createIcon(getClass().getResource("stop.png"), 16*getFont().getSize()/12));
 			now.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
