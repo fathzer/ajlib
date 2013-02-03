@@ -105,4 +105,14 @@ public class Utils {
 		}
 		return imageIcon;
 	}
+
+	public static Icon createIcon(URL path, float sizeRatio) {
+    ImageIcon imageIcon = new ImageIcon(path);
+		if (sizeRatio!=1.0f) {
+			Image img = imageIcon.getImage();
+		  imageIcon = new ImageIcon(img.getScaledInstance((int)(imageIcon.getIconWidth()*sizeRatio),
+		  		(int)(imageIcon.getIconHeight()*sizeRatio), java.awt.Image.SCALE_SMOOTH));
+		}
+		return imageIcon;
+	}
 }
