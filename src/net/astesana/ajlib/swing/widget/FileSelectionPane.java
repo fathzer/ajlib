@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import net.astesana.ajlib.swing.Utils;
+import net.astesana.ajlib.swing.dialog.FileChooser;
 import net.astesana.ajlib.swing.framework.Application;
 
 import java.awt.event.ActionListener;
@@ -63,7 +64,7 @@ public class FileSelectionPane extends JPanel {
 		final JButton btnChange = new JButton(Application.getString("FileSelectionPanel.change", getLocale())); //$NON-NLS-1$
 		btnChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
+				JFileChooser chooser = new FileChooser();
 				chooser.setCurrentDirectory(new File(".")); //$NON-NLS-1$
 				File file = chooser.showOpenDialog(Utils.getOwnerWindow(btnChange)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
 				if (file != null) {
