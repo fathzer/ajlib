@@ -2,7 +2,7 @@ package net.astesana.ajlib.swing.table;
 
 import javax.swing.table.TableModel;
 
-/** A JTable that fix the following bug in the JTable.
+/** A JTable that fixes the following bugs in the JTable.
  * <br>Bugs fixed:<ul>
  * <li>Unlike the original swing JTable class, the row height is set accordingly to the font (see setRowHeigth() method).
  * <br>The method setRowHeight is called in the constructor. You should call it again when changing the font.</li>
