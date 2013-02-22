@@ -5,8 +5,10 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableModel;
 
 import net.astesana.ajlib.swing.Utils;
@@ -60,7 +62,10 @@ public class Table extends JPanel {
 	}
 	
 	private void setRowViewSize(final JTable rowView) {
-		int width = (rowView.getColumnCount()>0)?Utils.packColumn(rowView, 0, 2):0;
+		int width = 0;
+		for (int i = 0; i < rowView.getColumnCount(); i++) {
+			width += Utils.packColumn(rowView, i, 2);
+		}
 		Dimension d = rowView.getPreferredScrollableViewportSize();
 		d.width = width;
 		rowView.setPreferredScrollableViewportSize(d);
@@ -107,10 +112,30 @@ public class Table extends JPanel {
 	private void installModelInRowJTable(TitledRowsTableModel model) {
 		final TableModel rowHeaderModel = new RowModel(model);
 		getRowJTable().setModel(rowHeaderModel);
-		rowHeaderModel.addTableModelListener(new TableModelListener() {
+		getRowJTable().getColumnModel().addColumnModelListener(new TableColumnModelListener() {
+			
 			@Override
-			public void tableChanged(TableModelEvent e) {
-				setRowViewSize(rowView);
+			public void columnSelectionChanged(ListSelectionEvent e) {
+			}
+			
+			@Override
+			public void columnRemoved(TableColumnModelEvent e) {
+				System.out.println("removed");
+				setRowViewSize(getRowJTable());
+			}
+			
+			@Override
+			public void columnMoved(TableColumnModelEvent e) {
+			}
+			
+			@Override
+			public void columnMarginChanged(ChangeEvent e) {
+			}
+			
+			@Override
+			public void columnAdded(TableColumnModelEvent e) {
+				System.out.println("added");
+				setRowViewSize(getRowJTable());
 			}
 		});
 		setRowViewSize(getRowJTable());
