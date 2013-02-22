@@ -15,7 +15,7 @@ class RowModel extends AbstractTableModel {
 			@Override
 			public void tableChanged(TableModelEvent e) {
 				//FIXME Be more precise ?
-				fireTableDataChanged();
+				fireTableChanged(e);
 			}
 		});
 	}
