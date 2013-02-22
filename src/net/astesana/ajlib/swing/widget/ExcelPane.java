@@ -1,5 +1,6 @@
 package net.astesana.ajlib.swing.widget;
 
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -50,6 +51,7 @@ public class ExcelPane extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridwidth = 0;
 		gbc_scrollPane.weighty = 1.0;
 		gbc_scrollPane.weightx = 1.0;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
@@ -57,11 +59,28 @@ public class ExcelPane extends JPanel {
 		gbc_scrollPane.gridy = 0;
 		add(getTable(), gbc_scrollPane);
 		GridBagConstraints gbc_saveButton = new GridBagConstraints();
-		gbc_saveButton.insets = new Insets(5, 0, 5, 0);
+		gbc_saveButton.insets = new Insets(5, 0, 0, 0);
 		gbc_saveButton.anchor = GridBagConstraints.EAST;
-		gbc_saveButton.gridx = 0;
+		gbc_saveButton.gridx = 1;
 		gbc_saveButton.gridy = 1;
 		add(getSaveButton(), gbc_saveButton);
+		JComponent extra = getExtraComponent();
+		if (extra!=null) {
+			GridBagConstraints gbc_extra = new GridBagConstraints();
+			gbc_extra.insets = new Insets(5, 0, 0, 0);
+			gbc_extra.anchor = GridBagConstraints.WEST;
+			gbc_extra.gridx = 0;
+			gbc_extra.gridy = 1;
+			add(extra, gbc_extra);
+		}
+	}
+	
+	/** Gets an extra component displayed at left below the table.
+	 * <br>By default, this method returns null.
+	 * @return A JComponent or null if no component is provided.
+	 */
+	protected JComponent getExtraComponent() {
+		return null;
 	}
 
 	/** Gets the table.
