@@ -22,37 +22,63 @@ public class CSVExporter {
 		this.separator = separator;
 		this.quoteCells = quoteCells;
 	}
+	
+	private class CSVWriter {
+		private boolean lineIsEmpty;
+		private BufferedWriter writer;
+		
+		public CSVWriter(BufferedWriter writer) {
+			this.writer = writer;
+			this.lineIsEmpty = true;
+		}
+		
+		public void writeCell(String cell) throws IOException {
+			//FIXME Have a look at the cvs spec => quoting pay also be used if a cell contains a separator
+			//FIXME If a cell contains a quote, this quote may be replaced by two quotes.
+			if (!lineIsEmpty) writer.append(separator);
+			lineIsEmpty = false;
+			if (quoteCells) writer.append('"');
+			writer.append(cell);
+			if (quoteCells) writer.append('"');
+		}
+		
+		public void newLine() throws IOException {
+			writer.newLine();
+			lineIsEmpty = true;
+		}
+	}
 
 	public void export(BufferedWriter writer, TableModel model, boolean withTitles) throws IOException {
-		boolean withRowTitle = model instanceof TitledRowsTableModel;
+		TitledRowsTableModel titled = (model instanceof TitledRowsTableModel)?(TitledRowsTableModel)model:null;
+		CSVWriter csv = new CSVWriter(writer);
 		if (withTitles) {
-			boolean lineIsEmpty = true;
-			if (withRowTitle) {
-				lineIsEmpty = false;
-				writeCell(writer, "");
+			if (titled!=null) {
+				for (int i = 0; i < titled.getTitlesColumnCount(); i++) {
+					csv.writeCell(getRowTitleHeaders(i));
+				}
 			}
 			for (int i = 0; i < model.getColumnCount(); i++) {
-				if (!lineIsEmpty) writer.append(separator);
-				writeCell(writer, model.getColumnName(i));
-				lineIsEmpty = false;
+				csv.writeCell(model.getColumnName(i));
 			}
-			writer.newLine();
+			csv.newLine();
 		}
 		for (int rowIndex = 0; rowIndex < model.getRowCount(); rowIndex++) {
-			boolean lineIsEmpty = true;
-			if (withRowTitle) {
-				lineIsEmpty = false;
-				writeCell(writer, ((TitledRowsTableModel)model).getRowName(rowIndex));
+			if (titled!=null) {
+				for (int i = 0; i < titled.getTitlesColumnCount(); i++) {
+					csv.writeCell(titled.getRowTitle(rowIndex, i));
+				}
 			}
 			for (int columnIndex = 0; columnIndex < model.getColumnCount(); columnIndex++) {
-				if (!lineIsEmpty) writer.append(separator);
 				Object value = model.getValueAt(rowIndex, columnIndex);
-				writeCell(writer, getExported(rowIndex, columnIndex, value));
-				lineIsEmpty = false;
+				csv.writeCell(getExported(rowIndex, columnIndex, value));
 			}
-			writer.newLine();
+			csv.newLine();
 		}
-		writer.newLine();
+		csv.newLine();
+	}
+	
+	protected String getRowTitleHeaders(int titleColumnIndex) {
+		return "";
 	}
 
 	/** Gets the representation of a cell content.
@@ -67,14 +93,6 @@ public class CSVExporter {
 		return value.toString();
 	}
 
-	private void writeCell(BufferedWriter writer, String cell) throws IOException {
-		//FIXME Have a look at the cvs spec => quoting pay also be used if a cell contains a separator
-		//FIXME If a cell contains a quote, this quote may be replaced by two quotes.
-		if (quoteCells) writer.append('"');
-		writer.append(cell);
-		if (quoteCells) writer.append('"');		
-	}
-	
 	public char getSeparator() {
 		return this.separator;
 	}

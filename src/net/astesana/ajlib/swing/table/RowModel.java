@@ -22,7 +22,7 @@ class RowModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return model.getRowName(rowIndex);
+		return model.getRowTitle(rowIndex, columnIndex);
 	}
 
 	@Override
@@ -32,6 +32,6 @@ class RowModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 1;
+		return model.getTitlesColumnCount();
 	}
 }
