@@ -3,12 +3,16 @@ package net.astesana.ajlib.swing;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.ToolTipManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -17,7 +21,7 @@ import javax.swing.table.TableColumnModel;
  * @author Jean-Marc Astesana
  * <BR>License : GPL v3
  */
-public class Utils {
+public abstract class Utils {
 	/** Gets the window which contains a component.
 	 * <br>Note that this method, unlike java.swing.SwingUtilities.getAncestor, this method returns the invoker window if the component is a menu item
 	 * (java.swing.SwingUtilities.getAncestor returns null in such a case).
@@ -98,9 +102,9 @@ public class Utils {
 	 */
 	public static Icon createIcon(URL path, int size) {
     ImageIcon imageIcon = new ImageIcon(path);
-		Image img = imageIcon.getImage();
 		int currentSize = imageIcon.getIconHeight();
 		if (size!=currentSize) {
+			Image img = imageIcon.getImage();
 		  imageIcon = new ImageIcon(img.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH));
 		}
 		return imageIcon;
@@ -115,4 +119,53 @@ public class Utils {
 		}
 		return imageIcon;
 	}
+	
+	/** Returns a utility MouseListener to set custom toolTip delays on component.
+	 * <BR>To use custom delays, add the return adapter as a MouseListener to the component.
+	 * <code>component.addMouseListener(Utils.getToolTipAdpater(...))</code> 
+	 * @param initialDelay see javax.swing.ToolTipManager documentation. A negative int to use the default delay.
+	 * @param dismissDelay see javax.swing.ToolTipManager documentation. A negative int to use the default delay. Zero to disable the tooltip.
+	 * @param reshowDelay see javax.swing.ToolTipManager documentation. A negative int to use the default delay.
+	 * @return a MouseListener
+	 */
+	public static MouseListener getToolTipAdapter(final int initialDelay, final int dismissDelay, final int reshowDelay) {
+		return new MouseAdapter() {
+			private int originalDismissDelay;
+			private int originalInitialDelay;
+			private int originalReshowDelay;
+			private boolean originalEnabled;
+	
+			@Override
+			public void mouseEntered(MouseEvent e) {
+	      ToolTipManager ttm = ToolTipManager.sharedInstance();
+      	this.originalInitialDelay = ttm.getInitialDelay();
+      	this.originalDismissDelay = ttm.getDismissDelay();
+      	this.originalReshowDelay = ttm.getReshowDelay();
+      	this.originalEnabled = ttm.isEnabled();
+	      if (dismissDelay>0) {
+	      	ttm.setDismissDelay(dismissDelay);
+	      } else if (dismissDelay==0) {
+	      	ttm.setEnabled(false);
+	      }
+	      if (initialDelay>=0) {
+	      	ttm.setInitialDelay(initialDelay);
+	      }
+	      if (reshowDelay>=0) {
+	      	ttm.setReshowDelay(reshowDelay);
+	      }
+				super.mouseEntered(e);
+			}
+	
+			@Override
+			public void mouseExited(MouseEvent e) {
+	      ToolTipManager ttm = ToolTipManager.sharedInstance();
+				ttm.setInitialDelay(originalInitialDelay);
+				ttm.setDismissDelay(originalDismissDelay);
+				ttm.setReshowDelay(originalReshowDelay);
+				ttm.setEnabled(originalEnabled);
+				super.mouseExited(e);
+			}
+		};
+	}
+
 }
