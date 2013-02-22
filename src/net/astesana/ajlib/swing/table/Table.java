@@ -120,7 +120,6 @@ public class Table extends JPanel {
 			
 			@Override
 			public void columnRemoved(TableColumnModelEvent e) {
-				System.out.println("removed");
 				setRowViewSize(getRowJTable());
 			}
 			
@@ -134,7 +133,6 @@ public class Table extends JPanel {
 			
 			@Override
 			public void columnAdded(TableColumnModelEvent e) {
-				System.out.println("added");
 				setRowViewSize(getRowJTable());
 			}
 		});
