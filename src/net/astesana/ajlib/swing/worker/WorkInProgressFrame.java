@@ -114,7 +114,7 @@ public class WorkInProgressFrame extends JDialog {
 	
 	/** Sets the delay before the dialog is shown.
 	 * <BR>This class allows you to specify a delay in opening the dialog.
-	 * @param delay The delay in ms. Long.MAX_VALUE to prevent the dialog to be shown.
+	 * @param delay The delay in ms. Integer.MAX_VALUE to prevent the dialog to be shown.
 	 * The default value is DEFAULT_DELAY.
 	 * <BR>Note that this method must be called before calling setVisible with a true argument.
 	 */
