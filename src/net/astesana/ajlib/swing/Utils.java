@@ -66,11 +66,12 @@ public abstract class Utils {
 	 * @param table a table
 	 * @param colIndex the column index (model based not view based)
 	 * @param margin The cells margin
-	 * @return The width of the column. 
+	 * @return The width of the column or -1 if the column is not displayed at this time. 
 	 */
 	public static int packColumn(JTable table, int colIndex, int margin) {
 		TableColumnModel colModel = table.getColumnModel();
 		int viewIndex = table.convertColumnIndexToView(colIndex);
+		if (viewIndex<0) return -1;
 		TableColumn col = colModel.getColumn(viewIndex);
 		int width = 0; // Will get width of column
 		//Get width of column header
