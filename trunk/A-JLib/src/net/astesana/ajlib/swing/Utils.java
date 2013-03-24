@@ -64,13 +64,14 @@ public abstract class Utils {
 	 * <br>The column will be just wide enough to show the column head and the widest cell in the column.
 	 * margin pixels are added to the left and right (resulting in an additional width of 2*margin pixels).
 	 * @param table a table
-	 * @param vColIndex the column index (model based not view based)
+	 * @param colIndex the column index (model based not view based)
 	 * @param margin The cells margin
 	 * @return The width of the column. 
 	 */
-	public static int packColumn(JTable table, int vColIndex, int margin) {
+	public static int packColumn(JTable table, int colIndex, int margin) {
 		TableColumnModel colModel = table.getColumnModel();
-		TableColumn col = colModel.getColumn(vColIndex);
+		int viewIndex = table.convertColumnIndexToView(colIndex);
+		TableColumn col = colModel.getColumn(viewIndex);
 		int width = 0; // Will get width of column
 		//Get width of column header
 		TableCellRenderer renderer = col.getHeaderRenderer();
@@ -82,8 +83,8 @@ public abstract class Utils {
 
 		//Get maximum width of column data
 		for (int r=0; r<table.getRowCount(); r++) {
-			renderer = table.getCellRenderer(r, vColIndex);
-			comp = renderer.getTableCellRendererComponent( table, table.getValueAt(r, vColIndex), false, false, r, vColIndex);
+			renderer = table.getCellRenderer(r, colIndex);
+			comp = renderer.getTableCellRendererComponent( table, table.getValueAt(r, colIndex), false, false, r, colIndex);
 			width = Math.max(width, comp.getPreferredSize().width); 
 		}
 		
