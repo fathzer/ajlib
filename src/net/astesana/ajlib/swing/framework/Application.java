@@ -141,7 +141,7 @@ public abstract class Application {
 
 	/** Gets the application name.
 	 * <br>You should override this method to define the name of your application.
-	 * <br>This name will be displayed in the main window of the application
+	 * <br>This name will be displayed as the main window's title.
 	 * @return The application's name
 	 */
 	public String getName() {
