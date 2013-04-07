@@ -2,9 +2,9 @@ package net.astesana.ajlib.swing.widget;
 
 import javax.swing.JComboBox;
 
-/** This subclass of JCombo is "cool" because it adds some useful functionalities, often asked in the forums.
+/** This subclass of JCombo is cool because it adds some useful functionalities, often asked in the forums.
  * <UL><LI>you can prevent instance from sending action event.<BR>
- * Its could be very useful when you have to refresh the menu but don't want any event being sent.</LI>
+ * It could be very useful when you have to refresh the menu but don't want any event being sent.</LI>
  * <LI>The method <b>contains</b> tests whether the menu contains an item or not</LI>
  * </UL>
  * @author Jean-Marc Astesana
