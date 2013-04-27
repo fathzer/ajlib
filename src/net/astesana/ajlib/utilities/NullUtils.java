@@ -27,7 +27,7 @@ public final class NullUtils {
 	 * <br>The arguments may be null.
 	 * @param o1 the first object
 	 * @param o2 the second object
-	 * @param nullIsLowest true if null if lower than any other value, false if it is greater.
+	 * @param nullIsLowest true if null is considered lower than any other value, false if it is greater.
 	 * @return o1.compareTo(o2) assuming that null is the lowest possible instance.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })

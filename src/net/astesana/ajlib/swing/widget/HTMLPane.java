@@ -60,7 +60,7 @@ public class HTMLPane extends JScrollPane {
 
 	/** Sets the panel content.
 	 * <br>If this panel content type is not set, the content type is determined by the content of the text.
-	 * If it starts with "<html>" and ends with "</html>", the panel assumes the content type is "text/html".
+	 * If it starts with "&lt;html&gt;" and ends with "&lt;/html&gt;", the panel assumes the content type is "text/html".
 	 * <br>If not, the content type is assumed to "text/plain".
 	 * <br>If the content type is set, this content type is used. It allows you to display an html code source,
 	 * by invoking this.setContentType("text/plain") before calling this method.  
