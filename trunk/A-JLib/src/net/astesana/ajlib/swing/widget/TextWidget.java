@@ -114,7 +114,7 @@ public class TextWidget extends JTextField {
 				public void focusLost(FocusEvent e) {
 					if (popup.isVisible() && !e.isTemporary() && (!list.equals(e.getOppositeComponent()))) {
 						popup.setVisible(false);
-						e.getOppositeComponent().requestFocus();
+						if (e.getOppositeComponent()!=null) e.getOppositeComponent().requestFocus();
 					}
 				}
 				
