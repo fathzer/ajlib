@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 
 import net.astesana.ajlib.swing.Utils;
 
-/** This panel contains a DateWidget and a button that shows a calendar popup.
+/** This panel contains a DateField and a button that shows a calendar popup.
  * As this widget (especially the DateWidget it contains) represents years with two digits, it can only represent dates near today (ie, impossible to represent a date before 1900) 
  * @see DateField
  * @see CalendarWidget
@@ -120,7 +120,6 @@ public class DateWidget extends JPanel {
 		gridBagConstraints.gridy = 0;
 		gridBagConstraints.weightx = 1.0;
 		gridBagConstraints.gridx = 0;
-		this.setSize(300, 200);
 		this.setLayout(new GridBagLayout());
 		this.add(getDateField(), gridBagConstraints);
 		this.add(jLabel, gridBagConstraints11);
