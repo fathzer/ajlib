@@ -85,16 +85,22 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	protected abstract void populateCombo();
 	
 	/** Refreshes the widget when the parameters has changed.
-	 * <br>This method should be called when the widget parameters changes.
-	 * It removes all old combo items, then calls populateCombo.
+	 * <br>This method is called when the widget parameters are changed by setParameters.
+	 * <br>It removes all old combo items, then calls populateCombo and setSelectionAfterRefresh.
+	 * <br>An property change is thrown if the selection changes (and the combo action is not disabled).
+	 * <br>The actionEnabled attribute of the combo is unchanged.
+	 * @see ComboBox#setActionEnabled(boolean)
+	 * @see #populateCombo()
+	 * @see #setSelectionAfterRefresh(Object)
 	 */
 	public void refresh() {
 		T old = get();
+		boolean oldEnabled = getCombo().isActionEnabled(); 
 		getCombo().setActionEnabled(false);
 		getCombo().removeAllItems();
 		populateCombo();
+		getCombo().setActionEnabled(oldEnabled);
 		setSelectionAfterRefresh(old);
-		getCombo().setActionEnabled(true);
 	}
 
 	/** Sets the combo selection during a refresh.
