@@ -109,6 +109,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		GridBagConstraints gbc_JLabel = new GridBagConstraints();
+		String label = getLabel();
 		gbc_JLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_JLabel.anchor = GridBagConstraints.WEST;
 		gbc_JLabel.gridx = 0;
@@ -123,12 +124,13 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 		GridBagConstraints gbc_newButton = new GridBagConstraints();
 		gbc_newButton.gridx = 2;
 		gbc_newButton.gridy = 0;
+
 		add(getNewButton(), gbc_newButton);
 
 		Dimension dimension = getCombo().getPreferredSize();
 		getNewButton().setPreferredSize(new Dimension(dimension.height, dimension.height));
 
-		if (getLabel()!=null) getJLabel().setText(getLabel());
+		if (label!=null) getJLabel().setText(getLabel());
 		if (getComboTip()!=null) getCombo().setToolTipText(getComboTip());
 		if (getNewButtonTip()!=null) getNewButton().setToolTipText(getNewButtonTip());
 	}
@@ -261,10 +263,10 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 */
 	protected abstract String getPropertyName(); 
 	
-	@SuppressWarnings("unchecked")
 	/** Gets the selected value.
 	 * @return the selected value.
 	 */
+	@SuppressWarnings("unchecked")
 	public T get() {
 		return (T)getCombo().getSelectedItem();
 	}
