@@ -48,6 +48,7 @@ public class CSVWriter {
 		cell = cell.replace(quoteSeq, doubleQuoteSeq);
 		if (quoteCells) writer.append(quote);
 		writer.append(cell);
+		if (quoteCells) writer.append(quote);
 	}
 	
 	public void newLine() throws IOException {
