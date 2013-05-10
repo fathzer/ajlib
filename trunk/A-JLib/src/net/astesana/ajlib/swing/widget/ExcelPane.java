@@ -20,8 +20,8 @@ import java.text.MessageFormat;
 
 import net.astesana.ajlib.swing.dialog.FileChooser;
 import net.astesana.ajlib.swing.framework.Application;
+import net.astesana.ajlib.swing.table.CSVExporter;
 import net.astesana.ajlib.swing.table.Table;
-import net.astesana.ajlib.utilities.CSVExporter;
 
 /** A widget with a JTable and a button that is able to save it in csv format.
  * @author Jean-Marc Astesana
@@ -136,6 +136,7 @@ public class ExcelPane extends JPanel {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 		try {
 			getCSVExporter().export(writer, getTable().getModel(), true);
+			writer.flush();
 		} finally {
 			writer.close();
 		}
@@ -162,10 +163,11 @@ public class ExcelPane extends JPanel {
 	
 	/** Builds the table.
 	 * <br>This method is called once.
-	 * <br>The default implementation returns a new CSVEXporter(';', false);
+	 * <br>The default implementation returns a default CSVEXporter;
 	 * @return a CSVExporter
+	 * @see CSVExporter
 	 */
 	protected CSVExporter buildExporter() {
-		return new CSVExporter(';',false);
+		return new CSVExporter();
 	}
 }
