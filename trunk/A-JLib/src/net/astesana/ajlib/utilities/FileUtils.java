@@ -181,7 +181,7 @@ public class FileUtils {
 	 */
 	public static boolean isWritable(File file) {
 		if (!file.exists()) {
-			File parentFile = file.getParentFile();
+			File parentFile = file.getAbsoluteFile().getParentFile();
 			return parentFile==null?false:isWritable(parentFile);
 		}
 		if (!file.canWrite()) return false;
