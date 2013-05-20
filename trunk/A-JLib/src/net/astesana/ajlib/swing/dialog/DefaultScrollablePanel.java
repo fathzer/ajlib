@@ -17,7 +17,7 @@ class DefaultScrollablePanel extends JPanel implements Scrollable {
 
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
-		return getPreferredSize();
+		return this.getComponent(0).getPreferredSize();
 	}
 
 	@Override
@@ -32,11 +32,11 @@ class DefaultScrollablePanel extends JPanel implements Scrollable {
 
 	@Override
 	public boolean getScrollableTracksViewportWidth() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean getScrollableTracksViewportHeight() {
-		return false;
+		return true;
 	}
 }
