@@ -64,7 +64,7 @@ public class FileUtils {
 	public static void move(File src, File dest) throws IOException {
 		// Check whether the destination directory exists or not.
 		// If not, create it.
-		File parent = dest.getParentFile();
+		File parent = dest.getAbsoluteFile().getParentFile();
 		if (!parent.exists()) {
 			parent.mkdirs();
 		}
@@ -86,7 +86,6 @@ public class FileUtils {
 					// Oh ... we were thinking we had the right to delete the file ... but we can't
 					// delete the dest file
 					dest.delete();
-					//FIXME Test that on Spot PC
 					throw new SecurityException(ACCESS_DENIED_MESSAGE);
 				}
 			} else {
