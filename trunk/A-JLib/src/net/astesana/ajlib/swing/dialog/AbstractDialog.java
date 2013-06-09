@@ -76,11 +76,9 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 			// As component can be bigger than screen ... and we always want the "ok", "cancel" button to be present,
 			// we will wrap the center pane into a scrollPane
 			Component component = (centerPane instanceof Scrollable) ? centerPane : new DefaultScrollablePanel(centerPane);
-			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setViewportView(component);
+			JScrollPane scrollPane = new JScrollPane(component);
 			scrollPane.setBorder(null);
 			contentPane.add(scrollPane, BorderLayout.CENTER);
-//			contentPane.add(centerPane, BorderLayout.CENTER);
 		}
 		
 		this.updateOkButtonEnabled();
