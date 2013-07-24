@@ -38,7 +38,7 @@ public class LocalizationData {
 	}
 	
 	/** Adds a bundle path to this.
-	 * <br>The application wordings may not be all the same bundle. This method allows you to declare additional bundles.
+	 * <br>The application wordings may not be all in the same bundle. This method allows you to declare additional bundles.
 	 * <br>If a key is present in two or more bundles, the last added has the priority and its wording will be returned by getString methods.
 	 * This allows developers to redefine some wordings.
 	 * @param bundlePath
@@ -53,7 +53,7 @@ public class LocalizationData {
 	
 	/** Gets a wording for a locale.
 	 * @param key The wording's key
-	 * @param locale The locale
+	 * @param locale The locale. Please have a look at java.util.ResourceBundle#getBundle to know the strategy use to load bundles depending on the locale, the default locale and the available bundle variants.
 	 * @return The wording
 	 * @throws MissingResourceException if the key is unknown 
 	 */
@@ -82,10 +82,12 @@ public class LocalizationData {
 	private List<ResourceBundle> getBundle(Locale locale) {
 		List<ResourceBundle> result = bundles.get(locale);
 		if (result==null) {
-//			System.out.println ("Loading bundle for locale "+locale);
+			System.out.println ("Loading bundle for locale "+locale);
 			result = new ArrayList<ResourceBundle>();
 			for (String bundleName : this.bundleNames) {
-				result.add(ResourceBundle.getBundle(bundleName, locale));
+				ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
+				System.out.println ("  ->"+bundle.getLocale());
+				result.add(bundle);
 			}
 			bundles.put(locale, result);
 		}
