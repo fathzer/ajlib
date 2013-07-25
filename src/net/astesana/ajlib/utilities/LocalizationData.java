@@ -53,7 +53,14 @@ public class LocalizationData {
 	
 	/** Gets a wording for a locale.
 	 * @param key The wording's key
-	 * @param locale The locale. Please have a look at java.util.ResourceBundle#getBundle to know the strategy use to load bundles depending on the locale, the default locale and the available bundle variants.
+	 * @param locale The locale.<br>
+	 * Please note that the standard strategy may cause "strange behavior". Here is an example:<br>
+	 * Let say that the default locale is fr_FR and we ask for the en_US locale, and we have define two bundles:<ul>
+	 * <li>The default one with no extension, that contains English wordings</li>
+	 * <li>The French one (_fr extension).</li></ul>
+	 * In such a case, the loaded bundle for en_US locale will be the French one, and not the default one !
+	 * It is because Locale.getDefault() bundle has priority on the default bundle (see {@link ResourceBundle#getBundle(String)}) for more information).
+	 * <br>A work-around is to always set the default locale (see {@link Locale#setDefault(Locale)}) to the desired locale.
 	 * @return The wording
 	 * @throws MissingResourceException if the key is unknown 
 	 */
