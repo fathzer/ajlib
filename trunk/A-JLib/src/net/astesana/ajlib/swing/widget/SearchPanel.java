@@ -17,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
+import net.astesana.ajlib.swing.framework.Application;
 import net.astesana.ajlib.swing.widget.TextWidget;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -87,7 +88,7 @@ public class SearchPanel extends JPanel {
 	
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("Chercher :");
+			lblNewLabel = new JLabel(Application.getString("SearchPanel.find")); //$NON-NLS-1$
 		}
 		return lblNewLabel;
 	}
@@ -107,7 +108,7 @@ public class SearchPanel extends JPanel {
 	
 	private JCheckBox getCaseInsensitiveCheckBox() {
 		if (chckbxCase == null) {
-			chckbxCase = new JCheckBox("Ignorer la casse");
+			chckbxCase = new JCheckBox(Application.getString("SearchPanel.ingnoreCase")); //$NON-NLS-1$
 			chckbxCase.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
 					searcher.setCaseSentitive(!getCaseInsensitiveCheckBox().isSelected());
@@ -141,7 +142,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JCheckBox getDiacriticalInsensitiveCheckbox() {
 		if (chckbxDiacritical == null) {
-			chckbxDiacritical = new JCheckBox("Ignorer les accents");
+			chckbxDiacritical = new JCheckBox(Application.getString("SearchPanel.ignoreMarks")); //$NON-NLS-1$
 			chckbxDiacritical.setSelected(true);
 			chckbxDiacritical.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
@@ -173,7 +174,7 @@ public class SearchPanel extends JPanel {
 			currentOffset = offsetNum;
 			getDownButton().setEnabled(currentOffset!=offsets.length-1);
 			getUpButton().setEnabled(currentOffset!=0);
-			getResultField().setText((currentOffset+1)+"/"+offsets.length);
+			getResultField().setText((currentOffset+1)+"/"+offsets.length); //$NON-NLS-1$
 		} catch (BadLocationException e) {
 			throw new RuntimeException(e);
 		}
@@ -190,7 +191,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JButton getUpButton() {
 		if (upButton == null) {
-			upButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/up.png")));
+			upButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/up.png"))); //$NON-NLS-1$
 			upButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					setSelected(currentOffset-1);
@@ -203,7 +204,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JButton getDownButton() {
 		if (downButton == null) {
-			downButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/down.png")));
+			downButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/down.png"))); //$NON-NLS-1$
 			downButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					setSelected(currentOffset+1);
