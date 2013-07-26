@@ -88,7 +88,7 @@ public class SearchPanel extends JPanel {
 	
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel(Application.getString("SearchPanel.find")); //$NON-NLS-1$
+			lblNewLabel = new JLabel(Application.getString("SearchPanel.find", getLocale())); //$NON-NLS-1$
 		}
 		return lblNewLabel;
 	}
@@ -108,7 +108,7 @@ public class SearchPanel extends JPanel {
 	
 	private JCheckBox getCaseInsensitiveCheckBox() {
 		if (chckbxCase == null) {
-			chckbxCase = new JCheckBox(Application.getString("SearchPanel.ingnoreCase")); //$NON-NLS-1$
+			chckbxCase = new JCheckBox(Application.getString("SearchPanel.ingnoreCase", getLocale())); //$NON-NLS-1$
 			chckbxCase.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
 					searcher.setCaseSentitive(!getCaseInsensitiveCheckBox().isSelected());
@@ -142,7 +142,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JCheckBox getDiacriticalInsensitiveCheckbox() {
 		if (chckbxDiacritical == null) {
-			chckbxDiacritical = new JCheckBox(Application.getString("SearchPanel.ignoreMarks")); //$NON-NLS-1$
+			chckbxDiacritical = new JCheckBox(Application.getString("SearchPanel.ignoreMarks", getLocale())); //$NON-NLS-1$
 			chckbxDiacritical.setSelected(true);
 			chckbxDiacritical.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
