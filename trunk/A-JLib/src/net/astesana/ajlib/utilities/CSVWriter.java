@@ -44,6 +44,7 @@ public class CSVWriter {
 	public void writeCell(String cell) throws IOException {
 		if (!lineIsEmpty) writer.append(separator);
 		lineIsEmpty = false;
+		if (cell==null) cell = new String();
 		boolean quoteCells = alwaysQuoteCells || (cell.indexOf(separator)>=0) || (cell.indexOf(quote)>=0) || cell.startsWith(BLANK) || cell.endsWith(BLANK);
 		cell = cell.replace(quoteSeq, doubleQuoteSeq);
 		if (quoteCells) writer.append(quote);
