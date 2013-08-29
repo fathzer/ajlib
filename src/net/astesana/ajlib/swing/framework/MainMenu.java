@@ -1,5 +1,6 @@
 package net.astesana.ajlib.swing.framework;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -15,7 +16,7 @@ class MainMenu extends JMenuBar {
 		menu.setMnemonic(Application.getString("MainMenu.file.mnemonic").charAt(0)); //$NON-NLS-1$
 		this.add(menu);
 		JMenuItem menuItem = new JMenuItem(new QuitAction(application));
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(Application.getString("MainMenu.quit.shortcut").charAt(0), ActionEvent.CTRL_MASK)); //$NON-NLS-1$
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(Application.getString("MainMenu.quit.shortcut").charAt(0), Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); //$NON-NLS-1$
 		menuItem.setMnemonic(Application.getString("MainMenu.quit.mnemonic").charAt(0)); //$NON-NLS-1$
 		menu.add(menuItem);
 	}
