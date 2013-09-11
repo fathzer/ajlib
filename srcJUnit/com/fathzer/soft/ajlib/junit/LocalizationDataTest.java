@@ -14,7 +14,7 @@ public class LocalizationDataTest {
 
 	@Test
 	public void test() {
-		LocalizationData loc = new LocalizationData("net.astesana.ajlib.junit.Resources");
+		LocalizationData loc = new LocalizationData("com.fathzer.soft.ajlib.junit.Resources");
 		assertEquals (loc.getString(NAME, Locale.US), Locale.US.getLanguage());
 		assertEquals (loc.getString(NAME, Locale.FRANCE), Locale.FRANCE.getLanguage());
 	}

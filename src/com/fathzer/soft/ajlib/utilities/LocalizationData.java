@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
  * <BR>License : GPL v3
  */
 public class LocalizationData {
-	public static final String DEFAULT_BUNDLE_NAME = "net.astesana.ajlib.Resources";
+	public static final String DEFAULT_BUNDLE_NAME = "com.fathzer.soft.ajlib.Resources";
 	public static LocalizationData DEFAULT = new LocalizationData(DEFAULT_BUNDLE_NAME);
 	
 	private HashMap<Locale, List<ResourceBundle>> bundles;
