@@ -91,17 +91,11 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		add(getBtnCancel(), gbc_btnCancel);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.astesana.ajlib.swing.worker.WorkInProgressPanel#getWorker()
-	 */
 	@Override
 	public Worker<?, ?> getWorker() {
 		return worker;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.astesana.ajlib.swing.worker.WorkInProgressPanel#setSwingWorker(net.astesana.ajlib.swing.worker.Worker)
-	 */
 	@Override
 	public void setSwingWorker(Worker<?, ?> worker) {
 		if (this.worker!=null) this.worker.removePropertyChangeListener(workerListener);

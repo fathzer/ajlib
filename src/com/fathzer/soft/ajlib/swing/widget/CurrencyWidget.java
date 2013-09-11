@@ -66,7 +66,7 @@ public class CurrencyWidget extends NumberWidget {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.astesana.ajlib.swing.widget.NumberWidget#parseValue(java.lang.String)
+	 * @see NumberWidget#parseValue(java.lang.String)
 	 */
 	@Override
 	protected Number parseValue(String text) {
