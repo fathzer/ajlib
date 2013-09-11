@@ -1,10 +1,11 @@
-package net.astesana.ajlib.junit;
+package com.fathzer.soft.ajlib.junit;
 
 import static org.junit.Assert.*;
 
-import net.astesana.ajlib.utilities.StringUtils;
 
 import org.junit.Test;
+
+import com.fathzer.soft.ajlib.utilities.StringUtils;
 
 /** Tests for StringUtils class.
  * @see StringUtils

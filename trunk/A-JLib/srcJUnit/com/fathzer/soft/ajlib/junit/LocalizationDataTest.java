@@ -1,12 +1,13 @@
-package net.astesana.ajlib.junit;
+package com.fathzer.soft.ajlib.junit;
 
 import static org.junit.Assert.*;
 
 import java.util.Locale;
 
-import net.astesana.ajlib.utilities.LocalizationData;
 
 import org.junit.Test;
+
+import com.fathzer.soft.ajlib.utilities.LocalizationData;
 
 public class LocalizationDataTest {
 	private static final String NAME = "name";
