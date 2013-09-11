@@ -29,7 +29,7 @@ import com.fathzer.soft.ajlib.utilities.LocalizationData;
  * import javax.swing.JLabel;<br>
  * import javax.swing.JPanel;<br>
  *<br>
- * import net.astesana.ajlib.swing.framework.Application;<br>
+ * import com.fathzer.soft.swing.framework.Application;<br>
  * <br>
  * public class HelloWorld extends Application {<br>
  * &nbsp;&nbsp;protected JPanel buildMainPanel() {<br>
