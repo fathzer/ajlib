@@ -31,7 +31,7 @@ public class DialogsPanel extends JPanel {
 						@Override
 						protected JPanel createCenterPane() {
 							JPanel panel = new JPanel();
-							HTMLPane htmlPane = new HTMLPane("<html>This is a very simple dialog, displaying a <a href=\"http://ajlib.sourceforge.net/javadoc/net/astesana/ajlib/swing/dialog/AbstractDialog.html\">link</a>." +
+							HTMLPane htmlPane = new HTMLPane("<html>This is a very simple dialog, displaying a <a href=\"http://com.fathzer.soft.ajlib/com/fathzer/soft/ajlib/swing/dialog/AbstractDialog.html\">link</a>." +
 									"<br>You should override createCentePane and buildResult methods to create more complex dialogs.</html>");
 							panel.add(htmlPane);
 							return panel;

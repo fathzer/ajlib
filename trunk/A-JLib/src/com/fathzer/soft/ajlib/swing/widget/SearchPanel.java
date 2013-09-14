@@ -193,7 +193,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JButton getUpButton() {
 		if (upButton == null) {
-			upButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/up.png"))); //$NON-NLS-1$
+			upButton = new JButton(new ImageIcon(getClass().getResource("/com/fathzer/soft/ajlib/swing/widget/up.png"))); //$NON-NLS-1$
 			upButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					setSelected(currentOffset-1);
@@ -206,7 +206,7 @@ public class SearchPanel extends JPanel {
 	}
 	private JButton getDownButton() {
 		if (downButton == null) {
-			downButton = new JButton(new ImageIcon(getClass().getResource("/net/astesana/ajlib/swing/widget/down.png"))); //$NON-NLS-1$
+			downButton = new JButton(new ImageIcon(getClass().getResource("/com/fathzer/soft/ajlib/swing/widget/down.png"))); //$NON-NLS-1$
 			downButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					setSelected(currentOffset+1);
