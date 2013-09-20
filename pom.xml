@@ -3,7 +3,7 @@
   <groupId>com.fathzer</groupId>
   <artifactId>ajlib</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.2.1</version>
   <name>A-JLib</name>
   <description>AJlib is a simple java library with Swing widgets, utilities and other stuff</description>
   <url>http://ajlib.soft.fathzer.com</url>
@@ -30,14 +30,15 @@
   
   <distributionManagement>
     <repository>
-      <id>Release</id>
-      <name>Release</name>
+      <id>ReleaseFathzer</id>
+      <name>Release fathzer.com</name>
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
     <snapshotRepository>
-      <id>Snapshot</id>
-      <name>Snapshot</name>
+      <id>SnapshotFathzer</id>
+      <name>Snapshot fathzer.com</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <uniqueVersion>false</uniqueVersion>
     </snapshotRepository>
   </distributionManagement>
   
