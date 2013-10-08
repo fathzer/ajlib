@@ -165,7 +165,7 @@ public class ExcelPane extends JPanel {
 	
 	/** Builds the table.
 	 * <br>This method is called once.
-	 * <br>The default implementation returns a default CSVEXporter;
+	 * <br>The default implementation returns a default CSVExporter;
 	 * @return a CSVExporter
 	 * @see CSVExporter
 	 */
