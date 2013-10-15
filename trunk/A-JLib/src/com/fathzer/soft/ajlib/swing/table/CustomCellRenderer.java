@@ -2,6 +2,9 @@ package com.fathzer.soft.ajlib.swing.table;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JTable;
@@ -33,14 +36,15 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 	 * @param rowModel The row index in the model.
 	 * @param columnModel The column index in the model.
 	 * @return The alignment, an int in the set SwingConstants: LEFT, CENTER, RIGHT, LEADING or TRAILING.<br>
-	 * By default it returns CENTER if value is an instance of Date, RIGHT if value is an instance of Double, Integer, Long or Float,
-	 * LEFT in other cases. You may override this method to change this behavior.
+	 * By default it returns CENTER if value is an instance of Date or Calendar, RIGHT if value is an instance of  Float, Double
+	 * BigDecimal, Integer, Long or BigInteger, LEFT in other cases.<br>You may override this method to change this behavior.
 	 */
 	protected int getAlignment(JTable table, Object value, boolean isSelected, boolean hasFocus, int rowModel, int columnModel) {
 		int alignment = SwingConstants.LEFT;
-		if (value instanceof Date) {
+		if ((value instanceof Date) || ((value instanceof Calendar))) {
 			alignment = SwingConstants.CENTER;
-		} else if ((value instanceof Double) || (value instanceof Integer) || (value instanceof Long) || (value instanceof Float)) {
+		} else if ((value instanceof Double) || (value instanceof Integer) || (value instanceof Long) || (value instanceof Float) ||
+				(value instanceof BigDecimal) || (value instanceof BigInteger)) {
 			alignment = SwingConstants.RIGHT;
 		}
 		return alignment;
