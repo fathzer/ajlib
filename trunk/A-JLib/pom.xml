@@ -80,8 +80,8 @@
         </executions>
         <configuration>
         	<!-- For obvious security reasons, keyFile and pass phrase are not provided -->
-      		<secretkey>keyfile:${project.basedir}/private_key.asc</secretkey>
-      		<passphrase>file:${project.basedir}/passphrase.txt</passphrase>
+      		<secretkey>keyfile:${user.home}/fathzer_private_key.asc</secretkey>
+      		<passphrase>file:${user.home}/fathzer_key_pwd.txt</passphrase>
     	</configuration>
       </plugin>
     
@@ -127,7 +127,7 @@
 		<configuration>
 			<doencoding>UTF-8</doencoding>
 			<excludePackageNames>*.junit.*</excludePackageNames>
-			<overview>${basedir}/src/overview.html</overview>
+			<overview>${basedir}/overview.html</overview>
 			<header>${project.version}</header>
 			<footer>${project.version}</footer>
 		</configuration>
