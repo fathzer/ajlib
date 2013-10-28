@@ -98,12 +98,18 @@
       	<artifactId>maven-jar-plugin</artifactId>
       	<version>2.4</version>
       	<configuration>
+	        <archive>
+	          <manifest>
+	            <addClasspath>true</addClasspath>
+	            <mainClass>com.fathzer.soft.ajlib.swing.demo.AJLibDemo</mainClass>
+	          </manifest>
+	        </archive>
 	        <excludes>
 	          <exclude>com/fathzer/soft/ajlib/junit/*.*</exclude>
 	          <exclude>com/fathzer/soft/ajlib/junit</exclude>
 	          <exclude>**/package.html</exclude>
 	        </excludes>
-	      	</configuration>
+	    </configuration>
       </plugin>
       
       <plugin>
@@ -126,7 +132,7 @@
 		<version>2.9</version>
 		<configuration>
 			<doencoding>UTF-8</doencoding>
-			<excludePackageNames>*.junit.*</excludePackageNames>
+			<excludePackageNames>*.junit.*:com.fathzer.soft.ajlib.swing.demo</excludePackageNames>
 			<overview>${basedir}/overview.html</overview>
 			<header>${project.version}</header>
 			<footer>${project.version}</footer>
@@ -141,6 +147,29 @@
 			</execution>
 		</executions>
       </plugin>
+      
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <phase>install</phase>
+            <configuration>
+              <target>
+				<echo message="This is an ant message: version=${project.version} to ${project.build.directory}"/>
+				<zip destfile="${basedir}/A-JLib-v${project.version}.zip">
+				    <zipfileset dir="." includes="license.html"/>
+				    <zipfileset dir="${project.build.directory}" includes="*.jar"/>
+				</zip>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
     </plugins>
   </build>
   

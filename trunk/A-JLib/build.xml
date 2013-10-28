@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!-- WARNING: DO NOT USE THIS ANT SCRIPT, IT IS OBSOLETE. USE pom.xml INSTEAD -->
+
 <project default="build" name="Build script for A-JLib project">
 	<property name="ajlibVersion" value="0.2.2"/>
 	<tstamp><format property="TODAY" pattern="dd/MM/yyyy" locale="fr,FR"/></tstamp>
@@ -31,7 +34,7 @@
 	
 	<target name="doc">
 		<javadoc header="${ajlibVersion}" sourcepath="src" excludepackagenames="com.fathzer.soft.ajlib.swing.demo"
-			overview="overview.html"
+			overview="overview.html" encoding="ISO8859-1"
 			destdir="zip/doc" doctitle="A-JLib" windowtitle="A-JLib"/>
 	</target>
 </project>
