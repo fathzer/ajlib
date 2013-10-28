@@ -156,7 +156,6 @@
             <phase>install</phase>
             <configuration>
               <target>
-				<echo message="This is an ant message: version=${project.version} to ${project.build.directory}"/>
 				<zip destfile="${basedir}/A-JLib-v${project.version}.zip">
 				    <zipfileset dir="." includes="license.html"/>
 				    <zipfileset dir="${project.build.directory}" includes="*.jar"/>
