@@ -10,8 +10,8 @@
   
   <licenses>
     <license>
-      <name>GNU General Public License v3 (GPL-v3)</name>
-      <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+      <name>GNU Lesser General Public License v3 (LGPL-v3)</name>
+      <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
