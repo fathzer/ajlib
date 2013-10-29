@@ -17,7 +17,7 @@ import javax.swing.text.PlainDocument;
  * after the key was released. And others events (for example a click on an OK button) may occurs before the listener is informed of the change.
  * <br><br>This widget guarantees that no "ghost" property change is thrown !
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 
 public class PasswordWidget extends JPasswordField {

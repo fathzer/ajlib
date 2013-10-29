@@ -30,7 +30,6 @@ import javax.swing.text.PlainDocument;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
 import com.fathzer.soft.ajlib.utilities.TextMatcher;
 
-
 /** A JTextField with a property that maps its text and the ability to define predefined values.
  * <br>I've found no way to track efficiently the modifications of the text of a JTextField ... so I developed this widget.
  * <br>DocumentListeners are intended to do it, unfortunately, when a text is replace in a field, the listener receive two events:<ol>
@@ -45,6 +44,8 @@ import com.fathzer.soft.ajlib.utilities.TextMatcher;
  * <br><br>This class implements a popup menu that allows to select the field content into a list of predefined values.
  * <br>The difference with a JComboBox is the popup content and selection is updated when the user changes the text field content.
  * It always contains only predefined text that contains the current widget text.
+ * @author Jean-Marc Astesana
+ * <BR>License: LGPL v3
  */
 public class TextWidget extends JTextField {
 	private static final long serialVersionUID = 1L;

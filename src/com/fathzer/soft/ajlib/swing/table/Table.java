@@ -17,7 +17,7 @@ import java.awt.BorderLayout;
 
 /** JTable has a lot of lacks, this class adds the ability for a table to have row titles.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */ 
 public class Table extends JPanel {
 	private static final long serialVersionUID = 1L;

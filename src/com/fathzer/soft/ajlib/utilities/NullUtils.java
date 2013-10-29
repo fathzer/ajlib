@@ -2,7 +2,7 @@ package com.fathzer.soft.ajlib.utilities;
 
 /** Utility to securely test whether two instances are equals ... even if one of them is null.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public final class NullUtils {
 	private NullUtils() {}

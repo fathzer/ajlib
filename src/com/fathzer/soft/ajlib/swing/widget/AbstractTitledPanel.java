@@ -14,6 +14,7 @@ import java.awt.Insets;
 
 /** A very basic panel, composed of a header with an icon at its north and a component in the center.
  * @author Jean-Marc Astesana
+ * <BR>License: LGPL v3
  * @param <T> The class of the data used to fill the center panel.
  */
 public abstract class AbstractTitledPanel<T> extends JPanel {

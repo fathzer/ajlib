@@ -10,7 +10,7 @@ import com.fathzer.soft.ajlib.swing.widget.TextWidget;
 
 /** A widget that allows the user to enter only one character. 
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 @SuppressWarnings("serial")
 public class CharWidget extends TextWidget {

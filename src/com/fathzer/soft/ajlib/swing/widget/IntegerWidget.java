@@ -14,7 +14,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  *  <br>The up and down arrows are shortcuts to increase/decrease the value in the field.
  *  <br>It is a java bean, so you can listen to its VALUE_PROPERTY change.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public class IntegerWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;

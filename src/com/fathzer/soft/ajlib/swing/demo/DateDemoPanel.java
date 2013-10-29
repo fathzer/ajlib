@@ -23,7 +23,7 @@ public class DateDemoPanel extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		
-		JLabel lblNewLabel = new JLabel("DateWidget :");
+		JLabel lblNewLabel = new JLabel("DateWidget:");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 5, 5, 5);
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
@@ -39,7 +39,7 @@ public class DateDemoPanel extends JPanel {
 		gbc_panel.gridy = 0;
 		add(panel, gbc_panel);
 		
-		JLabel lblDatefield = new JLabel("DateField :");
+		JLabel lblDatefield = new JLabel("DateField:");
 		GridBagConstraints gbc_lblDatefield = new GridBagConstraints();
 		gbc_lblDatefield.anchor = GridBagConstraints.WEST;
 		gbc_lblDatefield.insets = new Insets(0, 5, 5, 5);

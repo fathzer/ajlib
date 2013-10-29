@@ -16,7 +16,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * @param <V> the type used for carrying out intermediate results by this
  *        {@code SwingWorker's} {@code publish} and {@code process} methods
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  * @see #reportProgress(int)
  */
 public abstract class Worker<T,V> extends SwingWorker<T,V> {

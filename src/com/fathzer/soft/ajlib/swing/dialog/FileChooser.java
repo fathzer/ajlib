@@ -46,7 +46,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * </ul>
  * 
  * @author Jean-Marc Astesana <BR>
- *         License : GPL v3
+ *         License: LGPL v3
  */
 public class FileChooser extends JFileChooser {
 	private static final long serialVersionUID = 1L;

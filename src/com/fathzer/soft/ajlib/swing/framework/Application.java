@@ -44,7 +44,7 @@ import com.fathzer.soft.ajlib.utilities.LocalizationData;
  * }<br>
  * </code>
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public abstract class Application {
 	private static final String LOCATION_Y_PROPERTY = "y"; //$NON-NLS-1$
