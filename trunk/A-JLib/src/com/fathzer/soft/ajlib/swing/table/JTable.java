@@ -9,7 +9,7 @@ import javax.swing.table.TableModel;
  * <br>The method setRowHeight is called in the constructor. You should call it again when changing the font.</li>
  * </ul>
  * @author Jean-Marc Astesana
- * Licence GPL v3
+ * Licence LGPL v3
  */
 @SuppressWarnings("serial")
 public class JTable extends javax.swing.JTable {

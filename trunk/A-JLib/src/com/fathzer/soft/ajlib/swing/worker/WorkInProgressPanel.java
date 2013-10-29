@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 /** A panel reporting the progress of a background task.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  * @see Worker
  */
 @SuppressWarnings("serial")

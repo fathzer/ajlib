@@ -5,7 +5,7 @@ import java.util.List;
 
 /** Utility to parse the fields separated by a char in a string.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public abstract class StringUtils {
 	private StringUtils() {}

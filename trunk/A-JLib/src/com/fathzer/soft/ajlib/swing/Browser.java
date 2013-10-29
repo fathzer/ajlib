@@ -16,7 +16,8 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
 
 /** A class that is able to open a web browser to display an URI.
  *<br>The main advantage of this class is to display an alert dialog if java is not able to open the browser.
- * @author Jean-Marc Astesana <br>License : GPL v3
+ * @author Jean-Marc Astesana
+ * <BR>License: LGPL v3
  */
 public abstract class Browser {
 	/** Displays an URI in a browser.

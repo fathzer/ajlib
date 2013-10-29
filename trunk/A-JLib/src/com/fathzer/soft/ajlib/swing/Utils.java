@@ -19,7 +19,7 @@ import javax.swing.table.TableColumnModel;
 
 /** Some Swing utilities.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public abstract class Utils {
 	/** Gets the window which contains a component.

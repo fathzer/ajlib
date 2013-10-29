@@ -28,7 +28,7 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
  * @param <T> The class of the parameter of the dialog (information that is useful to build the center pane).
  * @param <V> The class of the result of the dialog
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public abstract class AbstractDialog<T,V> extends JDialog {
 	//FIXME The horizontal scroll bar is always shown when the vertical one is shown. 

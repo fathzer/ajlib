@@ -17,13 +17,13 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
 /** A widget to enter a number.
  * <br>This widget automatically format the value it contains according to its local.
  * <br>You can restrict the valid values by setting minimum and maximum values.
- * <br>This bean defines two properties :<ul>
- * <li>VALUE_PROPERTY : a double, the value currently entered in the field.</li>
- * <li>CONTENT_VALID_PROPERTY : a boolean, true if the text currently entered in the field is a valid value, false if it is not.
+ * <br>This bean defines two properties:<ul>
+ * <li>VALUE_PROPERTY: a double, the value currently entered in the field.</li>
+ * <li>CONTENT_VALID_PROPERTY: a boolean, true if the text currently entered in the field is a valid value, false if it is not.
  * <br>The CONTENT_VALID_PROPERTY is a read only property.</li>
  * </ul>
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public class NumberWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;
@@ -144,7 +144,7 @@ public class NumberWidget extends TextWidget {
 //		System.out.println ("Number widget is parsing "+text);
 //		System.out.println ("grouping separator "+(int)format.getDecimalFormatSymbols().getGroupingSeparator());
 //		try {
-//			System.out.println ("Double.parseDouble : "+Double.parseDouble(text));
+//			System.out.println ("Double.parseDouble: "+Double.parseDouble(text));
 //		} catch (NumberFormatException e) {
 //			System.out.println ("Double.parseDouble says "+text+" is wrong");
 //		}
@@ -153,7 +153,7 @@ public class NumberWidget extends TextWidget {
 //			ParsePosition pos = new ParsePosition(0);
 //			Number parse = format.parse(text, pos);
 //			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
-//			System.out.println ("NumberFormat.getInstance().parse : "+parse);
+//			System.out.println ("NumberFormat.getInstance().parse: "+parse);
 //		} catch (NumberFormatException e) {
 //			System.out.println ("NumberFormat.getInstance().parse says "+text+" is wrong");
 //		}
@@ -162,7 +162,7 @@ public class NumberWidget extends TextWidget {
 //			ParsePosition pos = new ParsePosition(0);
 //			Number parse = format.parse(text, pos);
 //			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
-//			System.out.println ("NumberFormat.getNumberInstance().parse : "+parse);
+//			System.out.println ("NumberFormat.getNumberInstance().parse: "+parse);
 //		} catch (NumberFormatException e) {
 //			System.out.println ("NumberFormat.getNumberInstance().parse says "+text+" is wrong");
 //		}

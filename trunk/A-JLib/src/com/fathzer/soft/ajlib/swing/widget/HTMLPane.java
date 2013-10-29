@@ -16,7 +16,7 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
 
 /** A HTML component.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 @SuppressWarnings("serial")
 public class HTMLPane extends JScrollPane {

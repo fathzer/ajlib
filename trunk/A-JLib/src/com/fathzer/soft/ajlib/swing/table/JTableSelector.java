@@ -9,7 +9,7 @@ import javax.swing.JTable;
  * <br>This class takes care of this for you.
  * @param <T> The class of the elements in the table.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public abstract class JTableSelector<T> {
 	/** The JTable that contains the selected elements.*/

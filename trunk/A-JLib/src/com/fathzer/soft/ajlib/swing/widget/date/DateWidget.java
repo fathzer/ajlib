@@ -19,6 +19,8 @@ import com.fathzer.soft.ajlib.swing.Utils;
  * As this widget (especially the DateWidget it contains) represents years with two digits, it can only represent dates near today (ie, impossible to represent a date before 1900) 
  * @see DateField
  * @see CalendarWidget
+ * @author Jean-Marc Astesana
+ * <BR>License: LGPL v3
  */
 public class DateWidget extends JPanel {
 	private static final long serialVersionUID = 1L;

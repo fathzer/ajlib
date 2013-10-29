@@ -1,5 +1,5 @@
 /* This is a modified version of the original DateChooserPanel.java from JFree.
- * Changes :<UL>
+ * Changes:<UL>
  * <LI>The month selection is implemented with buttons instead of the originals JComboBox.
  * This allows the component to be used in a popup.</LI>
  * <LI>The "today button" is now in the month selection panel and hasn't an non localized english label</LI>
@@ -12,7 +12,7 @@
  * (at your option) any later version.
 
  * ========================================================================
- * JCommon : a free general purpose class library for the Java(tm) platform
+ * JCommon: a free general purpose class library for the Java(tm) platform
  * ========================================================================
  *
  * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
@@ -49,10 +49,10 @@
  *
  * Changes (from 26-Oct-2001)
  * --------------------------
- * 26-Oct-2001 : Changed package to com.jrefinery.ui.* (DG);
- * 08-Dec-2001 : Dropped the getMonths() method (DG);
- * 13-Oct-2002 : Fixed errors reported by Checkstyle (DG);
- * 02-Nov-2005 : Fixed a bug where the current day-of-the-month is past
+ * 26-Oct-2001: Changed package to com.jrefinery.ui.* (DG);
+ * 08-Dec-2001: Dropped the getMonths() method (DG);
+ * 13-Oct-2002: Fixed errors reported by Checkstyle (DG);
+ * 02-Nov-2005: Fixed a bug where the current day-of-the-month is past
  *               the end of the newly selected month when the month or year
  *               combo boxes are changed - see bug id 1344319 (DG);
  *
@@ -81,10 +81,10 @@ import javax.swing.SwingConstants;
 
 import com.fathzer.soft.ajlib.utilities.NullUtils;
 
-
 /**
  * A panel that allows the user to select a date.
  * @author David Gilbert (modified by Jean-Marc Astesana)
+ * <BR>License: LGPL v3
  */
 public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 	private static final long serialVersionUID = 1L;

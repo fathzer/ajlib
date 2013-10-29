@@ -9,6 +9,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+/**
+ * @author Jean-Marc Astesana <BR>
+ *         License: LGPL v3
+ */
 @SuppressWarnings("serial")
 class MainMenu extends JMenuBar {
 	public MainMenu (Application application) {

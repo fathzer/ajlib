@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
  * <br>It provides a text field to enter the searched text, buttons to navigate through occurrences and setting buttons.
  * <br>When text is entered in search the text field, the first occurrence is automatically highlight in the text component. 
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 @SuppressWarnings("serial")
 public class SearchPanel extends JPanel {

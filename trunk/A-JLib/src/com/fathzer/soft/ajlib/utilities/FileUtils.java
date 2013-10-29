@@ -14,7 +14,7 @@ import sun.awt.shell.ShellFolder;
 
 /** Utility to perform some operations on files.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public class FileUtils {
 	private static final String ACCESS_DENIED_MESSAGE = "What's the right message ?";

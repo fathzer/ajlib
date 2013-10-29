@@ -11,7 +11,7 @@ import java.util.Locale;
  * <br>This class is able to write data in the CSV format.
  * <br>If you're looking for a CSV parser, I recommend using OpenCSV.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public class CSVWriter {
 	private static final String BLANK = " ";

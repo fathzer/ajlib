@@ -20,7 +20,7 @@ import javax.swing.table.TableRowSorter;
  * &nbsp;&nbsp;table.setRowSorter<TableModel>(new RowSorter(table.getModel()))<br>
  * </code>
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  * @param <M> The type of the table model
  */
 public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
@@ -71,7 +71,7 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
     } else {
     	// One might be tempted to remove the key from the sort key list, it would not be a good idea
     	// If the UNSORTED is not at the end of the toggleSequence, it would broke the sequence
-    	// Example : ASCENDING, UNSORTED, DESCENDING would leave DESCENDING unreachable
+    	// Example: ASCENDING, UNSORTED, DESCENDING would leave DESCENDING unreachable
     	// Instead of removing the key, we will put it to the lowest priority.
     	futureKeys.add(theKey);
     }

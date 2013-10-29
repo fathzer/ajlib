@@ -27,7 +27,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * @see #getPropertyName()
  * @see #getDefaultRenderedValue(Object)
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public abstract class AbstractSelector<T,V> extends JPanel {
 	private static final long serialVersionUID = 1L;

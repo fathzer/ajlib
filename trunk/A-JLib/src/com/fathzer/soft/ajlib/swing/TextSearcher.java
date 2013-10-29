@@ -21,7 +21,7 @@ import com.fathzer.soft.ajlib.swing.widget.HTMLPane;
  * It supports case and diacritical sensitive/insensitive search.
  * 
  * @author Jean-Marc Astesana <BR>
- *         License : GPL v3 <br>
+ *         License: LGPL v3 <br>
  *         This code was inspired by an example from Kim Topley (ISBN: 0 13
  *         083292 8 - Publisher: Prentice Hall)
  * @see HTMLPane

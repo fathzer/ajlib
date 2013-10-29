@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 /** This class is the main entry point for localization concerns.
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public class LocalizationData {
 	public static final String DEFAULT_BUNDLE_NAME = "com.fathzer.soft.ajlib.Resources";

@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
  * <LI>The method <b>contains</b> tests whether the menu contains an item or not</LI>
  * </UL>
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License: LGPL v3
  */
 public class ComboBox extends JComboBox {
 	private static final long serialVersionUID = 1L;
@@ -16,7 +16,7 @@ public class ComboBox extends JComboBox {
 	private boolean isActionEnabled = true;
 	
 	/** Enables/Disables the events.
-	 * Note : This method doesn't throw any event.
+	 * Note: This method doesn't throw any event.
 	 * @param isActionEnabled true to enable the events.
 	 */
 	public void setActionEnabled(boolean isActionEnabled) {
