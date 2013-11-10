@@ -155,11 +155,12 @@ public class FileUtils {
 	private static class HiddenFileOutputStream extends FileOutputStream {
 		private File file;
 
-		public HiddenFileOutputStream(File file) throws FileNotFoundException {
+		HiddenFileOutputStream(File file) throws FileNotFoundException {
 			super(file);
 			this.file = file;
 		}
 		
+		@Override
 		public void close() throws IOException {
 			super.close();
 			Process process = Runtime.getRuntime().exec("attrib +H \""+file.getAbsolutePath()+"\"");
@@ -175,8 +176,8 @@ public class FileUtils {
 	 * <br>It differs from File.canWrite because File.canWrite ignore the security policies of the platform.
 	 * This method returns true only if the calling thread have all the rights necessary to write to the file, and the file
 	 * is not already locked.
-	 * @param file The folder to test
-	 * @return true if the folder exists and the calling thread can write into it
+	 * @param file The file or folder to test
+	 * @return true if the file or folder exists and the calling thread can write into it
 	 */
 	public static boolean isWritable(File file) {
 		if (!file.exists()) {
@@ -220,6 +221,12 @@ public class FileUtils {
 		}
 	}
 
+	/** Tests whether the application can read from a file (or a folder).
+	 * <br>It differs from File.canRead because File.canRead ignore the security policies of the platform.
+	 * This method returns true only if the calling thread have all the rights necessary to read from the file.
+	 * @param file The file or folder to test
+	 * @return true if the file or folder exists and the calling thread can write into it
+	 */
 	public static boolean isReadable(File file) {
 		if (!file.canRead()) return false;
 		if (file.isDirectory()) return true;

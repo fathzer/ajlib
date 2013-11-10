@@ -18,7 +18,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  */
 public class IntegerWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;
-	private final static boolean DEBUG = false;
+	private static final boolean DEBUG = false;
 	/** The field value property name. */
 	public static final String VALUE_PROPERTY = "VALUE_PROPERTY";
 	/** An utility constant for Integer.MAX_VALUE.

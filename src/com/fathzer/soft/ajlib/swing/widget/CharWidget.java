@@ -6,6 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import com.fathzer.soft.ajlib.swing.widget.TextWidget;
+import com.fathzer.soft.ajlib.utilities.NullUtils;
 
 
 /** A widget that allows the user to enter only one character. 
@@ -60,7 +61,7 @@ public class CharWidget extends TextWidget {
 	 * @see CharWidget#setDefaultChar(char)
 	 */
 	public void setChar(Character character) {
-		if (character!= content) {
+		if (!NullUtils.areEquals(character,content)) {
 			Character old = this.content;
 			this.content = character;
 			setText(content==null?"":new String(new char[]{this.content}));
