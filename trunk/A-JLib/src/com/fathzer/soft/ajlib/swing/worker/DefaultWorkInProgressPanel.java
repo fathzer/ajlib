@@ -30,33 +30,38 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	private JLabel message;
 	private JProgressBar progressBar;
 	private JButton btnCancel;
-	private PropertyChangeListener workerListener;
+	private transient PropertyChangeListener workerListener;
 
 	/**
 	 * Constructor.
 	 */
 	public DefaultWorkInProgressPanel() {
 		buildContent();
+	}
 
-		workerListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
-					getBtnCancel().setEnabled(evt.getNewValue().equals(SwingWorker.StateValue.STARTED));
-					if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
-						if (!worker.isCancelled()) {
-							getProgressBar().setIndeterminate(false);
-							getProgressBar().setValue(getProgressBar().getMaximum());
+	private PropertyChangeListener getListener() {
+		if (workerListener==null) {
+			workerListener = new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
+						getBtnCancel().setEnabled(evt.getNewValue().equals(SwingWorker.StateValue.STARTED));
+						if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
+							if (!worker.isCancelled()) {
+								getProgressBar().setIndeterminate(false);
+								getProgressBar().setValue(getProgressBar().getMaximum());
+							}
 						}
+					} else if (evt.getPropertyName().equals(Worker.PROGRESS_PROPERTY_NAME)){
+						long absoluteValue = ((Integer)evt.getNewValue())*worker.getPhaseLength()/100;
+						getProgressBar().setValue((int)absoluteValue);
+					} else if (evt.getPropertyName().equals(Worker.JOB_PHASE) || evt.getPropertyName().equals(Worker.PHASE_LENGTH)){
+						initPhase();
 					}
-				} else if (evt.getPropertyName().equals(Worker.PROGRESS_PROPERTY_NAME)){
-					long absoluteValue = ((Integer)evt.getNewValue())*worker.getPhaseLength()/100;
-					getProgressBar().setValue((int)absoluteValue);
-				} else if (evt.getPropertyName().equals(Worker.JOB_PHASE) || evt.getPropertyName().equals(Worker.PHASE_LENGTH)){
-					initPhase();
 				}
-			}
-		};
+			};
+		}
+		return workerListener;
 	}
 
 	/** Builds the panel content.
@@ -98,9 +103,10 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 
 	@Override
 	public void setSwingWorker(Worker<?, ?> worker) {
-		if (this.worker!=null) this.worker.removePropertyChangeListener(workerListener);
+		PropertyChangeListener listener = getListener();
+		if (this.worker!=null) this.worker.removePropertyChangeListener(listener);
 		this.worker = worker;
-		this.worker.addPropertyChangeListener(workerListener);
+		this.worker.addPropertyChangeListener(listener);
 		initPhase();
 	}
 
