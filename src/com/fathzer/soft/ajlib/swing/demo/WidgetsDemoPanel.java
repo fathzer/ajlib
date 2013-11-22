@@ -13,9 +13,28 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.MessageFormat;
 
 
 public class WidgetsDemoPanel extends JPanel {
+	private static final class DefaultPropertyChangeListener implements PropertyChangeListener {
+		private String what;
+		private DefaultPropertyChangeListener(String what) {
+			this.what = what;
+		}
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			String message;
+			if (evt.getOldValue()==null) {
+				message = MessageFormat.format("{0} is set to {1}", what, evt.getNewValue());
+			} else if (evt.getNewValue()==null) {
+				message = MessageFormat.format("{0} is wrong", what);
+			} else {
+				message = MessageFormat.format("{0} changed from {1} to {2}", what, evt.getOldValue(), evt.getNewValue());
+			}
+			AJLibDemo.setMessage(message);
+		}
+	}
 	private static final long serialVersionUID = 1L;
 	private JLabel lblTextwidget;
 	private TextWidget textWidget;
@@ -103,20 +122,7 @@ public class WidgetsDemoPanel extends JPanel {
 			numberWidget = new NumberWidget();
 			numberWidget.setToolTipText("<html>This widget allows you to enter a double.</html>");
 			numberWidget.setColumns(10);
-			numberWidget.addPropertyChangeListener(NumberWidget.VALUE_PROPERTY, new PropertyChangeListener() {
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					String message;
-					if (evt.getOldValue()==null) {
-						message = "Number is set to "+evt.getNewValue();
-					} else if (evt.getNewValue()==null) {
-						message = "Number is wrong";
-					} else {
-						message = "Number changed from "+evt.getOldValue()+" to "+evt.getNewValue();
-					}
-					AJLibDemo.setMessage(message);
-				}
-			});
+			numberWidget.addPropertyChangeListener(NumberWidget.VALUE_PROPERTY, new DefaultPropertyChangeListener("Number"));
 			numberWidget.addPropertyChangeListener(NumberWidget.CONTENT_VALID_PROPERTY, new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
@@ -137,20 +143,7 @@ public class WidgetsDemoPanel extends JPanel {
 		if (currencyWidget == null) {
 			currencyWidget = new CurrencyWidget();
 			currencyWidget.setColumns(10);
-			currencyWidget.addPropertyChangeListener(NumberWidget.VALUE_PROPERTY, new PropertyChangeListener() {
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					String message;
-					if (evt.getOldValue()==null) {
-						message = "Amount is set to "+evt.getNewValue();
-					} else if (evt.getNewValue()==null) {
-						message = "Amount is wrong";
-					} else {
-						message = "Amount changed from "+evt.getOldValue()+" to "+evt.getNewValue();
-					}
-					AJLibDemo.setMessage(message);
-				}
-			});
+			currencyWidget.addPropertyChangeListener(NumberWidget.VALUE_PROPERTY, new DefaultPropertyChangeListener("Amount"));
 			currencyWidget.addPropertyChangeListener(NumberWidget.CONTENT_VALID_PROPERTY, new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
