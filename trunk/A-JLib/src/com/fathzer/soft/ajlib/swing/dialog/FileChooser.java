@@ -69,7 +69,7 @@ public class FileChooser extends JFileChooser {
 			try {
 				field.setAccessible(true);
 				fileNameField = (JTextField) field.get(getUI());
-			} catch (Throwable e) {
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		} catch (NoSuchFieldException e) {
@@ -82,7 +82,7 @@ public class FileChooser extends JFileChooser {
 			try {
 				field.setAccessible(true);
 				fileNameLabel = (JLabel) field.get(getUI());
-			} catch (Throwable e) {
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		} catch (NoSuchFieldException e) {
