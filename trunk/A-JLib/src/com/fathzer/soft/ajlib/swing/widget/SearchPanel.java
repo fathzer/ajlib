@@ -62,30 +62,30 @@ public class SearchPanel extends JPanel {
 	}
 
 	private void initialize() {
-		GridBagLayout gbl_searchPanel = new GridBagLayout();
-		setLayout(gbl_searchPanel);
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		add(getLblNewLabel(), gbc_lblNewLabel);
-		GridBagConstraints gbc_searchedTextField = new GridBagConstraints();
-		gbc_searchedTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_searchedTextField.weightx = 1.0;
-		gbc_searchedTextField.gridx = 1;
-		gbc_searchedTextField.gridy = 0;
-		add(getSearchedTextField(), gbc_searchedTextField);
-		GridBagConstraints gbc_resultPanel = new GridBagConstraints();
-		gbc_resultPanel.fill = GridBagConstraints.BOTH;
-		gbc_resultPanel.gridx = 2;
-		gbc_resultPanel.gridy = 0;
-		add(getResultPanel(), gbc_resultPanel);
-		GridBagConstraints gbc_settingsPanel = new GridBagConstraints();
-		gbc_settingsPanel.fill = GridBagConstraints.BOTH;
-		gbc_settingsPanel.gridx = 3;
-		gbc_settingsPanel.gridy = 0;
-		add(getSettingsPanel(), gbc_settingsPanel);
+		GridBagLayout gblSearchPanel = new GridBagLayout();
+		setLayout(gblSearchPanel);
+		GridBagConstraints gbcLblNewLabel = new GridBagConstraints();
+		gbcLblNewLabel.insets = new Insets(0, 0, 0, 5);
+		gbcLblNewLabel.anchor = GridBagConstraints.EAST;
+		gbcLblNewLabel.gridx = 0;
+		gbcLblNewLabel.gridy = 0;
+		add(getLblNewLabel(), gbcLblNewLabel);
+		GridBagConstraints gbcSearchedTextField = new GridBagConstraints();
+		gbcSearchedTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbcSearchedTextField.weightx = 1.0;
+		gbcSearchedTextField.gridx = 1;
+		gbcSearchedTextField.gridy = 0;
+		add(getSearchedTextField(), gbcSearchedTextField);
+		GridBagConstraints gbcResultPanel = new GridBagConstraints();
+		gbcResultPanel.fill = GridBagConstraints.BOTH;
+		gbcResultPanel.gridx = 2;
+		gbcResultPanel.gridy = 0;
+		add(getResultPanel(), gbcResultPanel);
+		GridBagConstraints gbcSettingsPanel = new GridBagConstraints();
+		gbcSettingsPanel.fill = GridBagConstraints.BOTH;
+		gbcSettingsPanel.gridx = 3;
+		gbcSettingsPanel.gridy = 0;
+		add(getSettingsPanel(), gbcSettingsPanel);
 	}
 	
 	private JLabel getLblNewLabel() {
@@ -125,20 +125,20 @@ public class SearchPanel extends JPanel {
 	private JPanel getSettingsPanel() {
 		if (settingsPanel == null) {
 			settingsPanel = new JPanel();
-			GridBagLayout gbl_settingsPanel = new GridBagLayout();
-			settingsPanel.setLayout(gbl_settingsPanel);
-			GridBagConstraints gbc_chckbxCase = new GridBagConstraints();
-			gbc_chckbxCase.anchor = GridBagConstraints.WEST;
-			gbc_chckbxCase.insets = new Insets(0, 0, 5, 5);
-			gbc_chckbxCase.gridx = 0;
-			gbc_chckbxCase.gridy = 0;
-			settingsPanel.add(getCaseInsensitiveCheckBox(), gbc_chckbxCase);
-			GridBagConstraints gbc_chckbxDiacritical = new GridBagConstraints();
-			gbc_chckbxDiacritical.insets = new Insets(0, 0, 0, 5);
-			gbc_chckbxDiacritical.anchor = GridBagConstraints.WEST;
-			gbc_chckbxDiacritical.gridx = 0;
-			gbc_chckbxDiacritical.gridy = 1;
-			settingsPanel.add(getDiacriticalInsensitiveCheckbox(), gbc_chckbxDiacritical);
+			GridBagLayout gblSettingsPanel = new GridBagLayout();
+			settingsPanel.setLayout(gblSettingsPanel);
+			GridBagConstraints gbcChckbxCase = new GridBagConstraints();
+			gbcChckbxCase.anchor = GridBagConstraints.WEST;
+			gbcChckbxCase.insets = new Insets(0, 0, 5, 5);
+			gbcChckbxCase.gridx = 0;
+			gbcChckbxCase.gridy = 0;
+			settingsPanel.add(getCaseInsensitiveCheckBox(), gbcChckbxCase);
+			GridBagConstraints gbcChckbxDiacritical = new GridBagConstraints();
+			gbcChckbxDiacritical.insets = new Insets(0, 0, 0, 5);
+			gbcChckbxDiacritical.anchor = GridBagConstraints.WEST;
+			gbcChckbxDiacritical.gridx = 0;
+			gbcChckbxDiacritical.gridy = 1;
+			settingsPanel.add(getDiacriticalInsensitiveCheckbox(), gbcChckbxDiacritical);
 		}
 		return settingsPanel;
 	}
@@ -220,22 +220,22 @@ public class SearchPanel extends JPanel {
 	private JPanel getResultPanel() {
 		if (resultPanel == null) {
 			resultPanel = new JPanel();
-			GridBagLayout gbl_resultPanel = new GridBagLayout();
-			resultPanel.setLayout(gbl_resultPanel);
-			GridBagConstraints gbc_resultField = new GridBagConstraints();
-			gbc_resultField.fill = GridBagConstraints.HORIZONTAL;
-			gbc_resultField.gridheight = 2;
-			gbc_resultField.gridx = 0;
-			gbc_resultField.gridy = 0;
-			resultPanel.add(getResultField(), gbc_resultField);
-			GridBagConstraints gbc_upButton = new GridBagConstraints();
-			gbc_upButton.gridx = 1;
-			gbc_upButton.gridy = 0;
-			resultPanel.add(getUpButton(), gbc_upButton);
-			GridBagConstraints gbc_downButton = new GridBagConstraints();
-			gbc_downButton.gridx = 1;
-			gbc_downButton.gridy = 1;
-			resultPanel.add(getDownButton(), gbc_downButton);
+			GridBagLayout gblResultPanel = new GridBagLayout();
+			resultPanel.setLayout(gblResultPanel);
+			GridBagConstraints gbcResultField = new GridBagConstraints();
+			gbcResultField.fill = GridBagConstraints.HORIZONTAL;
+			gbcResultField.gridheight = 2;
+			gbcResultField.gridx = 0;
+			gbcResultField.gridy = 0;
+			resultPanel.add(getResultField(), gbcResultField);
+			GridBagConstraints gbcUpButton = new GridBagConstraints();
+			gbcUpButton.gridx = 1;
+			gbcUpButton.gridy = 0;
+			resultPanel.add(getUpButton(), gbcUpButton);
+			GridBagConstraints gbcDownButton = new GridBagConstraints();
+			gbcDownButton.gridx = 1;
+			gbcDownButton.gridy = 1;
+			resultPanel.add(getDownButton(), gbcDownButton);
 		}
 		return resultPanel;
 	}

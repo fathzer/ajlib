@@ -31,7 +31,7 @@ public class JTableListener extends MouseAdapter {
 	 */
 	public JTableListener(Action[] actions, Action defaultAction) {
 		super();
-		this.actions = actions;
+		this.actions = actions==null ? null : actions.clone();
 		this.defaultAction = defaultAction;
 	}
 

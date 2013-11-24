@@ -31,7 +31,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  */
 public abstract class AbstractSelector<T,V> extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JLabel JLabel;
+	private JLabel jLabel;
 	private ComboBox combo;
 	private JButton newButton;
 
@@ -109,47 +109,55 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 * @param old the last selected item before refresh was performed.
 	 */
 	protected void setSelectionAfterRefresh(T old) {
-		if (getCombo().contains(old)) getCombo().setSelectedItem(old);
+		if (getCombo().contains(old)) {
+			getCombo().setSelectedItem(old);
+		}
 	}
 
 	private void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
-		GridBagConstraints gbc_JLabel = new GridBagConstraints();
+		GridBagConstraints gbcJLabel = new GridBagConstraints();
 		String label = getLabel();
-		gbc_JLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_JLabel.anchor = GridBagConstraints.WEST;
-		gbc_JLabel.gridx = 0;
-		gbc_JLabel.gridy = 0;
-		add(getJLabel(), gbc_JLabel);
-		GridBagConstraints gbc_combo = new GridBagConstraints();
-		gbc_combo.weightx = 1.0;
-		gbc_combo.fill = GridBagConstraints.HORIZONTAL;
-		gbc_combo.gridx = 1;
-		gbc_combo.gridy = 0;
-		add(getCombo(), gbc_combo);
-		GridBagConstraints gbc_newButton = new GridBagConstraints();
-		gbc_newButton.gridx = 2;
-		gbc_newButton.gridy = 0;
+		gbcJLabel.insets = new Insets(0, 0, 0, 5);
+		gbcJLabel.anchor = GridBagConstraints.WEST;
+		gbcJLabel.gridx = 0;
+		gbcJLabel.gridy = 0;
+		add(getJLabel(), gbcJLabel);
+		GridBagConstraints gbcCombo = new GridBagConstraints();
+		gbcCombo.weightx = 1.0;
+		gbcCombo.fill = GridBagConstraints.HORIZONTAL;
+		gbcCombo.gridx = 1;
+		gbcCombo.gridy = 0;
+		add(getCombo(), gbcCombo);
+		GridBagConstraints gbcNewButton = new GridBagConstraints();
+		gbcNewButton.gridx = 2;
+		gbcNewButton.gridy = 0;
 
-		add(getNewButton(), gbc_newButton);
+		add(getNewButton(), gbcNewButton);
 
 		Dimension dimension = getCombo().getPreferredSize();
 		getNewButton().setPreferredSize(new Dimension(dimension.height, dimension.height));
 
-		if (label!=null) getJLabel().setText(getLabel());
-		if (getComboTip()!=null) getCombo().setToolTipText(getComboTip());
-		if (getNewButtonTip()!=null) getNewButton().setToolTipText(getNewButtonTip());
+		if (label!=null) {
+			getJLabel().setText(getLabel());
+		}
+		if (getComboTip()!=null) {
+			getCombo().setToolTipText(getComboTip());
+		}
+		if (getNewButtonTip()!=null) {
+			getNewButton().setToolTipText(getNewButtonTip());
+		}
 	}
 
 	/** Gets the label.
 	 * @return a JLabel
 	 */
 	public JLabel getJLabel() {
-		if (JLabel == null) {
-			JLabel = new JLabel();
+		if (jLabel == null) {
+			jLabel = new JLabel();
 		}
-		return JLabel;
+		return jLabel;
 	}
 	
 	/** Gets the new button.
@@ -283,7 +291,9 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 */
 	public void set(T value) {
 		T oldValue = this.get();
-		if (!NullUtils.areEquals(value,oldValue)) getCombo().setSelectedItem(value);
+		if (!NullUtils.areEquals(value,oldValue)) {
+			getCombo().setSelectedItem(value);
+		}
 	}
 	
 	/** Sets the combo tooltip.

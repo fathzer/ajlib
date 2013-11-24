@@ -83,7 +83,9 @@ public class TextWidget extends JTextField {
 
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			if (((String)value).length()==0) value = " "; //$NON-NLS-1$
+			if (((String)value).length()==0) {
+				value = " "; //$NON-NLS-1$
+			}
 			JComponent label = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if ((unsortedMax>0) && (index==unsortedMax)) {
 				Border border = new UpperLineBorder(label.getForeground().brighter());
@@ -116,12 +118,16 @@ public class TextWidget extends JTextField {
 				public void focusLost(FocusEvent e) {
 					if (popup.isVisible() && !e.isTemporary() && (!list.equals(e.getOppositeComponent()))) {
 						popup.setVisible(false);
-						if (e.getOppositeComponent()!=null) e.getOppositeComponent().requestFocus();
+						if (e.getOppositeComponent()!=null) {
+							e.getOppositeComponent().requestFocus();
+						}
 					}
 				}
 				
 				@Override
-				public void focusGained(FocusEvent e) {}
+				public void focusGained(FocusEvent e) {
+					// Nothing to do in this case
+				}
 			});
 			// When the user clicks the list, we have to set the value clicked in the list, hide the popup, then transfer back the focus to the textField
 			list.addMouseListener(new MouseAdapter() {
@@ -223,14 +229,16 @@ public class TextWidget extends JTextField {
 	public void setPredefined(String[] array, int unsortedMax) {
 		installPopup();
 		this.unsortedMax = unsortedMax;
-		proposals = array;
+		this.proposals = array==null ? null : array.clone();
 		fillModel(this.getText());
 	}
 
 	private void showPopup() {
 		if (list.getModel().getSize()!=0) {
 			Dimension size = popup.getPreferredSize();
-			if (getWidth()>size.width) popup.setPreferredSize(new Dimension(getWidth(), size.height));
+			if (getWidth()>size.width) {
+				popup.setPreferredSize(new Dimension(getWidth(), size.height));
+			}
 			popup.show(TextWidget.this, 0, getHeight());
 			requestFocus(false);
 		} else {
@@ -299,7 +307,9 @@ public class TextWidget extends JTextField {
 			super.replace(offset, length, text, attrs);
 			this.ignoreEvents = false;
 			String newValue = TextWidget.this.getText();
-			if (!oldValue.equals(newValue)) TextWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!oldValue.equals(newValue)) {
+				TextWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			}
 		}
 		
 		@Override
@@ -307,7 +317,9 @@ public class TextWidget extends JTextField {
 			String oldValue = TextWidget.this.getText();
 			super.remove(offs, len);
 			String newValue = TextWidget.this.getText();
-			if (!ignoreEvents && !oldValue.equals(newValue)) TextWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!ignoreEvents && !oldValue.equals(newValue)) {
+				TextWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			}
 		}
 	}
 

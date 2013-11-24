@@ -136,7 +136,7 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 	 * The ordered set of all seven days of a week, beginning with the
 	 * 'firstDayOfWeek'.
 	 */
-	private int[] WEEK_DAYS;
+	private int[] weekDays;
 		
 	/**
 	 * Constructs a new date chooser panel, using today's date as the initial
@@ -183,9 +183,9 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 
 	private void initializeDays() {
 		this.firstDayOfWeek = Calendar.getInstance(getLocale()).getFirstDayOfWeek();
-		this.WEEK_DAYS = new int[7];
+		this.weekDays = new int[7];
 		for (int i = 0; i < 7; i++) {
-			this.WEEK_DAYS[i] = ((this.firstDayOfWeek + i - 1) % 7) + 1;
+			this.weekDays[i] = ((this.firstDayOfWeek + i - 1) % 7) + 1;
 		}
 	}
 
@@ -229,10 +229,10 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 		final JPanel p = new JPanel(new GridLayout(7, 7));
 		final DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(getLocale());
 		final String[] weekDays = dateFormatSymbols.getShortWeekdays();
-		this.days = new JLabel[this.WEEK_DAYS.length];
+		this.days = new JLabel[this.weekDays.length];
 
-		for (int i = 0; i < this.WEEK_DAYS.length; i++) {
-			this.days[i] = new JLabel(weekDays[this.WEEK_DAYS[i]], SwingConstants.CENTER);
+		for (int i = 0; i < this.weekDays.length; i++) {
+			this.days[i] = new JLabel(weekDays[this.weekDays[i]], SwingConstants.CENTER);
 			p.add(this.days[i]);
 		}
 
@@ -270,9 +270,9 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 
 	private void updateDays() {
 		final DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(getLocale());
-		final String[] weekDays = dateFormatSymbols.getShortWeekdays();
+		final String[] weekDaysWordings = dateFormatSymbols.getShortWeekdays();
 		for (int i = 0; i < days.length; i++) {
-			days[i].setText(weekDays[this.WEEK_DAYS[i]]);
+			days[i].setText(weekDaysWordings[this.weekDays[i]]);
 		}
 	}
 

@@ -24,13 +24,13 @@ public class AJLibDemoPanel extends JPanel {
 		setLayout(gridBagLayout);
 		
 		JTabbedPane panel = new JTabbedPane();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.weightx = 1.0;
-		gbc_panel.weighty = 1.0;
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
-		add(panel, gbc_panel);
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcPanel.weightx = 1.0;
+		gbcPanel.weighty = 1.0;
+		gbcPanel.fill = GridBagConstraints.BOTH;
+		gbcPanel.gridx = 0;
+		gbcPanel.gridy = 0;
+		add(panel, gbcPanel);
 		
 		panel.add("widget", new WidgetsDemoPanel());
 		
@@ -41,14 +41,14 @@ public class AJLibDemoPanel extends JPanel {
 		panel.add("dialog", new DialogsPanel());
 
 		messageLabel = new JLabel(" ");
-		GridBagConstraints gbc_messageLabel = new GridBagConstraints();
-		gbc_messageLabel.insets = new Insets(5, 5, 0, 5);
-		gbc_messageLabel.weightx = 1.0;
-		gbc_messageLabel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_messageLabel.anchor = GridBagConstraints.NORTHWEST;
-		gbc_messageLabel.gridx = 0;
-		gbc_messageLabel.gridy = 1;
-		add(messageLabel, gbc_messageLabel);
+		GridBagConstraints gbcMessageLabel = new GridBagConstraints();
+		gbcMessageLabel.insets = new Insets(5, 5, 0, 5);
+		gbcMessageLabel.weightx = 1.0;
+		gbcMessageLabel.fill = GridBagConstraints.HORIZONTAL;
+		gbcMessageLabel.anchor = GridBagConstraints.NORTHWEST;
+		gbcMessageLabel.gridx = 0;
+		gbcMessageLabel.gridy = 1;
+		add(messageLabel, gbcMessageLabel);
 	}
 
 	public void setMessage(String text) {

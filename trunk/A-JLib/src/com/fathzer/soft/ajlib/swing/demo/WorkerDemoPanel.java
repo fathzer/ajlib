@@ -16,7 +16,7 @@ import java.awt.GridBagConstraints;
 
 @SuppressWarnings("serial")
 public class WorkerDemoPanel extends JPanel {
-	private JButton btnStartANew_1;
+	private JButton btnStartANew1;
 		
 	/**
 	 * Create the panel.
@@ -28,14 +28,14 @@ public class WorkerDemoPanel extends JPanel {
 	private void initialize() {
 		setLayout(new GridBagLayout());
 		JButton btnStartANew = getBtnStartANew();
-		GridBagConstraints gbc_btnStartANew = new GridBagConstraints();
-		gbc_btnStartANew.gridy = 0;
-		gbc_btnStartANew.gridx = 0;
-		add(btnStartANew, gbc_btnStartANew);
-		GridBagConstraints gbc_btnStartANew_1 = new GridBagConstraints();
-		gbc_btnStartANew_1.gridy = 1;
-		gbc_btnStartANew_1.gridx = 0;
-		add(getBtnStartANew_1(), gbc_btnStartANew_1);
+		GridBagConstraints gbcBtnStartANew = new GridBagConstraints();
+		gbcBtnStartANew.gridy = 0;
+		gbcBtnStartANew.gridx = 0;
+		add(btnStartANew, gbcBtnStartANew);
+		GridBagConstraints gbcBtnStartANew1 = new GridBagConstraints();
+		gbcBtnStartANew1.gridy = 1;
+		gbcBtnStartANew1.gridx = 0;
+		add(getBtnStartANew1(), gbcBtnStartANew1);
 //		JButton btnStartChained = getBtnChained();
 //		GridBagConstraints gbc_btnStartChained = new GridBagConstraints();
 //		gbc_btnStartChained.anchor = GridBagConstraints.NORTH;
@@ -136,19 +136,25 @@ public class WorkerDemoPanel extends JPanel {
 			setPhase("A task may define phases", -1);
 			for (int i=0;i<40;i++) {
 				Thread.sleep(50);
-				if (isCancelled()) return null;
+				if (isCancelled()) {
+					return null;
+				}
 			}
 			setPhase("Some may not have a fixed length", -1);
 			for (int i=0;i<30;i++) {
 				Thread.sleep(50);
-				if (isCancelled()) return null;
+				if (isCancelled()) {
+					return null;
+				}
 			}
 			int nb = 30;
 			setPhase("Other may have a defined length", nb);
 			for (int i=0;i<nb;i++) {
 				Thread.sleep(50);
 				reportProgress(i);
-				if (isCancelled()) return null;
+				if (isCancelled()) {
+					return null;
+				}
 			}
 			return null;
 		}
@@ -180,10 +186,10 @@ public class WorkerDemoPanel extends JPanel {
 		return btnStartANew;
 	}
 	
-	private JButton getBtnStartANew_1() {
-		if (btnStartANew_1 == null) {
-			btnStartANew_1 = new JButton("Start a new modal background task");
-			btnStartANew_1.addActionListener(new ActionListener() {
+	private JButton getBtnStartANew1() {
+		if (btnStartANew1 == null) {
+			btnStartANew1 = new JButton("Start a new modal background task");
+			btnStartANew1.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					WorkerSample worker = new WorkerSample();
@@ -195,6 +201,6 @@ public class WorkerDemoPanel extends JPanel {
 				}
 			});
 		}
-		return btnStartANew_1;
+		return btnStartANew1;
 	}
 }

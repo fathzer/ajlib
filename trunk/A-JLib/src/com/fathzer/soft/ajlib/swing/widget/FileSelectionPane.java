@@ -44,22 +44,22 @@ public class FileSelectionPane extends JPanel {
 		setBorder(border);
 		
 		lblFile = new JLabel(Application.getString("FileSelectionPanel.file", getLocale())); //$NON-NLS-1$
-		GridBagConstraints gbc_lblFile = new GridBagConstraints();
-		gbc_lblFile.anchor = GridBagConstraints.WEST;
-		gbc_lblFile.insets = new Insets(0, 0, 0, 5);
-		gbc_lblFile.gridx = 0;
-		gbc_lblFile.gridy = 0;
-		add(lblFile, gbc_lblFile);
+		GridBagConstraints gbcLblFile = new GridBagConstraints();
+		gbcLblFile.anchor = GridBagConstraints.WEST;
+		gbcLblFile.insets = new Insets(0, 0, 0, 5);
+		gbcLblFile.gridx = 0;
+		gbcLblFile.gridy = 0;
+		add(lblFile, gbcLblFile);
 		
 		textField = new JTextField();
 		textField.setEditable(false);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.weightx = 1.0;
-		gbc_textField.insets = new Insets(0, 0, 0, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 0;
-		add(textField, gbc_textField);
+		GridBagConstraints gbcTextField = new GridBagConstraints();
+		gbcTextField.weightx = 1.0;
+		gbcTextField.insets = new Insets(0, 0, 0, 5);
+		gbcTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbcTextField.gridx = 1;
+		gbcTextField.gridy = 0;
+		add(textField, gbcTextField);
 		textField.setColumns(10);
 		
 		final JButton btnChange = new JButton(Application.getString("FileSelectionPanel.change", getLocale())); //$NON-NLS-1$
@@ -73,10 +73,10 @@ public class FileSelectionPane extends JPanel {
 				}
 			}
 		});
-		GridBagConstraints gbc_btnChange = new GridBagConstraints();
-		gbc_btnChange.gridx = 2;
-		gbc_btnChange.gridy = 0;
-		add(btnChange, gbc_btnChange);
+		GridBagConstraints gbcBtnChange = new GridBagConstraints();
+		gbcBtnChange.gridx = 2;
+		gbcBtnChange.gridy = 0;
+		add(btnChange, gbcBtnChange);
 	}
 
 	public void setSelectedFile(File file) {
