@@ -72,28 +72,28 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		
-		GridBagConstraints gbc_message = new GridBagConstraints();
-		gbc_message.insets = new Insets(5, 5, 5, 5);
-		gbc_message.anchor = GridBagConstraints.WEST;
-		gbc_message.gridwidth = 0;
-		gbc_message.gridx = 0;
-		gbc_message.gridy = 0;
-		add(getLabel(), gbc_message);
+		GridBagConstraints gbcMessage = new GridBagConstraints();
+		gbcMessage.insets = new Insets(5, 5, 5, 5);
+		gbcMessage.anchor = GridBagConstraints.WEST;
+		gbcMessage.gridwidth = 0;
+		gbcMessage.gridx = 0;
+		gbcMessage.gridy = 0;
+		add(getLabel(), gbcMessage);
 		
-		GridBagConstraints gbc_progressBar = new GridBagConstraints();
-		gbc_progressBar.weightx = 1.0;
-		gbc_progressBar.insets = new Insets(0, 5, 5, 5);
-		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_progressBar.gridwidth = 0;
-		gbc_progressBar.gridx = 0;
-		gbc_progressBar.gridy = 1;
-		add(getProgressBar(), gbc_progressBar);
+		GridBagConstraints gbcProgressBar = new GridBagConstraints();
+		gbcProgressBar.weightx = 1.0;
+		gbcProgressBar.insets = new Insets(0, 5, 5, 5);
+		gbcProgressBar.fill = GridBagConstraints.HORIZONTAL;
+		gbcProgressBar.gridwidth = 0;
+		gbcProgressBar.gridx = 0;
+		gbcProgressBar.gridy = 1;
+		add(getProgressBar(), gbcProgressBar);
 		
-		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
-		gbc_btnCancel.insets = new Insets(0, 5, 5, 5);
-		gbc_btnCancel.gridx = 0;
-		gbc_btnCancel.gridy = 2;
-		add(getBtnCancel(), gbc_btnCancel);
+		GridBagConstraints gbcBtnCancel = new GridBagConstraints();
+		gbcBtnCancel.insets = new Insets(0, 5, 5, 5);
+		gbcBtnCancel.gridx = 0;
+		gbcBtnCancel.gridy = 2;
+		add(getBtnCancel(), gbcBtnCancel);
 	}
 
 	@Override
@@ -104,7 +104,9 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	@Override
 	public void setSwingWorker(Worker<?, ?> worker) {
 		PropertyChangeListener listener = getListener();
-		if (this.worker!=null) this.worker.removePropertyChangeListener(listener);
+		if (this.worker!=null) {
+			this.worker.removePropertyChangeListener(listener);
+		}
 		this.worker = worker;
 		this.worker.addPropertyChangeListener(listener);
 		initPhase();
@@ -126,7 +128,9 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	 * <br>You can override this method to change this behavior. 
 	 */
 	protected void initPhase() {
-		if (worker.getPhase()!=null) setMessage(worker.getPhase());					
+		if (worker.getPhase()!=null) {
+			setMessage(worker.getPhase());					
+		}
 		int phaseLength = worker.getPhaseLength();
 		JProgressBar pBar = getProgressBar();
 		pBar.setIndeterminate(phaseLength<=0);

@@ -50,28 +50,28 @@ public class ExcelPane extends JPanel {
 	protected void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 0;
-		gbc_scrollPane.weighty = 1.0;
-		gbc_scrollPane.weightx = 1.0;
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 0;
-		add(getTable(), gbc_scrollPane);
-		GridBagConstraints gbc_saveButton = new GridBagConstraints();
-		gbc_saveButton.insets = new Insets(5, 0, 0, 0);
-		gbc_saveButton.anchor = GridBagConstraints.EAST;
-		gbc_saveButton.gridx = 1;
-		gbc_saveButton.gridy = 1;
-		add(getSaveButton(), gbc_saveButton);
+		GridBagConstraints gbcScrollPane = new GridBagConstraints();
+		gbcScrollPane.gridwidth = 0;
+		gbcScrollPane.weighty = 1.0;
+		gbcScrollPane.weightx = 1.0;
+		gbcScrollPane.fill = GridBagConstraints.BOTH;
+		gbcScrollPane.gridx = 0;
+		gbcScrollPane.gridy = 0;
+		add(getTable(), gbcScrollPane);
+		GridBagConstraints gbcSaveButton = new GridBagConstraints();
+		gbcSaveButton.insets = new Insets(5, 0, 0, 0);
+		gbcSaveButton.anchor = GridBagConstraints.EAST;
+		gbcSaveButton.gridx = 1;
+		gbcSaveButton.gridy = 1;
+		add(getSaveButton(), gbcSaveButton);
 		JComponent extra = getExtraComponent();
 		if (extra!=null) {
-			GridBagConstraints gbc_extra = new GridBagConstraints();
-			gbc_extra.insets = new Insets(5, 0, 0, 0);
-			gbc_extra.anchor = GridBagConstraints.WEST;
-			gbc_extra.gridx = 0;
-			gbc_extra.gridy = 1;
-			add(extra, gbc_extra);
+			GridBagConstraints gbcExtra = new GridBagConstraints();
+			gbcExtra.insets = new Insets(5, 0, 0, 0);
+			gbcExtra.anchor = GridBagConstraints.WEST;
+			gbcExtra.gridx = 0;
+			gbcExtra.gridy = 1;
+			add(extra, gbcExtra);
 		}
 	}
 	

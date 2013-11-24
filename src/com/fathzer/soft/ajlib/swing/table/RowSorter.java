@@ -87,7 +87,7 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
 	public void setToggleSequence(List<SortOrder> sequence) {
 		if (sequence==null) {
 			this.toggleSequence = Arrays.asList(SortOrder.values());
-		} else if (sequence.size()==0) {
+		} else if (sequence.isEmpty()) {
 			throw new IllegalArgumentException("toggle sequence can't be empty");
 		} else {
 			this.toggleSequence = sequence;

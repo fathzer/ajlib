@@ -21,9 +21,9 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  */
 public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	/** The state property name of the SwingWorker (Should have been defined in SwingWorker by Oracle ?) */
-	public static String STATE_PROPERTY_NAME = "state"; //$NON-NLS-1$
+	public static final String STATE_PROPERTY_NAME = "state"; //$NON-NLS-1$
 	/** The progress property name of the SwingWorker (Should have been defined in SwingWorker by Oracle ?) */
-	public static String PROGRESS_PROPERTY_NAME = "progress"; //$NON-NLS-1$
+	public static final String PROGRESS_PROPERTY_NAME = "progress"; //$NON-NLS-1$
 	/** The job phase property name */
 	public static final String JOB_PHASE = "phase"; //$NON-NLS-1$
 	/** The phase length property name */

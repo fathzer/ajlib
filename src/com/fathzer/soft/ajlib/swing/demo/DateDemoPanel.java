@@ -24,60 +24,60 @@ public class DateDemoPanel extends JPanel {
 		setLayout(gridBagLayout);
 		
 		JLabel lblNewLabel = new JLabel("DateWidget:");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 5, 5, 5);
-		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		add(lblNewLabel, gbc_lblNewLabel);
+		GridBagConstraints gbcLblNewLabel = new GridBagConstraints();
+		gbcLblNewLabel.insets = new Insets(0, 5, 5, 5);
+		gbcLblNewLabel.anchor = GridBagConstraints.WEST;
+		gbcLblNewLabel.gridx = 0;
+		gbcLblNewLabel.gridy = 0;
+		add(lblNewLabel, gbcLblNewLabel);
 		
 		DateWidget panel = new DateWidget();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(0, 0, 5, 0);
-		gbc_panel.anchor = GridBagConstraints.NORTHWEST;
-		gbc_panel.gridx = 1;
-		gbc_panel.gridy = 0;
-		add(panel, gbc_panel);
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcPanel.insets = new Insets(0, 0, 5, 0);
+		gbcPanel.anchor = GridBagConstraints.NORTHWEST;
+		gbcPanel.gridx = 1;
+		gbcPanel.gridy = 0;
+		add(panel, gbcPanel);
 		
 		JLabel lblDatefield = new JLabel("DateField:");
-		GridBagConstraints gbc_lblDatefield = new GridBagConstraints();
-		gbc_lblDatefield.anchor = GridBagConstraints.WEST;
-		gbc_lblDatefield.insets = new Insets(0, 5, 5, 5);
-		gbc_lblDatefield.gridx = 0;
-		gbc_lblDatefield.gridy = 1;
-		add(lblDatefield, gbc_lblDatefield);
+		GridBagConstraints gbcLblDatefield = new GridBagConstraints();
+		gbcLblDatefield.anchor = GridBagConstraints.WEST;
+		gbcLblDatefield.insets = new Insets(0, 5, 5, 5);
+		gbcLblDatefield.gridx = 0;
+		gbcLblDatefield.gridy = 1;
+		add(lblDatefield, gbcLblDatefield);
 		
 		textField = new DateField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.anchor = GridBagConstraints.WEST;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 1;
-		add(textField, gbc_textField);
+		GridBagConstraints gbcTextField = new GridBagConstraints();
+		gbcTextField.insets = new Insets(0, 0, 5, 0);
+		gbcTextField.anchor = GridBagConstraints.WEST;
+		gbcTextField.gridx = 1;
+		gbcTextField.gridy = 1;
+		add(textField, gbcTextField);
 		textField.setColumns(10);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "CalendarWidget", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_panel_1.weighty = 1.0;
-		gbc_panel_1.weightx = 1.0;
-		gbc_panel_1.gridwidth = 2;
-		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 2;
-		add(panel_1, gbc_panel_1);
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		panel_1.setLayout(gbl_panel_1);
+		JPanel panel1 = new JPanel();
+		panel1.setBorder(new TitledBorder(null, "CalendarWidget", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbcPanel1 = new GridBagConstraints();
+		gbcPanel1.anchor = GridBagConstraints.NORTHWEST;
+		gbcPanel1.weighty = 1.0;
+		gbcPanel1.weightx = 1.0;
+		gbcPanel1.gridwidth = 2;
+		gbcPanel1.insets = new Insets(0, 0, 0, 5);
+		gbcPanel1.gridx = 0;
+		gbcPanel1.gridy = 2;
+		add(panel1, gbcPanel1);
+		GridBagLayout gblPanel1 = new GridBagLayout();
+		panel1.setLayout(gblPanel1);
 		
-		CalendarWidget CalendarWidget = new CalendarWidget();
-		GridBagConstraints gbc_CalendarWidget = new GridBagConstraints();
-		gbc_CalendarWidget.anchor = GridBagConstraints.WEST;
-		gbc_CalendarWidget.insets = new Insets(0, 0, 5, 0);
-		gbc_CalendarWidget.gridwidth = 2;
-		gbc_CalendarWidget.gridx = 0;
-		gbc_CalendarWidget.gridy = 0;
-		panel_1.add(CalendarWidget, gbc_CalendarWidget);
+		CalendarWidget calendarWidget = new CalendarWidget();
+		GridBagConstraints gbcCalendarWidget = new GridBagConstraints();
+		gbcCalendarWidget.anchor = GridBagConstraints.WEST;
+		gbcCalendarWidget.insets = new Insets(0, 0, 5, 0);
+		gbcCalendarWidget.gridwidth = 2;
+		gbcCalendarWidget.gridx = 0;
+		gbcCalendarWidget.gridy = 0;
+		panel1.add(calendarWidget, gbcCalendarWidget);
 
 	}
 
