@@ -9,7 +9,7 @@ import javax.swing.table.TableModel;
 import com.fathzer.soft.ajlib.utilities.CSVWriter;
 
 
-/** A specialize CSV Exporter that exports TableModels
+/** A specialized CSV Exporter that exports TableModels
  * @author Jean-Marc Astesana
  * <BR>License: LGPL v3
  */
