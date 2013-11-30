@@ -47,6 +47,7 @@ public class CharWidget extends TextWidget {
 		addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
+				// Nothing to do
 			}
 			
 			@Override

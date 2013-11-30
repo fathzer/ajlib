@@ -86,8 +86,9 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	 * @param progress
 	 */
 	public void reportProgress(int progress) {
-		if (this.phaseLength<0) throw new IllegalArgumentException();
-		if (progress>phaseLength) throw new IllegalArgumentException();
+		if ((this.phaseLength<0) || (progress>phaseLength)) {
+			throw new IllegalArgumentException();
+		}
 		long percent = phaseLength==0?100:(progress*100)/phaseLength;
 		super.setProgress((int)percent);
 	}

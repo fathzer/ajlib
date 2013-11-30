@@ -5,7 +5,8 @@ package com.fathzer.soft.ajlib.utilities;
  * <BR>License: LGPL v3
  */
 public final class NullUtils {
-	private NullUtils() {}
+	private NullUtils() {
+	}
 	
 	/** Tests whether two objects are equals or not.
 	 * <br>The arguments may be null.
@@ -15,7 +16,7 @@ public final class NullUtils {
 	 */
 	public static boolean areEquals(Object o1, Object o2) {
 		if (o1==null) {
-			return (o2==null);
+			return o2==null;
 		} else if (o2 == null) {
 			return false;
 		} else {

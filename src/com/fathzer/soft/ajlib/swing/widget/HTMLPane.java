@@ -73,8 +73,12 @@ public class HTMLPane extends JScrollPane {
 		if (this.contentType==null) {
 			String trimmed = text.trim();
 			boolean html = trimmed.length()>=HTML_START_TAG.length()+HTML_END_TAG.length();
-			if (html) html = HTML_START_TAG.equalsIgnoreCase(trimmed.substring(0, HTML_START_TAG.length()));
-			if (html) html = HTML_END_TAG.equalsIgnoreCase(trimmed.substring(trimmed.length() - HTML_END_TAG.length()));
+			if (html) {
+				html = HTML_START_TAG.equalsIgnoreCase(trimmed.substring(0, HTML_START_TAG.length()));
+			}
+			if (html) {
+				html = HTML_END_TAG.equalsIgnoreCase(trimmed.substring(trimmed.length() - HTML_END_TAG.length()));
+			}
 			type = html?"text/html":"text/plain"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			type = this.contentType;
@@ -106,6 +110,8 @@ public class HTMLPane extends JScrollPane {
 	 */
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
-		if (contentType!=null) getTextPane().setContentType(contentType);
+		if (contentType!=null) {
+			getTextPane().setContentType(contentType);
+		}
 	}
 }

@@ -45,7 +45,9 @@ public class IntegerWidget extends TextWidget {
 	 */
 	public IntegerWidget(BigInteger minValue, BigInteger maxValue) {
 		super();
-		if ((minValue!=null)&&(maxValue!=null)&&(minValue.compareTo(maxValue)>0)) throw new IllegalArgumentException();
+		if ((minValue!=null)&&(maxValue!=null)&&(minValue.compareTo(maxValue)>0)) {
+			throw new IllegalArgumentException();
+		}
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		// Adds a key listener to ignored any invalid characters and to increase/decrease value when up/down arrow key are pressed
@@ -53,25 +55,31 @@ public class IntegerWidget extends TextWidget {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// No car are allowed before a - sign
-				if ((getSelectionEnd()<getText().length()) && (getText().substring(getSelectionEnd()).indexOf('-')>=0)) e.consume();
+				if ((getSelectionEnd()<getText().length()) && (getText().substring(getSelectionEnd()).indexOf('-')>=0)) {
+					e.consume();
+				}
 				char car = e.getKeyChar();
 				if (car=='-') { // - char is a valid character only if the field accepts value less than zero and in the first place (if there's no other - after the current selection)
 					if ((IntegerWidget.this.minValue==null) || (IntegerWidget.this.minValue.compareTo(BigInteger.ZERO)<0)) {
-						if (IntegerWidget.this.getSelectionStart()!=0) e.consume(); // No - after first position
+						if (IntegerWidget.this.getSelectionStart()!=0) {
+							e.consume(); // No - after first position
+						}
 					} else {
 						e.consume();
 					}
-				} else if (!Character.isDigit(car)) e.consume();
+				} else if (!Character.isDigit(car)) {
+					e.consume();
+				}
 			}
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode()==KeyEvent.VK_UP) {
-					if (value!=null) {
-						if ((IntegerWidget.this.maxValue==null) || (value.compareTo(IntegerWidget.this.maxValue)<0)) setValue(value.add(BigInteger.ONE));
+					if ((value!=null) && ((IntegerWidget.this.maxValue==null) || (value.compareTo(IntegerWidget.this.maxValue)<0))) {
+						setValue(value.add(BigInteger.ONE));
 					}
 				} else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-					if (value!=null) {
-						if ((IntegerWidget.this.minValue==null) || (value.compareTo(IntegerWidget.this.minValue)>0)) setValue(value.subtract(BigInteger.ONE));
+					if ((value!=null) && ((IntegerWidget.this.minValue==null) || (value.compareTo(IntegerWidget.this.minValue)>0))) {
+						setValue(value.subtract(BigInteger.ONE));
 					}
 				}
 			}
@@ -97,7 +105,9 @@ public class IntegerWidget extends TextWidget {
 			value = null;
 		}
 		if (!NullUtils.areEquals(value,old)) {
-			if (DEBUG) System.out.println ("->"+value);
+			if (DEBUG) {
+				System.out.println ("->"+value);
+			}
 			this.firePropertyChange(VALUE_PROPERTY, old, value);
 		}
 	}
@@ -112,7 +122,9 @@ public class IntegerWidget extends TextWidget {
 	 * @return an integer or null if the value is not valid.
 	 */
 	public BigInteger getValue() {
-		if (DEBUG) System.out.println ("IntegerWidget.getValue() returns "+value);
+		if (DEBUG) {
+			System.out.println ("IntegerWidget.getValue() returns "+value);
+		}
 		return this.value==null?null:this.value;
 	}
 
@@ -120,7 +132,9 @@ public class IntegerWidget extends TextWidget {
 	 * @param value a big integer or null to set the field empty.
 	 */
 	public void setValue(BigInteger value) {
-		if (!NullUtils.areEquals(value,this.value)) this.setText(value==null?"":value.toString());
+		if (!NullUtils.areEquals(value,this.value)) {
+			this.setText(value==null?"":value.toString());
+		}
 	}
 
 	/** Sets the current value.

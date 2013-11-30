@@ -201,7 +201,9 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 			if (theDate == null) {
 				this.chosenDate = null;
 			} else {
-				if (this.chosenDate == null) this.chosenDate = Calendar.getInstance(getLocale());
+				if (this.chosenDate == null) {
+					this.chosenDate = Calendar.getInstance(getLocale());
+				}
 				this.chosenDate.setTime(theDate);
 				this.monthSelector.setMonth(theDate);
 			}
@@ -287,14 +289,14 @@ public class CalendarWidget extends JPanel /*implements ActionListener*/ {
 	 */
 	private boolean equalDates(final Calendar c1, final Calendar c2) {
 		// Be aware that c1 or c2 can be null
-		if (c1 == c2) return true;
-		if ((c1 == null) || (c2 == null)) return false;
-		if ((c1.get(Calendar.DATE) == c2.get(Calendar.DATE)) && (c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH))
-				&& (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR))) {
+		if ((c1 == null) && (c2 == null)) {
 			return true;
-		} else {
+		}
+		if ((c1 == null) || (c2 == null)) {
 			return false;
 		}
+		return (c1.get(Calendar.DATE) == c2.get(Calendar.DATE)) && (c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH))
+				&& (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR));
 	}
 
 	/**

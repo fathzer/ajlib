@@ -47,11 +47,13 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
 	@Override
 	public void toggleSortOrder(int column) {
 //System.out.println ("toggleSortOrder is called");
-		if (!isSortable(column)) return;
-    List<? extends SortKey> sortKeys = getSortKeys();
-    ArrayList<SortKey> futureKeys = new ArrayList<SortKey>();
-    SortKey theKey = null;
-    for (SortKey sortKey : sortKeys) {
+		if (!isSortable(column)) {
+			return;
+		}
+		List<? extends SortKey> sortKeys = getSortKeys();
+		ArrayList<SortKey> futureKeys = new ArrayList<SortKey>();
+		SortKey theKey = null;
+		for (SortKey sortKey : sortKeys) {
 			if (sortKey.getColumn()==column) {
 				int index = toggleSequence.indexOf(sortKey.getSortOrder());
 				if ((index<0) || (index==toggleSequence.size()-1)) {
@@ -65,17 +67,23 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
 				futureKeys.add(sortKey);
 			}
 		}
-    if (theKey==null) theKey = new SortKey(column, toggleSequence.get(0));
-    if (!theKey.getSortOrder().equals(SortOrder.UNSORTED)) {
-    	futureKeys.add(0, theKey);
-    } else {
-    	// One might be tempted to remove the key from the sort key list, it would not be a good idea
-    	// If the UNSORTED is not at the end of the toggleSequence, it would broke the sequence
-    	// Example: ASCENDING, UNSORTED, DESCENDING would leave DESCENDING unreachable
-    	// Instead of removing the key, we will put it to the lowest priority.
-    	futureKeys.add(theKey);
-    }
-    super.setSortKeys(futureKeys);
+		if (theKey == null) {
+			theKey = new SortKey(column, toggleSequence.get(0));
+		}
+		if (!theKey.getSortOrder().equals(SortOrder.UNSORTED)) {
+			futureKeys.add(0, theKey);
+		} else {
+			// One might be tempted to remove the key from the sort key list, it
+			// would not be a good idea
+			// If the UNSORTED is not at the end of the toggleSequence, it would
+			// broke the sequence
+			// Example: ASCENDING, UNSORTED, DESCENDING would leave DESCENDING
+			// unreachable
+			// Instead of removing the key, we will put it to the lowest
+			// priority.
+			futureKeys.add(theKey);
+		}
+		super.setSortKeys(futureKeys);
 	}
 	
 	/** Sets the toggle sequence.

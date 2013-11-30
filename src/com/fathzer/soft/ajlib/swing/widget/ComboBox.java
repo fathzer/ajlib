@@ -36,13 +36,17 @@ public class ComboBox extends JComboBox {
 	 */
 	public boolean contains (Object item) {
 		for (int i = 0; i < this.getItemCount(); i++) {
-			if (this.getItemAt(i).equals(item)) return true;
+			if (this.getItemAt(i).equals(item)) {
+				return true;
+			}
 		}
 		return false;
 	}
 
 	@Override
 	protected void fireActionEvent() {
-		if (isActionEnabled) super.fireActionEvent();
+		if (isActionEnabled) {
+			super.fireActionEvent();
+		}
 	}
 }

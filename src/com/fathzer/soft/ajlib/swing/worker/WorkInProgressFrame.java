@@ -32,11 +32,9 @@ public class WorkInProgressFrame extends JDialog {
 	private final class AutoClosePropertyChangeListener implements PropertyChangeListener {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
-				if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
-//					System.out.println ("End of worker detected at "+System.currentTimeMillis());
-					WorkInProgressFrame.this.dispose();
-				}
+			if (Worker.STATE_PROPERTY_NAME.equals(evt.getPropertyName()) && SwingWorker.StateValue.DONE.equals(evt.getNewValue())) {
+//				System.out.println ("End of worker detected at "+System.currentTimeMillis());
+				WorkInProgressFrame.this.dispose();
 			}
 		}
 	}
@@ -71,7 +69,9 @@ public class WorkInProgressFrame extends JDialog {
 				if (getDefaultCloseOperation()!=JFrame.DO_NOTHING_ON_CLOSE) {
 					// Cancel the task if the window is closing
 					Worker<?, ?> worker = progressPanel.getWorker();
-					if (!worker.isFinished()) worker.cancel(false);
+					if (!worker.isFinished()) {
+						worker.cancel(false);
+					}
 					
 					if (getDefaultCloseOperation()==JFrame.DISPOSE_ON_CLOSE) {
 						forceDispose();
@@ -85,7 +85,9 @@ public class WorkInProgressFrame extends JDialog {
 		this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
 
 		pack();
-		if (owner!=null) this.setLocationRelativeTo(owner);
+		if (owner!=null) {
+			this.setLocationRelativeTo(owner);
+		}
 	}
 
 	private void buildContentPane() {
@@ -138,7 +140,8 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	@Override
 	public void setVisible(boolean visible) {
-		if (visible) { // If we try to open the dialog, start the task if it is not already started
+		if (visible) {
+			// If we try to open the dialog, start the task if it is not already started
 			execute();
 		}
 	}
@@ -148,7 +151,8 @@ public class WorkInProgressFrame extends JDialog {
 		// remaining will contain the visibility remaining time (to satisfied the minimumVisibleTime attribute).
 		// If the worker was cancelled, we assume that the user has cancelled the dialog ... so, minimumVisibleTime has no reason to be satisfied
 		long remaining = this.worker.isCancelled()?0:minimumVisibleTime-(System.currentTimeMillis()-setVisibleTime);
-		if (remaining>0) { // If the dialog is displayed for less than the minimum visible time ms, and the task was not cancelled
+		if (remaining>0) {
+			// If the dialog is displayed for less than the minimum visible time ms, and the task was not cancelled
 			// Wait for the user to see what happens ;-)
 			Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
 				@Override
@@ -175,13 +179,16 @@ public class WorkInProgressFrame extends JDialog {
 	 * <br>If this frame is modal, the calling thread is blocked until the task completes (and this frame is hiden).
 	 */
 	public void execute() {
-		if (!worker.getState().equals(StateValue.PENDING)) return;
+		if (!worker.getState().equals(StateValue.PENDING)) {
+			return;
+		}
 		// Start the job task.
 //		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
 		worker.execute();
 		if (!isVisible()) {
-			if (delay>0) { // If the window display should be delayed
-				if (getModalityType().equals(ModalityType.MODELESS)) {
+			if (delay>0) {
+				// If the window display should be delayed
+				if (ModalityType.MODELESS.equals(getModalityType())) {
 					// If the dialog is not modal, then create a timer to show the window and returns immediately 
 					this.timer = new Timer(delay, new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -213,7 +220,9 @@ public class WorkInProgressFrame extends JDialog {
 	private synchronized void showIt() {
 		setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
 //		System.out.println ("setVisible(true) at "+setVisibleTime+". Minimum="+this.minimumVisibleTime);
-		if (!isVisible() && !worker.isFinished()) super.setVisible(true);
+		if (!isVisible() && !worker.isFinished()) {
+			super.setVisible(true);
+		}
 	}
 	
 	protected Worker<?,?> getWorker() {

@@ -15,10 +15,13 @@ import com.fathzer.soft.ajlib.swing.Utils;
 
 import java.awt.BorderLayout;
 
-/** JTable has a lot of lacks, this class adds the ability for a table to have row titles.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
- */ 
+/**
+ * JTable has a lot of lacks, this class adds the ability for a table to have
+ * row titles.
+ * 
+ * @author Jean-Marc Astesana <BR>
+ *         License: LGPL v3
+ */
 public class Table extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -32,8 +35,8 @@ public class Table extends JPanel {
 	public Table() {
 		initialize();
 	}
-	
-	protected void initialize() {
+
+	private void initialize() {
 		setLayout(new BorderLayout(0, 0));
 		add(getScrollPane());
 	}
@@ -41,18 +44,20 @@ public class Table extends JPanel {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-	    scrollPane.setRowHeaderView(getRowJTable());
+			scrollPane.setRowHeaderView(getRowJTable());
 			scrollPane.setViewportView(getJTable());
 		}
 		return scrollPane;
 	}
-	
-	/** Gets the internal table that is used to display table rows.
-	 * <br>You can override this method in order to create a customized row table.
+
+	/**
+	 * Gets the internal table that is used to display table rows. <br>
+	 * You can override this method in order to create a customized row table.
+	 * 
 	 * @return a JTable
 	 */
 	public final JTable getRowJTable() {
-		if (rowView==null) {
+		if (rowView == null) {
 			rowView = new JTable();
 			rowView.setDefaultRenderer(Object.class, new RowHeaderRenderer());
 			rowView.setFocusable(false);
@@ -61,7 +66,7 @@ public class Table extends JPanel {
 		}
 		return rowView;
 	}
-	
+
 	private void setRowViewSize(final JTable rowView) {
 		int width = 0;
 		for (int i = 0; i < rowView.getColumnCount(); i++) {
@@ -72,7 +77,9 @@ public class Table extends JPanel {
 		rowView.setPreferredScrollableViewportSize(d);
 	}
 
-	/** Gets the internal JTable.
+	/**
+	 * Gets the internal JTable.
+	 * 
 	 * @return a JTable
 	 * @see #buildJTable()
 	 */
@@ -85,22 +92,29 @@ public class Table extends JPanel {
 		}
 		return table;
 	}
-	
-	/** Builds the internal JTable.
-	 * <br>This table doesn't not contains the row titles.
-	 * <br>This method is called once and creates the internal JTable.
-	 * <br>It is useful to customize the table (for example to change its CellRenderer).
-	 * <br>So, you can override this method in order to create a customized table.
+
+	/**
+	 * Builds the internal JTable. <br>
+	 * This table doesn't not contains the row titles. <br>
+	 * This method is called once and creates the internal JTable. <br>
+	 * It is useful to customize the table (for example to change its
+	 * CellRenderer). <br>
+	 * So, you can override this method in order to create a customized table.
+	 * 
 	 * @return a JTable
 	 */
 	protected JTable buildJTable() {
 		return new JTable();
 	}
-	
-	/** Sets the table model.
-	 * <br>Please note that you should not modify directly the model of the internal JTable.
-	 * It would results in having the row titles not updated.
-	 * @param model The model. If this model implements TitledRowsTableModel, the table will have row titles.
+
+	/**
+	 * Sets the table model. <br>
+	 * Please note that you should not modify directly the model of the internal
+	 * JTable. It would results in having the row titles not updated.
+	 * 
+	 * @param model
+	 *            The model. If this model implements TitledRowsTableModel, the
+	 *            table will have row titles.
 	 * @see TitledRowsTableModel
 	 */
 	public void setModel(TableModel model) {
@@ -113,50 +127,61 @@ public class Table extends JPanel {
 	private void installModelInRowJTable(TitledRowsTableModel model) {
 		final TableModel rowHeaderModel = new RowModel(model);
 		getRowJTable().setModel(rowHeaderModel);
-		getRowJTable().getColumnModel().addColumnModelListener(new TableColumnModelListener() {
-			
-			@Override
-			public void columnSelectionChanged(ListSelectionEvent e) {
-			}
-			
-			@Override
-			public void columnRemoved(TableColumnModelEvent e) {
-				setRowViewSize(getRowJTable());
-			}
-			
-			@Override
-			public void columnMoved(TableColumnModelEvent e) {
-			}
-			
-			@Override
-			public void columnMarginChanged(ChangeEvent e) {
-			}
-			
-			@Override
-			public void columnAdded(TableColumnModelEvent e) {
-				setRowViewSize(getRowJTable());
-			}
-		});
+		getRowJTable().getColumnModel().addColumnModelListener(
+				new TableColumnModelListener() {
+
+					@Override
+					public void columnSelectionChanged(ListSelectionEvent e) {
+						// Nothing to do
+					}
+
+					@Override
+					public void columnRemoved(TableColumnModelEvent e) {
+						setRowViewSize(getRowJTable());
+					}
+
+					@Override
+					public void columnMoved(TableColumnModelEvent e) {
+						// Nothing to do
+					}
+
+					@Override
+					public void columnMarginChanged(ChangeEvent e) {
+						// Nothing to do
+					}
+
+					@Override
+					public void columnAdded(TableColumnModelEvent e) {
+						setRowViewSize(getRowJTable());
+					}
+				});
 		setRowViewSize(getRowJTable());
 	}
-	
-	/** Gets the table model.
+
+	/**
+	 * Gets the table model.
+	 * 
 	 * @return a TableModel
 	 */
 	public TableModel getModel() {
 		return this.getJTable().getModel();
 	}
 
-	/** Gets the default row height of this table.
+	/**
+	 * Gets the default row height of this table.
+	 * 
 	 * @return an integer.
 	 */
 	public int getRowHeight() {
 		return this.getJTable().getRowHeight();
 	}
 
-	/** Sets the default row height of this table.
-	 * <br>This method sets the row height of the main table and its title table. 
-	 * @param rowHeight The new row height
+	/**
+	 * Sets the default row height of this table. <br>
+	 * This method sets the row height of the main table and its title table.
+	 * 
+	 * @param rowHeight
+	 *            The new row height
 	 */
 	public void setRowHeight(int rowHeight) {
 		this.getJTable().setRowHeight(rowHeight);

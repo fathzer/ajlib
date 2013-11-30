@@ -33,7 +33,9 @@ public abstract class JTableSelector<T> {
 			int row = getModelIndex(elements[i]);
 			if (row>=0) {
 				row = table.convertRowIndexToView(row);
-				if ((firstViewRow<0) || (firstViewRow>row)) firstViewRow = row;
+				if ((firstViewRow<0) || (firstViewRow>row)) {
+					firstViewRow = row;
+				}
 				table.getSelectionModel().addSelectionInterval(row, row);
 			}
 		}

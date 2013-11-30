@@ -119,10 +119,8 @@ public abstract class Application {
 					// the window for exiting from application.
 					Window[] windows = Window.getWindows();
 					for (int i = 0; i < windows.length; i++) {
-						if (windows[i] == frame) {
-							if (!windows[i].isVisible()) {
-								windows[i].dispatchEvent(new WindowEvent(windows[i],WindowEvent.WINDOW_CLOSING));
-							}
+						if ((windows[i] == frame) && !windows[i].isVisible()) {
+							windows[i].dispatchEvent(new WindowEvent(windows[i],WindowEvent.WINDOW_CLOSING));
 						}
 					}
 				}
@@ -167,7 +165,9 @@ public abstract class Application {
 				break;
 			}
 		}
-		if (lookAndFeelClass==null) lookAndFeelClass = UIManager.getSystemLookAndFeelClassName();
+		if (lookAndFeelClass==null) {
+			lookAndFeelClass = UIManager.getSystemLookAndFeelClassName();
+		}
 		try {
 			UIManager.setLookAndFeel(lookAndFeelClass);
 			UIManager.getLookAndFeelDefaults().setDefaultLocale(Locale.getDefault());
@@ -224,8 +224,12 @@ public abstract class Application {
 			getJFrame().setExtendedState(extendedState);
 		}
 		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
-		if (location.x+frame.getWidth()>screenSize.width) location.x = screenSize.width-frame.getWidth();
-		if (location.y+frame.getHeight()>screenSize.height) location.y = screenSize.height-frame.getHeight();
+		if (location.x+frame.getWidth()>screenSize.width) {
+			location.x = screenSize.width-frame.getWidth();
+		}
+		if (location.y+frame.getHeight()>screenSize.height) {
+			location.y = screenSize.height-frame.getHeight();
+		}
 		frame.setLocation(location);
 	}
 	
@@ -304,7 +308,9 @@ public abstract class Application {
 	/** This method is called one time, at startup, after the frame is made visible, on the eventDispatchThread.
 	 * <br>This default implementation does nothing.
 	 */
-	protected void onVisible() {}
+	protected void onVisible() {
+		// By default, this method does nothing
+	}
 	
 	/** This method is called when the application frame is closed.
 	 * <br>The default implementation calls saveState, then disposes the window.

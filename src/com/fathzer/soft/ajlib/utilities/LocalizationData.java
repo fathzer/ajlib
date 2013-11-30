@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -15,7 +16,7 @@ public class LocalizationData {
 	public static final String DEFAULT_BUNDLE_NAME = "com.fathzer.soft.ajlib.Resources";
 	public static LocalizationData DEFAULT = new LocalizationData(DEFAULT_BUNDLE_NAME);
 	
-	private HashMap<Locale, List<ResourceBundle>> bundles;
+	private Map<Locale, List<ResourceBundle>> bundles;
 	private List<String> bundleNames;
 	private boolean translatorMode;
 	
@@ -32,7 +33,8 @@ public class LocalizationData {
 	 * @see #add(String)
 	 */
 	public LocalizationData(String bundlePath) {
-		this.bundleNames = new ArrayList<String>(); this.bundleNames.add(bundlePath);
+		this.bundleNames = new ArrayList<String>();
+		this.bundleNames.add(bundlePath);
 		this.bundles = new HashMap<Locale, List<ResourceBundle>>();
 		this.translatorMode = false;
 	}
@@ -66,11 +68,15 @@ public class LocalizationData {
 	 */
 	public String getString(String key, Locale locale) {
 		// If translator mode is on, return the key
-		if (translatorMode) return key;
+		if (translatorMode) {
+			return key;
+		}
 		// Check key in additional bundles
 		List<ResourceBundle> bundle = this.getBundle(locale);
 		for (int i = bundle.size()-1; i > 0; i--) {
-			if (bundle.get(i).containsKey(key)) return bundle.get(i).getString(key);
+			if (bundle.get(i).containsKey(key)) {
+				return bundle.get(i).getString(key);
+			}
 		}
 		return bundle.get(0).getString(key);
 	}

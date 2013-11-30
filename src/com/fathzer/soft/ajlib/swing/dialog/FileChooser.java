@@ -101,7 +101,9 @@ public class FileChooser extends JFileChooser {
 					int pos = fileNameField != null ? fileNameField.getCaretPosition() : 0;
 					firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old, selectedFile);
 					if (fileNameField != null) {
-						if (pos > fileNameField.getText().length()) pos = fileNameField.getText().length();
+						if (pos > fileNameField.getText().length()) {
+							pos = fileNameField.getText().length();
+						}
 						fileNameField.setCaretPosition(pos);
 					}
 				}
@@ -118,7 +120,9 @@ public class FileChooser extends JFileChooser {
 	@Override
 	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 		// Update the selectedFile attribute
-		if (SELECTED_FILE_CHANGED_PROPERTY.equals(propertyName)) selectedFile = (File) newValue;
+		if (SELECTED_FILE_CHANGED_PROPERTY.equals(propertyName)) {
+			selectedFile = (File) newValue;
+		}
 		super.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
@@ -180,7 +184,9 @@ public class FileChooser extends JFileChooser {
 
 	public String getDisabledCause() {
 		File file = getSelectedFile();
-		if (file == null) return null;
+		if (file == null) {
+			return null;
+		}
 		try {
 			if (getDialogType() == OPEN_DIALOG) {
 				if (!file.exists()) {
@@ -275,7 +281,9 @@ public class FileChooser extends JFileChooser {
 			super.replace(offset, length, text, attrs);
 			this.ignoreEvents = false;
 			String newValue = field.getText();
-			if (!oldValue.equals(newValue)) firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!oldValue.equals(newValue)) {
+				firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			}
 		}
 
 		@Override
@@ -283,7 +291,9 @@ public class FileChooser extends JFileChooser {
 			String oldValue = field.getText();
 			super.remove(offs, len);
 			String newValue = field.getText();
-			if (!ignoreEvents && !oldValue.equals(newValue)) firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!ignoreEvents && !oldValue.equals(newValue)) {
+				firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			}
 		}
 	}
 }

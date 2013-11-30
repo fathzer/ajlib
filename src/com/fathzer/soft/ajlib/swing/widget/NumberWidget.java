@@ -27,7 +27,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  */
 public class NumberWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;
-	private final static boolean DEBUG = false;
+	private static final boolean DEBUG = false;
 	private static final char NON_BREAKING_SPACE = 160;
 	private static final char SPACE = ' ';
 	
@@ -73,10 +73,14 @@ public class NumberWidget extends TextWidget {
 		this.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (!e.isTemporary()) refreshText(value);
+				if (!e.isTemporary()) {
+					refreshText(value);
+				}
 			}
 			@Override
-			public void focusGained(FocusEvent e) {}
+			public void focusGained(FocusEvent e) {
+				// Nothing to do
+			}
 		});
 	}
 	
@@ -93,8 +97,12 @@ public class NumberWidget extends TextWidget {
 	 */
 	protected DecimalFormat patchJavaBug4510618 (DecimalFormat format) {
 		DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
-		if ((decimalFormatSymbols.getGroupingSeparator()==NON_BREAKING_SPACE)) decimalFormatSymbols.setGroupingSeparator(SPACE);
-		if ((decimalFormatSymbols.getDecimalSeparator()==NON_BREAKING_SPACE)) decimalFormatSymbols.setDecimalSeparator(SPACE);
+		if ((decimalFormatSymbols.getGroupingSeparator()==NON_BREAKING_SPACE)) {
+			decimalFormatSymbols.setGroupingSeparator(SPACE);
+		}
+		if ((decimalFormatSymbols.getDecimalSeparator()==NON_BREAKING_SPACE)) {
+			decimalFormatSymbols.setDecimalSeparator(SPACE);
+		}
 		format.setDecimalFormatSymbols(decimalFormatSymbols);
 		return format;
 	}
@@ -128,10 +136,14 @@ public class NumberWidget extends TextWidget {
 		} else {
 			changed = parseValue(text.replace(NON_BREAKING_SPACE, SPACE));
 			this.valid = (changed!=null) && (changed.doubleValue()>=minValue.doubleValue()) && (changed.doubleValue()<=maxValue.doubleValue());
-			if (DEBUG) System.out.println (text+"->"+changed+" => this.valid:"+oldValid+"->"+valid);
+			if (DEBUG) {
+				System.out.println (text+"->"+changed+" => this.valid:"+oldValid+"->"+valid);
+			}
 		}
 		internalSetValue(changed==null?null:changed.doubleValue());
-		if (this.valid!=oldValid) firePropertyChange(CONTENT_VALID_PROPERTY, oldValid, this.valid);
+		if (this.valid!=oldValid) {
+			firePropertyChange(CONTENT_VALID_PROPERTY, oldValid, this.valid);
+		}
 	}
 
 	/** Parses the text contained in the field.
@@ -140,76 +152,7 @@ public class NumberWidget extends TextWidget {
 	 * @return The value of the text or null if the text can't be parsed as a number.
 	 */
 	protected Number parseValue(String text) {
-//		
-//		System.out.println ("Number widget is parsing "+text);
-//		System.out.println ("grouping separator "+(int)format.getDecimalFormatSymbols().getGroupingSeparator());
-//		try {
-//			System.out.println ("Double.parseDouble: "+Double.parseDouble(text));
-//		} catch (NumberFormatException e) {
-//			System.out.println ("Double.parseDouble says "+text+" is wrong");
-//		}
-//		try {
-//			DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(/*format.getLocale()*/);
-//			ParsePosition pos = new ParsePosition(0);
-//			Number parse = format.parse(text, pos);
-//			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
-//			System.out.println ("NumberFormat.getInstance().parse: "+parse);
-//		} catch (NumberFormatException e) {
-//			System.out.println ("NumberFormat.getInstance().parse says "+text+" is wrong");
-//		}
-//		try {
-//			DecimalFormat format = (DecimalFormat) NumberFormat.getNumberInstance(/*format.getLocale()*/);
-//			ParsePosition pos = new ParsePosition(0);
-//			Number parse = format.parse(text, pos);
-//			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
-//			System.out.println ("NumberFormat.getNumberInstance().parse: "+parse);
-//		} catch (NumberFormatException e) {
-//			System.out.println ("NumberFormat.getNumberInstance().parse says "+text+" is wrong");
-//		}
-//		try {
-//			DecimalFormat format = (DecimalFormat) NumberFormat.getCurrencyInstance(/*format.getLocale()*/);
-//			ParsePosition pos = new ParsePosition(0);
-//			Number parse = format.parse(text, pos);
-//			if (pos.getIndex()!=text.length()) throw new NumberFormatException();
-//			System.out.println ("NumberFormat.getCurrencyInstance().parse : "+parse);
-//		} catch (NumberFormatException e) {
-//			System.out.println ("NumberFormat.getCurrencyInstance().parse says "+text+" is wrong");
-//		} catch (Throwable e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println ("---------------------");
-//		//FIXME
-
 		return safeParse(format, text);
-		
-// 		Number result = null;
-//		// We have to be cautious with grouping separator. In some languages (ie French) Java excepts the separator to be a non-breaking space.
-//		// But, most of the time, people use simple spaces. To prevent this problem, what to DO ????? //TODO
-//		// We have to be cautious with parsing. If the text begins with a valid number but is followed by garbage, format.parse(String) will succeed !!!
-//		// We will use format.parse(String, ParsePosition) in order to detect garbage placed after a valid number
-//		try {
-//			ParsePosition pos = new ParsePosition(0);
-//			Number candidate = format.parse(text, pos);
-//			if (pos.getIndex()==text.length()) {
-//				result = candidate;
-//			} else {
-//				throw new ParseException(text, 0);
-//			}
-//		} catch (ParseException e) {
-//			// Parsing with the "official" formatter failed.
-			// It seems that this formatter is quite sensitive. For instance, if you remove the currency sign ... it fails.
-			// We will try to convert what was typed in a "pure" English digital number (only digits and . as decimal separator),
-			// in order to use the standard decimal parser.
-//			DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
-//			text = text.replace(new String(new char[]{decimalFormatSymbols.getGroupingSeparator()}), "");
-//			text = text.replace(decimalFormatSymbols.getDecimalSeparator(), '.');
-//			try {
-//				result = Double.parseDouble(text);
-//			} catch (NumberFormatException e2) {
-//				// Ok, now, it's clear, the number is wrong
-//			}
-//		}
-//		return result;
 	}
 
 	/** Parses a text with a format and ensures the text has no extra characters after valid data.
@@ -243,7 +186,9 @@ public class NumberWidget extends TextWidget {
 	 */
 	public void setEmptyAllowed(boolean isEmptyAllowed) {
 		this.isEmptyAllowed = isEmptyAllowed;
-		if (this.getText().trim().length()==0) updateValue();
+		if (this.getText().trim().length()==0) {
+			updateValue();
+		}
 	}
 
 	/** Gets the minimum value allowed in the field.
@@ -279,7 +224,9 @@ public class NumberWidget extends TextWidget {
 	 */
 	public Double getValue() {
 		updateValue();
-		if (DEBUG) System.out.println ("AmountWidget.getValue returns "+value);
+		if (DEBUG) {
+			System.out.println ("AmountWidget.getValue returns "+value);
+		}
 		return this.value==null?null:new Double(this.value.doubleValue());
 	}
 
@@ -304,7 +251,9 @@ public class NumberWidget extends TextWidget {
 	private boolean internalSetValue(Double value) {
 		// Does nothing if amount is equals to current widget amount
 		// Be aware of null values
-		if (NullUtils.areEquals(value, this.value)) return false;
+		if (NullUtils.areEquals(value, this.value)) {
+			return false;
+		}
 		Number old = this.value;
 		this.value = value;
 		firePropertyChange(VALUE_PROPERTY, old, value);

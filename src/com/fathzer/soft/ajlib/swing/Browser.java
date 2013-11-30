@@ -39,9 +39,11 @@ public abstract class Browser {
 		String url = uri.toString();
 		String message = MessageFormat.format(Application.getString("Browser.unsupported.message", parent.getLocale()), url); //$NON-NLS-1$
 		StringSelection stringSelection = new StringSelection(url);
-    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    clipboard.setContents( stringSelection, null);
-    if (errorDialogTitle==null) errorDialogTitle = "";
-    JOptionPane.showMessageDialog(Utils.getOwnerWindow(parent), message, errorDialogTitle, JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
+		if (errorDialogTitle == null) {
+			errorDialogTitle = "";
+		}
+		JOptionPane.showMessageDialog(Utils.getOwnerWindow(parent), message, errorDialogTitle, JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 	}
 }
