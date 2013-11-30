@@ -60,7 +60,7 @@ public class TextSearcher {
 	 * Searches for this.text and updates the offset of all the occurrences.
 	 */
 	private void search() {
-		if (text == null || text.equals("")) {
+		if (text == null || text.isEmpty()) {
 			this.offsets = new int[0];
 			return;
 		}
@@ -105,9 +105,12 @@ public class TextSearcher {
 	 * @return a String
 	 */
 	private String normalize(String content) {
-		if (!isCaseSensitive()) content = content.toLowerCase();
-		if (!isDiacriticalSensitive())
+		if (!isCaseSensitive()) {
+			content = content.toLowerCase();
+		}
+		if (!isDiacriticalSensitive()) {
 			content = Normalizer.normalize(content, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+		}
 		return content;
 	}
 
@@ -174,7 +177,9 @@ public class TextSearcher {
 	 * @see #getOffsets()
 	 */
 	public void highlight(int[] offsets, Highlighter.HighlightPainter painter) throws BadLocationException {
-  	if (painter==null) painter = DefaultHighlighter.DefaultPainter;
+		if (painter==null) {
+			painter = DefaultHighlighter.DefaultPainter;
+		}
 		// Remove any existing highlights for last word
 		Highlighter highlighter = comp.getHighlighter();
 		highlighter.removeAllHighlights();
@@ -183,7 +188,9 @@ public class TextSearcher {
 				highlighter.addHighlight(offsets[i], offsets[i] + this.searchedNormalizedLength, painter);
 			}
 			// Scroll the text pane in order to view the first occurrence.
-			if (offsets.length>0) comp.scrollRectToVisible(comp.modelToView(offsets[0]));
+			if (offsets.length>0) {
+				comp.scrollRectToVisible(comp.modelToView(offsets[0]));
+			}
 		}
 	}
 
@@ -194,7 +201,9 @@ public class TextSearcher {
 	 * @see #getOffsets()
 	 */
 	public void highlight(int offset, Highlighter.HighlightPainter painter) throws BadLocationException {
-  	if (painter==null) painter = DefaultHighlighter.DefaultPainter;
+		if (painter==null) {
+			painter = DefaultHighlighter.DefaultPainter;
+		}
 		// Remove any existing highlights for last word
 		Highlighter highlighter = comp.getHighlighter();
 		highlighter.removeAllHighlights();

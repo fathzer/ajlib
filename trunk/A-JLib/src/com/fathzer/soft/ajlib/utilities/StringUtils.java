@@ -8,7 +8,8 @@ import java.util.List;
  * <BR>License: LGPL v3
  */
 public abstract class StringUtils {
-	private StringUtils() {}
+	private StringUtils() {
+	}
 	
 	/** Splits a string into fields.
 	 * <br>The main advantage vs String#split is that the developer has not to deal with separators that
@@ -27,7 +28,9 @@ public abstract class StringUtils {
 		for (int i = 0; i < string.length(); i++) {
 			if (string.charAt(i)==separator) {
 				result.add(buffer.toString());
-				if (buffer.length()>0) buffer.delete(0, buffer.length());
+				if (buffer.length()>0) {
+					buffer.delete(0, buffer.length());
+				}
 			} else {
 				buffer.append(string.charAt(i));
 			}

@@ -52,7 +52,9 @@ public class DateField extends TextWidget {
 		super.setLocale(locale);
 		this.formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
 		this.formatter.setLenient(false);
-		if (date!=null) this.setText(formatter.format(date));
+		if (date!=null) {
+			this.setText(formatter.format(date));
+		}
 	}
 
 	/** Constructor.
@@ -72,6 +74,7 @@ public class DateField extends TextWidget {
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				// Nothing to do, all the job is done in keyPressed
 			}
 
 			@Override
@@ -84,13 +87,11 @@ public class DateField extends TextWidget {
 					// Set the date to previous day before the current date
 					increment = 1;						
 				}
-				if (increment!=0) {
-					if (getDate()!=null) {
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(getDate());
-						calendar.add(Calendar.DATE, increment);
-						setDate(calendar.getTime());
-					}
+				if ((increment!=0) && (getDate()!=null)) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(getDate());
+					calendar.add(Calendar.DATE, increment);
+					setDate(calendar.getTime());
 				}
 			}
 			
@@ -104,10 +105,14 @@ public class DateField extends TextWidget {
 		this.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (!e.isTemporary()) DateField.super.setText(date==null?"":formatter.format(date));
+				if (!e.isTemporary()) {
+					DateField.super.setText(date==null?"":formatter.format(date));
+				}
 			}
 			@Override
-			public void focusGained(FocusEvent e) {}
+			public void focusGained(FocusEvent e) {
+				// Nothing to do
+			}
 		});
 	}
 	
@@ -117,7 +122,9 @@ public class DateField extends TextWidget {
 	 */
 	public void setEmptyDate(Date date) {
 		this.emptyValue = date;
-		if (this.getText().trim().length()==0) updateDate();
+		if (this.getText().trim().length()==0) {
+			updateDate();
+		}
 	}
 	
 	/** Allow/Disallow this field to be empty (if it means a null date).
@@ -127,7 +134,9 @@ public class DateField extends TextWidget {
 	 */
 	public void setIsEmptyNullDateIsValid(boolean valid) {
 		this.isEmptyNullDateValid = valid;
-		if (this.getText().trim().length()==0) updateDate();
+		if (this.getText().trim().length()==0) {
+			updateDate();
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -150,7 +159,9 @@ public class DateField extends TextWidget {
 					changed.setYear(year-1900);
 					// If that date is not in the 100 year period of the formatter, add one century
 					// Note: I compare the getTime() results, because, sometime, an exception is thrown that tells that instances are not of the same class
-					if (changed.getTime()-formatterStartYear.getTime()<0) changed.setYear(year-1800);
+					if (changed.getTime()-formatterStartYear.getTime()<0) {
+						changed.setYear(year-1800);
+					}
 				}
 			} catch (ParseException e) {
 				try {
@@ -170,7 +181,9 @@ public class DateField extends TextWidget {
 			this.valid = changed!=null;
 			internalSetDate(changed);
 		}
-		if (oldValid!=this.valid) firePropertyChange(CONTENT_VALID_PROPERTY, oldValid, this.valid);
+		if (oldValid!=this.valid) {
+			firePropertyChange(CONTENT_VALID_PROPERTY, oldValid, this.valid);
+		}
 	}
 
 	/** Get the widget current date.
@@ -202,7 +215,9 @@ public class DateField extends TextWidget {
 	private boolean internalSetDate(Date date) {
 		// Does nothing if date is equals to current widget date
 		// Be aware of null values
-		if (NullUtils.areEquals(date, this.date)) return false;
+		if (NullUtils.areEquals(date, this.date)) {
+			return false;
+		}
 		Date old = this.date;
 		this.date = date;
 		firePropertyChange(DATE_PROPERTY, old, date);

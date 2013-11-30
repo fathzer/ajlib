@@ -215,11 +215,12 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 
 
 	/** Gets the window which contains a component.
+	 * @deprecated
 	 * @param component the component
 	 * @return The window containing the component or null if no window contains the component.
-	 * @deprecated
 	 * @see Utils#getOwnerWindow(Component)
 	 */
+	@Deprecated
 	public static Window getOwnerWindow(Component component) {
 		return Utils.getOwnerWindow(component);
 	}

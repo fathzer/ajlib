@@ -48,7 +48,9 @@ public class JTableListener extends MouseAdapter {
 			int row = jTable.rowAtPoint(p);
 			if (row >= 0) {
 				Action action = getDoubleClickAction();
-				if (action != null) action.actionPerformed(new ActionEvent(e.getSource(), e.getID(), ""));
+				if (action != null) {
+					action.actionPerformed(new ActionEvent(e.getSource(), e.getID(), ""));
+				}
 			}
 		} else {
 			maybeShowPopup(e);

@@ -61,7 +61,9 @@ public class CSVExporter {
 	 * @see CSVWriter#getDecimalFormater(Locale)
 	 */
 	protected String getExported(int rowIndex, int columnIndex, Object value) {
-		if (value==null) return ""; //$NON-NLS-1$
+		if (value==null) {
+			return ""; //$NON-NLS-1$
+		}
 		return value.toString();
 	}
 }

@@ -11,7 +11,8 @@ public class AJLibDemo extends Application {
 	
 	private AJLibDemoPanel demoPanel;
 	
-	private AJLibDemo() {}
+	private AJLibDemo() {
+	}
 	
 	@Override
 	public String getName() {

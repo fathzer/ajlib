@@ -45,7 +45,9 @@ public class PasswordWidget extends JPasswordField {
 			super.replace(offset, length, text, attrs);
 			this.ignoreEvents = false;
 			String newValue = new String(PasswordWidget.this.getPassword());
-			if (!oldValue.equals(newValue)) PasswordWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!oldValue.equals(newValue)) {
+				PasswordWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			}
 		}
 		
 		@Override
@@ -53,7 +55,9 @@ public class PasswordWidget extends JPasswordField {
 			String oldValue = new String(PasswordWidget.this.getPassword());
 			super.remove(offs, len);
 			String newValue = new String(PasswordWidget.this.getPassword());
-			if (!ignoreEvents && !oldValue.equals(newValue)) PasswordWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			if (!ignoreEvents && !oldValue.equals(newValue)) {
+				PasswordWidget.this.firePropertyChange(TEXT_PROPERTY, oldValue, newValue);
+			}
 		}
 	}
 }

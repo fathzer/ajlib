@@ -37,7 +37,9 @@ public class JTable extends javax.swing.JTable {
 	 */
 	public void setSelectedIndexes(int[] selectedIndexes) {
 		for (int i = 0; i < selectedIndexes.length; i++) {
-			if ((selectedIndexes[i]<0) || (selectedIndexes[i]>=getRowCount())) throw new IllegalArgumentException();
+			if ((selectedIndexes[i]<0) || (selectedIndexes[i]>=getRowCount())) {
+				throw new IllegalArgumentException();
+			}
 		}
 		ListSelectionModel selectionModel = getSelectionModel();
 		selectionModel.setValueIsAdjusting(true);

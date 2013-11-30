@@ -19,7 +19,8 @@ import sun.awt.shell.ShellFolder;
 public class FileUtils {
 	private static final String ACCESS_DENIED_MESSAGE = "What's the right message ?";
 
-	private FileUtils() {}
+	private FileUtils() {
+	}
 	
 	/** Gets the canonical file of a file even on windows where links are ignored by File.getCanonicalPath().
 	 * <br>Even if the link is broken, the method returns the linked file. You should use File.exists() to test if the returned file is available.
@@ -29,7 +30,9 @@ public class FileUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static File getCanonical(File file) throws IOException {
-		if (!file.exists()) return file;
+		if (!file.exists()) {
+			return file;
+		}
 		try {
 			// The following lines are equivalent to sf = new sun.awt.shell.Win32ShellFolderManager2().createShellFolder(file);
 			// We use reflection in order the code to compile on non Windows platform (where new sun.awt.shell.Win32ShellFolderManager2
@@ -39,7 +42,9 @@ public class FileUtils {
 			Class cl = Class.forName("sun.awt.shell.Win32ShellFolderManager2");
 			Object windowsFolderManager = cl.newInstance();
 			sf = (ShellFolder) cl.getMethod("createShellFolder", File.class).invoke(windowsFolderManager, file);
-			if (sf.isLink()) return sf.getLinkLocation();
+			if (sf.isLink()) {
+				return sf.getLinkLocation();
+			}
 		} catch (ClassNotFoundException e) {
 			// We're not on a windows platform
 			// We also ignore other errors that may not happen.
@@ -69,18 +74,25 @@ public class FileUtils {
 			parent.mkdirs();
 		}
 		// Try to simply rename the file
-		boolean result = src.renameTo(dest);
-		if (result==false) {
+		if (!src.renameTo(dest)) {
 			// renameTo may fail if src and dest files are not on the same file system.
 			// We then copy the src file, it's really ugly ... but I don't know how to do that
 			// Before, we will ensure we will be able to erase the src file after the copy
 			if (src.canWrite()) {
-				FileReader in = new FileReader(src);
-				FileWriter out = new FileWriter(dest);
-				int c;
-				while ((c = in.read()) != -1) out.write(c);
-				in.close();
-				out.close();
+				FileInputStream in = new FileInputStream(src);
+				try {
+					FileOutputStream out = new FileOutputStream(dest);
+					try {
+						int c;
+						while ((c = in.read()) != -1) {
+							out.write(c);
+						}
+					} finally {
+						out.close();
+					}
+				} finally {
+					in.close();
+				}
 				// Now, deletes the src file
 				if (!src.delete()) {
 					// Oh ... we were thinking we had the right to delete the file ... but we can't
@@ -117,7 +129,9 @@ public class FileUtils {
 	 */
 	public static boolean isIncluded(File file, File directory) {
 		for (File parent = file.getParentFile(); parent!=null; parent = parent.getParentFile()) {
-			if (parent.equals(directory)) return true;
+			if (parent.equals(directory)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -136,7 +150,9 @@ public class FileUtils {
 				Process process = Runtime.getRuntime().exec("attrib -H \""+file.getAbsolutePath()+"\"");
 				try {
 					int result = process.waitFor();
-					if (result==0) return new HiddenFileOutputStream(file);
+					if (result==0) {
+						return new HiddenFileOutputStream(file);
+					}
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
@@ -184,7 +200,9 @@ public class FileUtils {
 			File parentFile = file.getAbsoluteFile().getParentFile();
 			return parentFile==null?false:isWritable(parentFile);
 		}
-		if (!file.canWrite()) return false;
+		if (!file.canWrite()) {
+			return false;
+		}
 		if (file.isDirectory()) {
 			// If the file is a folder, the easiest way is to create a temporary file.
 			try {
@@ -228,8 +246,12 @@ public class FileUtils {
 	 * @return true if the file or folder exists and the calling thread can write into it
 	 */
 	public static boolean isReadable(File file) {
-		if (!file.canRead()) return false;
-		if (file.isDirectory()) return true;
+		if (!file.canRead()) {
+			return false;
+		}
+		if (file.isDirectory()) {
+			return true;
+		}
 		// If the argument is a file, we will simply to open it for reading 
 		try {
 			FileInputStream x = new FileInputStream(file);
