@@ -41,7 +41,7 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 	 */
 	protected int getAlignment(JTable table, Object value, boolean isSelected, boolean hasFocus, int rowModel, int columnModel) {
 		int alignment = SwingConstants.LEFT;
-		if ((value instanceof Date) || ((value instanceof Calendar))) {
+		if ((value instanceof Date) || (value instanceof Calendar)) {
 			alignment = SwingConstants.CENTER;
 		} else if ((value instanceof Double) || (value instanceof Integer) || (value instanceof Long) || (value instanceof Float) ||
 				(value instanceof BigDecimal) || (value instanceof BigInteger)) {

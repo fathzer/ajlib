@@ -20,6 +20,10 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
  * <BR>License: LGPL v3
  */
 public abstract class Browser {
+	private Browser() {
+		//To prevent instance to be constructed
+	}
+	
 	/** Displays an URI in a browser.
 	 * @param uri The uri to display
 	 * @param parent The parent component of the dialog displayed if browser is not available.

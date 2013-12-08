@@ -46,11 +46,9 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (evt.getPropertyName().equals(Worker.STATE_PROPERTY_NAME)) {
 						getBtnCancel().setEnabled(evt.getNewValue().equals(SwingWorker.StateValue.STARTED));
-						if (evt.getNewValue().equals(SwingWorker.StateValue.DONE)) {
-							if (!worker.isCancelled()) {
-								getProgressBar().setIndeterminate(false);
-								getProgressBar().setValue(getProgressBar().getMaximum());
-							}
+						if (evt.getNewValue().equals(SwingWorker.StateValue.DONE) && !worker.isCancelled()) {
+							getProgressBar().setIndeterminate(false);
+							getProgressBar().setValue(getProgressBar().getMaximum());
 						}
 					} else if (evt.getPropertyName().equals(Worker.PROGRESS_PROPERTY_NAME)){
 						long absoluteValue = ((Integer)evt.getNewValue())*worker.getPhaseLength()/100;

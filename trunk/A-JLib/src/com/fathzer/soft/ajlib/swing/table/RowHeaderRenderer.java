@@ -21,11 +21,10 @@ public class RowHeaderRenderer implements TableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
 		try {
-			Component result = renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-			return result;
+			return renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 		} catch (NullPointerException e) {
-			// Bug workaround: Under some unclear circumstances (Launch Yapbam, Menu File/New, then choose Windows look and feel, then Windows Classic,
-			// then Nimbus, then, open a non empty file ... a NullPointerException occured :-(
+			// Bug workaround: Under some unclear circumstances (Launch Application, Menu File/New, then choose Windows look and feel, then Windows Classic,
+			// then Nimbus, then, open a non empty file ... a NullPointerException occurred :-(
 			return new DefaultTableCellRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 		}
 	}

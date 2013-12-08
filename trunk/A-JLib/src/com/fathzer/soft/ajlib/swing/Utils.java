@@ -24,6 +24,10 @@ import javax.swing.table.TableColumnModel;
  *         License: LGPL v3
  */
 public abstract class Utils {
+	private Utils() {
+		//To prevent instance to be constructed
+	}
+
 	/**
 	 * Gets the window which contains a component. <br>
 	 * Note that this method, unlike java.swing.SwingUtilities.getAncestor, this
