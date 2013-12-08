@@ -97,10 +97,10 @@ public class NumberWidget extends TextWidget {
 	 */
 	protected DecimalFormat patchJavaBug4510618 (DecimalFormat format) {
 		DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
-		if ((decimalFormatSymbols.getGroupingSeparator()==NON_BREAKING_SPACE)) {
+		if (decimalFormatSymbols.getGroupingSeparator()==NON_BREAKING_SPACE) {
 			decimalFormatSymbols.setGroupingSeparator(SPACE);
 		}
-		if ((decimalFormatSymbols.getDecimalSeparator()==NON_BREAKING_SPACE)) {
+		if (decimalFormatSymbols.getDecimalSeparator()==NON_BREAKING_SPACE) {
 			decimalFormatSymbols.setDecimalSeparator(SPACE);
 		}
 		format.setDecimalFormatSymbols(decimalFormatSymbols);
