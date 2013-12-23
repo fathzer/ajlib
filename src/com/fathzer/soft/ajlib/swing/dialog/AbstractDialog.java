@@ -70,6 +70,10 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 		JPanel buttonsPane = createButtonsPane();
 
 		southPane.add(buttonsPane, BorderLayout.EAST);
+		JComponent extra = createExtraComponent();
+		if (extra!=null) {
+			southPane.add(extra, BorderLayout.WEST);
+		}
 		contentPane.add(southPane, BorderLayout.SOUTH);
 
 		JPanel centerPane = this.createCenterPane();
@@ -113,6 +117,14 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 		return buttonsPane;
 	}
 	
+	/** Gets an extra component displayed on the same line as the buttons panel (see {@link #createButtonsPane()}) on the left side.
+	 * <br>By default, this method returns null.
+	 * @return A JComponent or null if no component is provided.
+	 */
+	protected JComponent createExtraComponent() {
+		return null;
+	}
+
 	/** Gets the ok button.
 	 * If you want the dialog not to have an ok button, you may set the visibility of this button to false
 	 * (okButton.setVisible(false)).
