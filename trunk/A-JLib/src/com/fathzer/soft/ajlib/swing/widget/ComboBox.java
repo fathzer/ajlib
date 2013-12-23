@@ -16,7 +16,7 @@ public class ComboBox extends JComboBox {
 	private boolean isActionEnabled = true;
 	
 	/** Enables/Disables the events.
-	 * Note: This method doesn't throw any event.
+	 * <br>Note: This method doesn't throw any event.
 	 * @param isActionEnabled true to enable the events.
 	 */
 	public void setActionEnabled(boolean isActionEnabled) {
