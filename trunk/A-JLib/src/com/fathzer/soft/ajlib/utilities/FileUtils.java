@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.FileLock;
+import java.text.MessageFormat;
 
 import sun.awt.shell.ShellFolder;
 
@@ -74,23 +75,10 @@ public class FileUtils {
 		// Try to simply rename the file
 		if (!src.renameTo(dest)) {
 			// renameTo may fail if src and dest files are not on the same file system.
-			// We then copy the src file, it's really ugly ... but I don't know how to do that
+			// Then we have to copy the src file.
 			// Before, we will ensure we will be able to erase the src file after the copy
 			if (src.canWrite()) {
-				FileInputStream in = new FileInputStream(src);
-				try {
-					FileOutputStream out = new FileOutputStream(dest);
-					try {
-						int c;
-						while ((c = in.read()) != -1) {
-							out.write(c);
-						}
-					} finally {
-						out.close();
-					}
-				} finally {
-					in.close();
-				}
+				copy(src, dest, true);
 				// Now, deletes the src file
 				if (!src.delete()) {
 					// Oh ... we were thinking we had the right to delete the file ... but we can't
@@ -102,6 +90,33 @@ public class FileUtils {
 				throw new SecurityException(ACCESS_DENIED_MESSAGE);
 			}
 		}
+	}
+
+	/** Copy a file to another.
+	 * @param src The src path
+	 * @param dest The dest path
+	 * @param overrideExisting true if copying to an existing file is ok.
+	 * @throws IOException If the copy fails
+	 */
+	public static void copy(File src, File dest, boolean overrideExisting) throws IOException {
+		if (dest.exists() && !overrideExisting) {
+			throw new IOException(MessageFormat.format("File {} already exists", dest));
+		}
+		FileInputStream in = new FileInputStream(src);
+		try {
+			FileOutputStream out = new FileOutputStream(dest);
+			try {
+				int c;
+				while ((c = in.read()) != -1) {
+					out.write(c);
+				}
+			} finally {
+				out.close();
+			}
+		} finally {
+			in.close();
+		}
+		dest.setLastModified(src.lastModified());
 	}
 	
 	/** Deletes recursively a directory.
@@ -191,7 +206,8 @@ public class FileUtils {
 	 * This method returns true only if the calling thread have all the rights necessary to write to the file, and the file
 	 * is not already locked.
 	 * @param file The file or folder to test
-	 * @return true if the file or folder exists and the calling thread can write into it
+	 * @return true if the file or folder exists and the calling thread can write into it.
+	 * <br>If the file doesn't exist, it returns true if the parent folder is writable.
 	 */
 	public static boolean isWritable(File file) {
 		if (!file.exists()) {
@@ -260,6 +276,36 @@ public class FileUtils {
 			return false;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+	}
+	
+	/** Gets the extension of a file.
+	 * <br>For example, the extension of file "file.xml" is ".xml".
+	 * @param file The file.
+	 * @return The extension including the point, or null if fileName does not have an extension.
+	 */
+	public static String getExtension(File file) {
+		String name = file.getName();
+		int index = name.lastIndexOf('.');
+		if (index<0) {
+			return null;
+		} else {
+			return name.substring(index);
+		}
+	}
+
+	/** Gets the root name of a file.
+	 * <br>For example, the root name of file "file.xml" is "file".
+	 * @param file The file.
+	 * @return The extension including the point, or null if fileName does not have an extension.
+	 */
+	public static String getRootName(File file) {
+		String name = file.getName();
+		int index = name.lastIndexOf('.');
+		if (index<0) {
+			return name;
+		} else {
+			return name.substring(0,index);
 		}
 	}
 }
