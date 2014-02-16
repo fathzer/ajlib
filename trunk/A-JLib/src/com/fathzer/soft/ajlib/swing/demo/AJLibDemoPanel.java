@@ -36,6 +36,8 @@ public class AJLibDemoPanel extends JPanel {
 		
 		panel.add("widget.date", new DateDemoPanel());
 		
+		panel.add("rotating label", new RotatingLabelPanel());
+
 		panel.add("worker", new WorkerDemoPanel());
 
 		panel.add("dialog", new DialogsPanel());
