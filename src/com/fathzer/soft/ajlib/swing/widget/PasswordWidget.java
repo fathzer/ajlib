@@ -19,7 +19,6 @@ import javax.swing.text.PlainDocument;
  * @author Jean-Marc Astesana
  * <BR>License: LGPL v3
  */
-
 public class PasswordWidget extends JPasswordField {
 	private static final long serialVersionUID = 1L;
 
