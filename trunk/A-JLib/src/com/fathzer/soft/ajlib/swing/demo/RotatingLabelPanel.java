@@ -52,9 +52,13 @@ public class RotatingLabelPanel extends JPanel {
 	private JSlider getSlider() {
 		if (slider == null) {
 			slider = new JSlider();
+			slider.setSnapToTicks(true);
+			slider.setPaintLabels(true);
+			slider.setPaintTicks(true);
+			slider.setMajorTickSpacing(90);
 			slider.setValue(0);
-			slider.setMinimum(-179);
-			slider.setMaximum(180);
+			slider.setMinimum(-360);
+			slider.setMaximum(360);
 			slider.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent e) {
