@@ -25,15 +25,15 @@ public class RotatingLabel extends JLabel {
 	}
 	
 	/** Sets the angle of this label.
-	 * @param angleDegrees The angle in degrees, between -179 and 180 degrees.
-	 * @throws IllegalArgumentException if angle in not in range -179 to 180.
+	 * @param angleDegrees The angle in degrees.
 	 * @throws UnsupportedOperationException In the current version, only -90, 0, 90 and 180 are accepted. Other values throw this exception
 	 */
 	public void setRotation(int angleDegrees) {
-		if (angleDegrees<-179 || angleDegrees>180) {
-			throw new IllegalArgumentException();
+		angleDegrees = angleDegrees % 360;
+		if (angleDegrees < 0) {
+			angleDegrees = 360 + angleDegrees;
 		}
-		if (angleDegrees!=-90 && angleDegrees!=0 && angleDegrees!=90 && angleDegrees!=180) {
+		if (angleDegrees % 90 !=0) {
 			throw new UnsupportedOperationException(); 
 		}
 		angle = angleDegrees;
@@ -82,9 +82,9 @@ public class RotatingLabel extends JLabel {
 		if (angle==90) {
 			gr.transform(AffineTransform.getQuadrantRotateInstance(1));
 			gr.translate(0, -getSize().getWidth());
-		} else if (angle==-90) {
+		} else if (angle==270) {
 			gr.translate(0, getSize().getHeight());
-			gr.transform(AffineTransform.getQuadrantRotateInstance(-1));
+			gr.transform(AffineTransform.getQuadrantRotateInstance(3));
 		} else if (angle==180) {
 			gr.transform(AffineTransform.getQuadrantRotateInstance(2, (double)getWidth()/2, (double)getHeight()/2));
 		} else if (angle!=0) {
