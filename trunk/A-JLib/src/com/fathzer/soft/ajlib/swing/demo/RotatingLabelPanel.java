@@ -26,7 +26,7 @@ public class RotatingLabelPanel extends JPanel {
 	private RotatingLabel northLabel;
 	private RotatingLabel eastLabel;
 	private RotatingLabel rotatingLabel;
-	private JPanel panel_1;
+	private JPanel panel1;
 
 	public RotatingLabelPanel() {
 		initialize();
@@ -45,7 +45,7 @@ public class RotatingLabelPanel extends JPanel {
 			panel.add(getSouthLabel(), BorderLayout.SOUTH);
 			panel.add(getNorthLabel(), BorderLayout.NORTH);
 			panel.add(getEastLabel(), BorderLayout.EAST);
-			panel.add(getPanel_1(), BorderLayout.CENTER);
+			panel.add(getPanel1(), BorderLayout.CENTER);
 		}
 		return panel;
 	}
@@ -65,7 +65,7 @@ public class RotatingLabelPanel extends JPanel {
 					try {
 						getRotatingLabel().setRotation(slider.getValue());
 					} catch (UnsupportedOperationException e1) {
-						System.out.println ("angle not supported "+slider.getValue()); //TODO
+						// This angle is not supported, ignore it
 					}
 				}
 			});
@@ -117,17 +117,17 @@ public class RotatingLabelPanel extends JPanel {
 		}
 		return rotatingLabel;
 	}
-	private JPanel getPanel_1() {
-		if (panel_1 == null) {
-			panel_1 = new JPanel();
-			GridBagLayout gbl_panel_1 = new GridBagLayout();
-			panel_1.setLayout(gbl_panel_1);
+	private JPanel getPanel1() {
+		if (panel1 == null) {
+			panel1 = new JPanel();
+			GridBagLayout gblPanel1 = new GridBagLayout();
+			panel1.setLayout(gblPanel1);
 			GridBagConstraints gbcRotatingLabel = new GridBagConstraints();
 			gbcRotatingLabel.weighty = 1.0;
 			gbcRotatingLabel.gridx = 1;
 			gbcRotatingLabel.gridy = 0;
-			panel_1.add(getRotatingLabel(), gbcRotatingLabel);
+			panel1.add(getRotatingLabel(), gbcRotatingLabel);
 		}
-		return panel_1;
+		return panel1;
 	}
 }
