@@ -210,8 +210,8 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 */
 	public void updateOkButtonEnabled() {
 		String cause = getOkDisabledCause();
-		this.okButton.setEnabled(cause==null);
-		this.okButton.setToolTipText(cause==null?Application.getString("GenericButton.ok.toolTip", getLocale()):cause);
+		this.getOkButton().setEnabled(cause==null);
+		this.getOkButton().setToolTipText(cause==null?Application.getString("GenericButton.ok.toolTip", getLocale()):cause);
 	}
 	
 	@Override
