@@ -19,6 +19,26 @@ import javax.swing.JFrame;
 public class ToolsFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
+	private final class MyWindowListener extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent e) {
+			dispose();
+			super.windowClosing(e);
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			setExtendedState(Frame.ICONIFIED);
+			super.windowIconified(e);
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			setExtendedState(Frame.NORMAL);
+			super.windowDeiconified(e);
+		}
+	}
+
 	/** Constructor.
 	 * @param owner The windows owner. The constructed instance will be closed/iconified when its owner window is.
 	 * @param contentPane The content of the tool window.
@@ -31,27 +51,7 @@ public class ToolsFrame extends JFrame {
 		setAlwaysOnTop(true);
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		if (owner!=null) {
-			owner.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					dispose();
-					super.windowClosing(e);
-				}
-	
-				@Override
-				public void windowIconified(WindowEvent e) {
-					System.out.println ("iconified");
-					setExtendedState(Frame.ICONIFIED);
-					super.windowIconified(e);
-				}
-	
-				@Override
-				public void windowDeiconified(WindowEvent e) {
-					System.out.println ("deiconified");
-					setExtendedState(Frame.NORMAL);
-					super.windowDeiconified(e);
-				}
-			});
+			owner.addWindowListener(new MyWindowListener());
 		}
 	}
 }
