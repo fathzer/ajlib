@@ -8,7 +8,10 @@ import java.util.List;
  * <BR>License: LGPL v3
  */
 public abstract class StringUtils {
+	public static final String EMPTY = ""; //$NON-NLS-1$
+	
 	private StringUtils() {
+		super();
 	}
 	
 	/** Splits a string into fields.
