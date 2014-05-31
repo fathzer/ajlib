@@ -100,7 +100,7 @@ public class FileUtils {
 	 */
 	public static void copy(File src, File dest, boolean overrideExisting) throws IOException {
 		if (dest.exists() && !overrideExisting) {
-			throw new IOException(MessageFormat.format("File {} already exists", dest));
+			throw new IOException(MessageFormat.format("File {0} already exists", dest));
 		}
 		FileInputStream in = new FileInputStream(src);
 		try {

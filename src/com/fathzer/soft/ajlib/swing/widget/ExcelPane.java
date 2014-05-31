@@ -7,8 +7,10 @@ import javax.swing.JPanel;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
 
+import com.fathzer.jlocal.Formatter;
 import com.fathzer.soft.ajlib.swing.dialog.FileChooser;
 import com.fathzer.soft.ajlib.swing.framework.Application;
 import com.fathzer.soft.ajlib.swing.table.CSVExporter;
@@ -21,7 +23,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.MessageFormat;
 
 /** A widget with a JTable and a button that is able to save it in csv format.
  * @author Jean-Marc Astesana
@@ -107,7 +108,7 @@ public class ExcelPane extends JPanel {
 						try {
 							save(file);
 						} catch(IOException ex) {
-							String message = MessageFormat.format(Application.getString("ExcelPane.error.message", getLocale()), ex.toString()); //$NON-NLS-1$
+							String message = Formatter.format(Application.getString("ExcelPane.error.message", getLocale()), ex.toString()); //$NON-NLS-1$
 							JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("Generic.error", getLocale()), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 						}
 					}

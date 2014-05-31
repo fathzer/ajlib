@@ -7,10 +7,10 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
-import java.text.MessageFormat;
 
 import javax.swing.JOptionPane;
 
+import com.fathzer.jlocal.Formatter;
 import com.fathzer.soft.ajlib.swing.framework.Application;
 
 
@@ -41,7 +41,7 @@ public abstract class Browser {
 
 	private static void error(URI uri, Component parent, String errorDialogTitle) {
 		String url = uri.toString();
-		String message = MessageFormat.format(Application.getString("Browser.unsupported.message", parent.getLocale()), url); //$NON-NLS-1$
+		String message = Formatter.format(Application.getString("Browser.unsupported.message", parent.getLocale()), url); //$NON-NLS-1$
 		StringSelection stringSelection = new StringSelection(url);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
