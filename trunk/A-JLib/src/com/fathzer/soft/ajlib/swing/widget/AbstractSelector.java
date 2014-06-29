@@ -24,6 +24,8 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * <br>It is typically used to select a value in a list of possible values.
  * <br>This widget defines a property that reflects the selection changes. Its name is defined by the method getPropertyName.
  * <br>It also allows the combo box display to be customized using method getDefaultRenderedValue.
+ * @param <T> The class of the items selected by the selector.
+ * @param <V> The class of the constructor argument.
  * @see #getPropertyName()
  * @see #getDefaultRenderedValue(Object)
  * @author Jean-Marc Astesana
@@ -88,7 +90,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	/** Refreshes the widget when the parameters has changed.
 	 * <br>This method is called when the widget parameters are changed by setParameters.
 	 * <br>It removes all old combo items, then calls populateCombo and setSelectionAfterRefresh.
-	 * <br>An property change is thrown if the selection changes (and the combo action is not disabled).
+	 * <br>A property change is thrown if the selection changes (and the combo action is not disabled).
 	 * <br>The actionEnabled attribute of the combo is unchanged.
 	 * @see ComboBox#setActionEnabled(boolean)
 	 * @see #populateCombo()
@@ -302,5 +304,13 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 */
 	public void setToolTipText(String tip) {
 		getCombo().setToolTipText(tip);
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		getJLabel().setEnabled(enabled);
+		getNewButton().setEnabled(enabled);
+		getCombo().setEnabled(enabled);
 	}
 }
