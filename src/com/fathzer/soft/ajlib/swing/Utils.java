@@ -13,6 +13,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -213,5 +215,21 @@ public abstract class Utils {
 				super.mouseExited(e);
 			}
 		};
+	}
+	
+	/** Converts a look and feel name to its class name.
+	 * @param lookAndFeelName The name of the look and feel
+	 * @return The class name of the look and feel or null if the LAF is unknown.
+	 */
+	public static String getLFClassFromName(String lookAndFeelName) {
+		LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
+		String lookAndFeelClass = null;
+		for (LookAndFeelInfo lookAndFeelInfo : installedLookAndFeels) {
+			if (lookAndFeelInfo.getName().equals(lookAndFeelName)) {
+				lookAndFeelClass = lookAndFeelInfo.getClassName();
+				break;
+			}
+		}
+		return lookAndFeelClass;
 	}
 }
