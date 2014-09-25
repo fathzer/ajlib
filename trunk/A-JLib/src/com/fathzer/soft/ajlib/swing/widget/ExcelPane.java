@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.fathzer.jlocal.Formatter;
 import com.fathzer.soft.ajlib.swing.dialog.FileChooser;
@@ -30,6 +31,7 @@ import java.io.IOException;
  */ 
 public class ExcelPane extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private static final String CSV_EXTENSION = ".csv";
 
 	private Table table;
 	private JButton saveButton;
@@ -102,7 +104,17 @@ public class ExcelPane extends JPanel {
 			saveButton = new JButton(Application.getString("ExcelPane.save", getLocale())); //$NON-NLS-1$
 			saveButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JFileChooser chooser = new FileChooser(getInitialPath());
+					JFileChooser chooser = new FileChooser(getInitialPath()) {
+						private static final long serialVersionUID = 1L;
+						public File getSelectedFile() {
+							File f = super.getSelectedFile();
+							if ((f!=null) && !f.getName().endsWith(CSV_EXTENSION)) {
+								f = new File(f.getParent(), f.getName()+CSV_EXTENSION);
+							}
+							return f;
+						}
+					};
+					chooser.setFileFilter(new FileNameExtensionFilter(Application.getString("ExcelPane.csv.wording", getLocale()),CSV_EXTENSION.substring(1)));
 					File file = chooser.showSaveDialog(ExcelPane.this)==JFileChooser.APPROVE_OPTION?chooser.getSelectedFile():null;
 					if (file!=null) {
 						try {
