@@ -102,34 +102,36 @@ public class ExcelPane extends JPanel {
 	public final JButton getSaveButton() {
 		if (saveButton == null) {
 			saveButton = new JButton(Application.getString("ExcelPane.save", getLocale())); //$NON-NLS-1$
-			saveButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JFileChooser chooser = new FileChooser(getInitialPath()) {
-						private static final long serialVersionUID = 1L;
-						public File getSelectedFile() {
-							File f = super.getSelectedFile();
-							if ((f!=null) && !f.getName().endsWith(CSV_EXTENSION)) {
-								f = new File(f.getParent(), f.getName()+CSV_EXTENSION);
-							}
-							return f;
-						}
-					};
-					chooser.setFileFilter(new FileNameExtensionFilter(Application.getString("ExcelPane.csv.wording", getLocale()),CSV_EXTENSION.substring(1)));
-					File file = chooser.showSaveDialog(ExcelPane.this)==JFileChooser.APPROVE_OPTION?chooser.getSelectedFile():null;
-					if (file!=null) {
-						try {
-							save(file);
-						} catch(IOException ex) {
-							String message = Formatter.format(Application.getString("ExcelPane.error.message", getLocale()), ex.toString()); //$NON-NLS-1$
-							JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("Generic.error", getLocale()), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
-						}
-					}
-				}
-			});
+			saveButton.addActionListener(new SaveButtonActionListener());
 		}
 		return saveButton;
 	}
 	
+	private final class SaveButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser chooser = new FileChooser(getInitialPath()) {
+				private static final long serialVersionUID = 1L;
+				public File getSelectedFile() {
+					File f = super.getSelectedFile();
+					if ((f!=null) && !f.getName().endsWith(CSV_EXTENSION)) {
+						f = new File(f.getParent(), f.getName()+CSV_EXTENSION);
+					}
+					return f;
+				}
+			};
+			chooser.setFileFilter(new FileNameExtensionFilter(Application.getString("ExcelPane.csv.wording", getLocale()),CSV_EXTENSION.substring(1)));
+			File file = chooser.showSaveDialog(ExcelPane.this)==JFileChooser.APPROVE_OPTION?chooser.getSelectedFile():null;
+			if (file!=null) {
+				try {
+					save(file);
+				} catch(IOException ex) {
+					String message = Formatter.format(Application.getString("ExcelPane.error.message", getLocale()), ex.toString()); //$NON-NLS-1$
+					JOptionPane.showMessageDialog(ExcelPane.this, message, Application.getString("Generic.error", getLocale()), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+				}
+			}
+		}
+	}
+
 	/** Gets the initial path of the file chooser.
 	 * <br>This method is called every time the save button is clicked.
 	 * <br>By default, this path is null.
