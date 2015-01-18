@@ -7,12 +7,13 @@ import java.net.URL;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import com.fathzer.soft.ajlib.swing.Browser;
 import com.fathzer.soft.ajlib.swing.framework.Application;
-
 
 /** A HTML component.
  * @author Jean-Marc Astesana
@@ -20,10 +21,12 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
  */
 @SuppressWarnings("serial")
 public class HTMLPane extends JScrollPane {
+	public static final String CONTENT_CHANGED_PROPERTY = "CHANGED";  //$NON-NLS-1$
 	private static final String HTML_START_TAG = "<html>"; //$NON-NLS-1$
 	private static final String HTML_END_TAG = "</html>"; //$NON-NLS-1$
 	private JTextPane textPane;
 	private String contentType;
+	private DocumentListener docListener;
 
 	/** Constructor.
 	 */
@@ -31,22 +34,8 @@ public class HTMLPane extends JScrollPane {
 		super();
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.contentType = null;
-		textPane = new JTextPane();
-		textPane.setEditable(false);
-		textPane.addHyperlinkListener(new HyperlinkListener() {
-			@Override
-			public void hyperlinkUpdate(HyperlinkEvent e) {
-				if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
-					URL url = e.getURL();
-					try {
-						Browser.show(url.toURI(), HTMLPane.this, Application.getString("Generic.error", getLocale())); //$NON-NLS-1$
-					} catch (URISyntaxException e2) {
-						throw new RuntimeException();
-					}
-				}
-			}
-		});
-		this.setViewportView(textPane);
+		getTextPane().getDocument().addDocumentListener(getDocumentListener());
+		this.setViewportView(getTextPane());
 	}
 	
 	public HTMLPane (URL url) throws IOException {
@@ -83,10 +72,11 @@ public class HTMLPane extends JScrollPane {
 		} else {
 			type = this.contentType;
 		}
-		textPane.setContentType(type);
+		getTextPane().setContentType(type);
 		// We should not use textPane.setText because it scrolls the textPane to the end of the text
 		try {
-			textPane.read(new StringReader(text), type);
+			getTextPane().read(new StringReader(text), type);
+			getTextPane().getDocument().addDocumentListener(getDocumentListener());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -94,13 +84,52 @@ public class HTMLPane extends JScrollPane {
 	
 	public void setContent (URL url) throws IOException {
 		if (url != null) {
-			textPane.setPage(url);
+			getTextPane().setPage(url);
+			textPane.getDocument().addDocumentListener(getDocumentListener());
 		}
 	}
 	
 	/** Gets the internal text pane. */
 	public JTextPane getTextPane() {
+		if (this.textPane==null) {
+			textPane = new JTextPane();
+			textPane.setEditable(false);
+			textPane.addHyperlinkListener(new HyperlinkListener() {
+				@Override
+				public void hyperlinkUpdate(HyperlinkEvent e) {
+					if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
+						URL url = e.getURL();
+						try {
+							Browser.show(url.toURI(), HTMLPane.this, Application.getString("Generic.error", getLocale())); //$NON-NLS-1$
+						} catch (URISyntaxException e2) {
+							throw new RuntimeException();
+						}
+					}
+				}
+			});
+			textPane.getDocument().addDocumentListener(getDocumentListener());
+		}
 		return this.textPane;
+	}
+	
+	private DocumentListener getDocumentListener() {
+		if (docListener==null) {
+			docListener = new DocumentListener() {
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					firePropertyChange(CONTENT_CHANGED_PROPERTY, null, null);
+				}
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					firePropertyChange(CONTENT_CHANGED_PROPERTY, null, null);
+				}
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					firePropertyChange(CONTENT_CHANGED_PROPERTY, null, null);
+				}
+			};
+		}
+		return docListener;
 	}
 
 	/** Sets the content type.
