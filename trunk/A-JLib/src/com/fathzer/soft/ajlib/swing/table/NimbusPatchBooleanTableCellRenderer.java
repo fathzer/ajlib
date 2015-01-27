@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  * <br>Default boolean renderer is broken. Its background desperately remains blank instead of using the alternate Nimbus background.
  * @see <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6723524">bug id 6723524</a>
  * @author Jean-Marc Astesana
- * <BR>License : GPL v3
+ * <BR>License : LGPL v3
  */
 public class NimbusPatchBooleanTableCellRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
