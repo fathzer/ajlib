@@ -144,12 +144,30 @@ public class IntegerWidget extends TextWidget {
 		setValue(BigInteger.valueOf(value));
 	}
 	
+	/** Sets the min value of the widget.
+	 * @param min the min value.
+	 * <br>If the current value if lower than max, the current value is set to null.
+	 * @throws IllegalArgumentException if min is bigger than widget max value.
+	 */
+	public void setMinValue(BigInteger min) {
+		if (min.compareTo(maxValue)>0) {
+			throw new IllegalArgumentException();
+		}
+		minValue = min;
+		if (value!=null && value.compareTo(min)<0) {
+			setValue((BigInteger)null);
+		}
+	}
+	
 	/** Sets the max value of the widget.
 	 * @param max the max value.
 	 * <br>If the current value if bigger than max, the current value is set to null.
-	 * @throws IllegalArgumentException if max if lower than widget min value.
+	 * @throws IllegalArgumentException if max is lower than widget min value.
 	 */
 	public void setMaxValue(BigInteger max) {
+		if (max.compareTo(minValue)<0) {
+			throw new IllegalArgumentException();
+		}
 		maxValue = max;
 		if (value!=null && value.compareTo(max)>0) {
 			setValue((BigInteger)null);
