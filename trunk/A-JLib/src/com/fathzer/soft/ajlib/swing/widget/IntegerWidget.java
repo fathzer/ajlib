@@ -143,4 +143,16 @@ public class IntegerWidget extends TextWidget {
 	public void setValue(Integer value) {
 		setValue(BigInteger.valueOf(value));
 	}
+	
+	/** Sets the max value of the widget.
+	 * @param max the max value.
+	 * <br>If the current value if bigger than max, the current value is set to null.
+	 * @throws IllegalArgumentException if max if lower than widget min value.
+	 */
+	public void setMaxValue(BigInteger max) {
+		maxValue = max;
+		if (value!=null && value.compareTo(max)>0) {
+			setValue((BigInteger)null);
+		}
+	}
 }
