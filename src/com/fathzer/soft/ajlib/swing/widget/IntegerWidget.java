@@ -146,30 +146,48 @@ public class IntegerWidget extends TextWidget {
 	
 	/** Sets the min value of the widget.
 	 * @param min the min value.
-	 * <br>If the current value if lower than max, the current value is set to null.
+	 * <br>If the current value is lower than max, the current value is set to null.
 	 * @throws IllegalArgumentException if min is bigger than widget max value.
+	 * @see #setRange(BigInteger, BigInteger)
 	 */
 	public void setMinValue(BigInteger min) {
 		if (min.compareTo(maxValue)>0) {
 			throw new IllegalArgumentException();
 		}
 		minValue = min;
-		if (value!=null && value.compareTo(min)<0) {
+		if (value!=null && min!=null && value.compareTo(min)<0) {
 			setValue((BigInteger)null);
 		}
 	}
 	
 	/** Sets the max value of the widget.
 	 * @param max the max value.
-	 * <br>If the current value if bigger than max, the current value is set to null.
+	 * <br>If the current value is bigger than max, the current value is set to null.
 	 * @throws IllegalArgumentException if max is lower than widget min value.
+	 * @see #setRange(BigInteger, BigInteger)
 	 */
 	public void setMaxValue(BigInteger max) {
 		if (max.compareTo(minValue)<0) {
 			throw new IllegalArgumentException();
 		}
 		maxValue = max;
-		if (value!=null && value.compareTo(max)>0) {
+		if (value!=null && max!= null && value.compareTo(max)>0) {
+			setValue((BigInteger)null);
+		}
+	}
+	
+	/** Sets this widget min and max values.
+	 * <br>If the current value is out of the new range, the current value is set to null.
+	 * @param min The min value
+	 * @param max The max value
+	 */
+	public void setRange(BigInteger min, BigInteger max) {
+		if ((min!=null)&&(max!=null)&&(min.compareTo(max)>0)) {
+			throw new IllegalArgumentException();
+		}
+		minValue = min;
+		maxValue = max;
+		if (value!=null && ((min!=null && value.compareTo(min)<0) || (max!= null && value.compareTo(max)>0))) {
 			setValue((BigInteger)null);
 		}
 	}
