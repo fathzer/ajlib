@@ -141,7 +141,7 @@ public class IntegerWidget extends TextWidget {
 	 * @param value an integer or null to set the field empty.
 	 */
 	public void setValue(Integer value) {
-		setValue(BigInteger.valueOf(value));
+		setValue(value==null?(BigInteger)null:BigInteger.valueOf(value));
 	}
 	
 	/** Sets the min value of the widget.

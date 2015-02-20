@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicFileChooserUI;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
@@ -18,7 +19,6 @@ import javax.swing.text.PlainDocument;
 import com.fathzer.soft.ajlib.swing.framework.Application;
 import com.fathzer.soft.ajlib.utilities.FileUtils;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
-
 
 /**
  * A better file chooser. <br>
@@ -41,7 +41,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * previous point.</li>
  * <br>
  * <br>
- * <b>Here is the bad news</b>: This component is design to allow selection of
+ * <b>Here is the bad news</b>: This component is designed to allow selection of
  * individual files, not folder, not multiple files :-(
  * </ul>
  * 
@@ -86,14 +86,13 @@ public class FileChooser extends JFileChooser {
 				throw new RuntimeException(e);
 			}
 		} catch (NoSuchFieldException e) {
-			// If there's no fileNameLabel ... ok, then we will not do anything
-			// with it !
+			// If there's no fileNameLabel ... ok, then we will not do anything with it !
 		}
 
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				File old = selectedFile;
+				File old = getSelectedFile();
 				File superSelected = FileChooser.super.getSelectedFile();
 				String name = fileNameField != null ? fileNameField.getText() : superSelected==null?"":superSelected.getName();
 				File selectedFile = name.length() == 0 ? null : new File(FileChooser.super.getCurrentDirectory(), name);
@@ -125,13 +124,33 @@ public class FileChooser extends JFileChooser {
 		}
 		super.firePropertyChange(propertyName, oldValue, newValue);
 	}
+	
+	/** Tests whether the getSelectedFile method is fixed.<br>
+	 * Unfortunately, the original JFileChooser has a bug: getSelectedFile returns a wrong value when
+	 * text is typed in the  file name field.<br>
+	 * This class tries to fix it, but the fix is not available under some look and feels (CDE/Motif for example).
+	 * @return true if the bug is fixed for the current look and feel.
+	 */
+	public boolean isGetSelectedFileFixed() {
+		return fileNameField!=null;
+	}
 
 	@Override
 	public File getSelectedFile() {
 		// The JFileChooser getSelectedFile returns a wrong value when the file
 		// name field is changed
 		// So, we use an attribute updated when events that modify the selected
-		// file occurs.
+		// file occurs ... if we can find it in the UI.
+		// Another way is asking the ui ... if it allows it
+		if (!isGetSelectedFileFixed()) {
+			if (getUI() instanceof BasicFileChooserUI) {
+				String name = ((BasicFileChooserUI)getUI()).getFileName();
+				selectedFile = name.length()==0?null:new File(super.getCurrentDirectory(),name) ;
+			} else {
+				System.err.println ("Warning, unable to get the current file name. UI is instance of "+ui.getClass());
+				selectedFile = super.getSelectedFile();
+			}
+		}
 		return selectedFile;
 	}
 
@@ -174,9 +193,7 @@ public class FileChooser extends JFileChooser {
 	 * Activate/Deactivate the test made on the selected file during in
 	 * approveSelection method. <br>
 	 * The default value is true.
-	 * 
-	 * @param enabled
-	 *          true to perform tests, false to skip them.
+	 * @param enabled true to perform tests, false to skip them.
 	 */
 	public void setSelectionTestEnabled(boolean enabled) {
 		this.selectionTestEnabled = enabled;
