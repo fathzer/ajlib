@@ -26,7 +26,8 @@ import java.awt.event.ActionListener;
  */
 public class MonthWidget extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
+	static final String RES_PATH = "/com/fathzer/soft/ajlib/swing/widget/date/";
+
 	public static final String DATE_PROPERTY = "MONTH";
 
 	private JButton previousYear = null;
@@ -109,7 +110,7 @@ public class MonthWidget extends JPanel {
 		add(getButtonsPanel(), gbcButtonsPanel);
 		this.add(currentMonth, gridBagConstraints2);
 	}
-
+	
 	/**
 	 * This method initializes previousYear	
 	 * 	
@@ -118,7 +119,7 @@ public class MonthWidget extends JPanel {
 	private JButton getPreviousYear() {
 		if (previousYear == null) {
 			previousYear = new JButton();
-			previousYear.setIcon(Utils.createIcon(getClass().getResource("fast-rewind.png"), 16*getFont().getSize()/12));
+			previousYear.setIcon(Utils.createIcon(getClass().getResource(RES_PATH+"fast-rewind.png"), 16*getFont().getSize()/12));
 			previousYear.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(-12);
@@ -136,7 +137,7 @@ public class MonthWidget extends JPanel {
 	private JButton getPreviousMonth() {
 		if (previousMonth == null) {
 			previousMonth = new JButton();
-			previousMonth.setIcon(Utils.createIcon(getClass().getResource("rewind.png"), 16*getFont().getSize()/12));
+			previousMonth.setIcon(Utils.createIcon(getClass().getResource(RES_PATH+"rewind.png"), 16*getFont().getSize()/12));
 			previousMonth.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(-1);
@@ -154,7 +155,7 @@ public class MonthWidget extends JPanel {
 	private JButton getNextMonth() {
 		if (nextMonth == null) {
 			nextMonth = new JButton();
-			nextMonth.setIcon(Utils.createIcon(getClass().getResource("forward.png"), 16*getFont().getSize()/12));
+			nextMonth.setIcon(Utils.createIcon(getClass().getResource(RES_PATH+"forward.png"), 16*getFont().getSize()/12));
 			nextMonth.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(1);
@@ -172,7 +173,7 @@ public class MonthWidget extends JPanel {
 	private JButton getNextYear() {
 		if (nextYear == null) {
 			nextYear = new JButton();
-			nextYear.setIcon(Utils.createIcon(getClass().getResource("fast-forward.png"), 16*getFont().getSize()/12));
+			nextYear.setIcon(Utils.createIcon(getClass().getResource(RES_PATH+"fast-forward.png"), 16*getFont().getSize()/12));
 			nextYear.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					add(12);
@@ -189,7 +190,7 @@ public class MonthWidget extends JPanel {
 	public JButton getNow() {
 		if (now == null) {
 			now = new JButton();
-			now.setIcon(Utils.createIcon(getClass().getResource("stop.png"), 16*getFont().getSize()/12));
+			now.setIcon(Utils.createIcon(getClass().getResource(RES_PATH+"stop.png"), 16*getFont().getSize()/12));
 			now.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
