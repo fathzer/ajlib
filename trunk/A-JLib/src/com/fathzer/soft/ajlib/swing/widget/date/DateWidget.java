@@ -108,7 +108,7 @@ public class DateWidget extends JPanel {
 		gridBagConstraints11.fill = GridBagConstraints.VERTICAL;
 		gridBagConstraints11.gridy = 0;
 		jLabel = new JLabel();
-		jLabel.setIcon(Utils.createIcon(DateWidget.class.getResource("calendar.png"), 16*getFont().getSize()/12));
+		jLabel.setIcon(Utils.createIcon(DateWidget.class.getResource(MonthWidget.RES_PATH+"calendar.png"), 16*getFont().getSize()/12));
 		jLabel.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (jLabel.isEnabled() && !popup.isVisible()) {
