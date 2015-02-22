@@ -151,7 +151,7 @@ public class IntegerWidget extends TextWidget {
 	 * @see #setRange(BigInteger, BigInteger)
 	 */
 	public void setMinValue(BigInteger min) {
-		if (min.compareTo(maxValue)>0) {
+		if (min!=null && maxValue!=null && min.compareTo(maxValue)>0) {
 			throw new IllegalArgumentException();
 		}
 		minValue = min;
@@ -167,7 +167,7 @@ public class IntegerWidget extends TextWidget {
 	 * @see #setRange(BigInteger, BigInteger)
 	 */
 	public void setMaxValue(BigInteger max) {
-		if (max.compareTo(minValue)<0) {
+		if (max!=null && minValue!=null && max.compareTo(minValue)<0) {
 			throw new IllegalArgumentException();
 		}
 		maxValue = max;
