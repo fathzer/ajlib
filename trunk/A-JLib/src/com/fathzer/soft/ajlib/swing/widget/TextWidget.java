@@ -98,6 +98,64 @@ public class TextWidget extends JTextField {
 	/** Constructor.
 	 */
 	public TextWidget () {
+/*
+This is a try to implement command-V in textfield on MacOS
+Unfortunately, all my tries failed :-(
+Maybe retry later or ask to stackoverflow
+
+int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+Keymap im = getKeymap();
+KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_V, menuShortcutKeyMask);
+im.removeKeyStrokeBinding(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
+im.addActionForKeyStroke(keyStroke, new Action() {
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println ("paste was called");
+		dispatchEvent(new KeyEvent(TextWidget.this, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), InputEvent.CTRL_MASK, 'V'));
+//		paste();
+	}
+	
+	@Override
+	public void setEnabled(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void putValue(String key, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public Object getValue(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+});
+System.out.println ("Keystroke installed");
+//im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, menuShortcutKeyMask), DefaultEditorKit.pasteAction);
+//im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, menuShortcutKeyMask), DefaultEditorKit.cutAction);
+*/
 		this.setDocument(new MyDocument());
 	}
 
