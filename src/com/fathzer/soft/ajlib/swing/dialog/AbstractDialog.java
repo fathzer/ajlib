@@ -62,8 +62,9 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 				cancel();
 			}
 		};
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESCAPE_KEY");
-		getRootPane().getActionMap().put("ESCAPE_KEY", escapeAction);
+		String actionMapKey = "ESCAPE_KEY"; //$NON-NLS-1$
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), actionMapKey);
+		getRootPane().getActionMap().put(actionMapKey, escapeAction);
 		this.setContentPane(this.createContentPane());
 		this.setResizable(false);
 		this.pack();
@@ -142,7 +143,7 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 */
 	protected JButton getOkButton() {
 		if (okButton==null) {
-			okButton = new JButton(Application.getString("GenericButton.ok", getLocale()));
+			okButton = new JButton(Application.getString("GenericButton.ok", getLocale())); //$NON-NLS-1$
 			okButton.setOpaque(false);
 		}
 		return okButton;
@@ -154,8 +155,8 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 */
 	protected JButton getCancelButton() {
 		if (cancelButton==null) {
-			cancelButton = new JButton(Application.getString("GenericButton.cancel", getLocale()));
-			cancelButton.setToolTipText(Application.getString("GenericButton.cancel.toolTip", getLocale()));
+			cancelButton = new JButton(Application.getString("GenericButton.cancel", getLocale())); //$NON-NLS-1$
+			cancelButton.setToolTipText(Application.getString("GenericButton.cancel.toolTip", getLocale())); //$NON-NLS-1$
 			cancelButton.setOpaque(false);
 		}
 		return cancelButton;
@@ -222,7 +223,7 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	public void updateOkButtonEnabled() {
 		String cause = getOkDisabledCause();
 		this.getOkButton().setEnabled(cause==null);
-		this.getOkButton().setToolTipText(cause==null?Application.getString("GenericButton.ok.toolTip", getLocale()):cause);
+		this.getOkButton().setToolTipText(cause==null?Application.getString("GenericButton.ok.toolTip", getLocale()):cause); //$NON-NLS-1$
 	}
 	
 	@Override
