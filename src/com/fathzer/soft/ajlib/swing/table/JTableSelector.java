@@ -25,7 +25,7 @@ public abstract class JTableSelector<T> {
 	/** Selects some elements.
 	 * @param elements The elements to select. If some elements do not exist in the table, they are ignored. 
 	 */
-	public void setSelectedTransactions(T[] elements) {
+	public void setSelected(T[] elements) {
 		table.getSelectionModel().setValueIsAdjusting(true);
 		table.getSelectionModel().clearSelection();
 		int firstViewRow = -1;
