@@ -71,9 +71,10 @@ public class ExcelPane extends JPanel {
 		if (extra!=null) {
 			GridBagConstraints gbcExtra = new GridBagConstraints();
 			gbcExtra.insets = new Insets(5, 0, 0, 0);
-			gbcExtra.anchor = GridBagConstraints.WEST;
+			gbcExtra.anchor = GridBagConstraints.EAST;
 			gbcExtra.gridx = 0;
 			gbcExtra.gridy = 1;
+			gbcExtra.weightx = 1.0;
 			add(extra, gbcExtra);
 		}
 	}
