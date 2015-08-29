@@ -43,7 +43,7 @@ public class LocalizationData {
 	 * <br>The application wordings may not be all in the same bundle. This method allows you to declare additional bundles.
 	 * <br>If a key is present in two or more bundles, the last added has the priority and its wording will be returned by getString methods.
 	 * This allows developers to redefine some wordings.
-	 * @param bundlePath
+	 * @param bundlePath The path of the bundle to add.
 	 */
 	public void add(String bundlePath) {
 		for(Locale locale : bundles.keySet()) {

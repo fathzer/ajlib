@@ -39,12 +39,10 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * <li>setSelectedFile(null) clears the current selection.</li>
  * <li>The SELECTED_FILE_CHANGED_PROPERTY event is thrown accordingly to the
  * previous point.</li>
- * <br>
- * <br>
+ * </ul>
  * <b>Here is the bad news</b>: This component is designed to allow selection of
  * individual files, not folder, not multiple files :-(
- * </ul>
- * 
+ * <br>
  * @author Jean-Marc Astesana <BR>
  *         License: LGPL v3
  */

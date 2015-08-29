@@ -83,7 +83,8 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 
 	/** Sets the progress of the current phase.
 	 * <br>You should use this method instead of the super class setProgress method.
-	 * @param progress
+	 * @param progress The current progress
+	 * @see #setPhaseLength(int)
 	 */
 	public void reportProgress(int progress) {
 		if ((this.phaseLength<0) || (progress>phaseLength)) {

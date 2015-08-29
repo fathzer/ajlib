@@ -37,6 +37,7 @@ public class TextSearcher {
 	/**
 	 * Constructor.
 	 * <br>The searched text is set to null.
+	 * @param comp The text component in which to search
 	 * @see #TextSearcher(JTextComponent, String)
 	 */
 	public TextSearcher(JTextComponent comp) {
@@ -47,6 +48,7 @@ public class TextSearcher {
 	 * Constructor.
 	 * <br>By default, the searcher is not case sensitive nor diacritical sensitive.
 	 * @param comp The text component in which to search
+	 * @param searchedText The text to search
 	 */
 	public TextSearcher(JTextComponent comp, String searchedText) {
 		this.comp = comp;

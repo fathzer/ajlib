@@ -138,8 +138,9 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	}
 
 	/** Gets the ok button.
-	 * If you want the dialog not to have an ok button, you may set the visibility of this button to false
-	 * (okButton.setVisible(false)).
+	 * <br>If you want the dialog not to have an ok button, you may set the visibility of this button to false with
+	 * (getOkButton.setVisible(false)).
+	 * @return The ok button.
 	 */
 	protected JButton getOkButton() {
 		if (okButton==null) {
@@ -151,7 +152,8 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	
 	/** Gets the cancel button.
 	 * If you want the dialog not to have a cancel button, you may set the visibility of this button to false
-	 * (cancelButton.setVisible(false)).
+	 * (getCancelButton.setVisible(false)).
+	 * @return the cancel button.
 	 */
 	protected JButton getCancelButton() {
 		if (cancelButton==null) {

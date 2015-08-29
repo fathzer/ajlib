@@ -35,7 +35,7 @@ import com.fathzer.soft.ajlib.utilities.TextMatcher;
  * <br>DocumentListeners are intended to do it, unfortunately, when a text is replace in a field, the listener receive two events:<ol>
  * <li>One when the replaced text is removed.</li>
  * <li>One when the replacing text is inserted</li>
- * </ul>
+ * </ol>
  * The first event is ... simply absolutely misleading, it corresponds to a value that the text never had.
  * <br>Another problem with DocumentListener is that you can't modify the text into it (it throws IllegalStateException).
  * <br>Another way was to use KeyListeners ... but some key events are throw a long time (probably the key auto-repeat interval)
@@ -221,7 +221,8 @@ public class TextWidget extends JTextField {
 	/** Sets the predefined values allowed by the field.
 	 * @param array The predefined values.
 	 * @param unsortedMax Maximum number of unsorted values.
-	 * <br>The values can be divided in two groups (which will be separated by a thin line)<ol>.
+	 * <br>The values can be divided in two groups (which will be separated by a thin line).
+	 * <ol>
 	 * <li>A group of values, that matches the current typed text, sorted in the same order as in the array argument.</li>
 	 * <li>A group of values, that matches the current typed text, sorted in alphabetical order.</li>
 	 * </ol>

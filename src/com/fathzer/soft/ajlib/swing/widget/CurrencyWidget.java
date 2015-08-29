@@ -54,8 +54,8 @@ public class CurrencyWidget extends NumberWidget {
 	}
 	
 	/** Sets the currency.
-	 * By default, the currency is the one of the widget's locale.
-	 * @param currency
+	 * <br>By default, the currency is the one of the widget's locale.
+	 * @param currency The new currency.
 	 */
 	public void setCurrency (Currency currency) {
 		getFormat().setCurrency(currency);

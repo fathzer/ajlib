@@ -147,7 +147,8 @@ public class DateWidget extends JPanel {
 		return dateField;
 	}
 
-	/**
+	/** Sets the validity of null date.
+	 * @param valid true if null should be considered valid.
 	 * @see DateField#setIsEmptyNullDateIsValid(boolean)
 	 */
 	public void setIsEmptyNullDateIsValid(boolean valid) {

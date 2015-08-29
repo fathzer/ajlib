@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.fathzer.soft.ajlib.utilities.ListUtils;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.List;
 
 /** An abstract widget composed of two buttons to move up or down selected rows of a JTable.
  * @see JTable
@@ -27,8 +27,10 @@ public abstract class AbstractTableRowMover extends JPanel {
 	private JButton upButton;
 
 	private JTable table;
+	
 	/**
 	 * Creates the panel.
+	 * @param table The table that contains the moveable rows.
 	 */
 	public AbstractTableRowMover(JTable table) {
 		this.table = table;
@@ -113,34 +115,7 @@ public abstract class AbstractTableRowMover extends JPanel {
 	 * <br>It is mandatory that this method fire the proper model change event after updating the model.  
 	 * @param selectedRows The moved rows
 	 * @param up true if the rows are moved up, false if they are moved down.
+	 * @see ListUtils#move(java.util.List, int[], int)
 	 */
 	protected abstract void moveModelRows(int[] selectedRows, boolean up);
-	
-	/** Utility method that moves some indexes of a list one position up or down.
-	 * <br>It should be useful to implement moveModelRows.
-	 * @param list The list where to move the elements
-	 * @param indexes The indexes of the elements to move (should be sorted in ascending order).
-	 * @param up true to move up, false to move down.
-	 */
-	public static <T> void move(List<T> list, int[] indexes, boolean up) {
-		if (up) {
-			for (int i = 0; i < indexes.length; i++) {
-				T elem1 = list.get(indexes[i]);
-				T elem2 = list.get(indexes[i]-1);
-				list.set(indexes[i]-1, elem1);
-				list.set(indexes[i], elem2);
-			}
-		} else {
-			List<T> tmp = new ArrayList<T>();
-			for (int i=0;i<indexes.length;i++) {
-				tmp.add(list.get(indexes[i]));
-			}	
-			for (int i=0;i<indexes.length;i++) {
-				list.remove(indexes[i]-i);
-			}
-			for (int i=0;i<tmp.size();i++) {
-				list.add(indexes[i]+1, tmp.get(i));
-			}
-		}
-	}
 }

@@ -56,11 +56,21 @@ public abstract class Application {
 	
 	public static LocalizationData LOCALIZATION = LocalizationData.DEFAULT;
 
-	@Deprecated
+	/** Gets a message localized in the default locale.
+	 * @param key The message key.
+	 * @return The localized message.
+	 * @see #getString(String, Locale)
+	 */
 	public static String getString(String key) {
 		return LOCALIZATION.getString(key);
 	}
 	
+	/** Gets a localized message.
+	 * @param key The message key.
+	 * @param locale The desired locale.
+	 * @return The localized message.
+	 * @see LocalizationData
+	 */
 	public static String getString(String key, Locale locale) {
 		return LOCALIZATION.getString(key, locale);
 	}

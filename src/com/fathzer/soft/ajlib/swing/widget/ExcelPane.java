@@ -148,6 +148,7 @@ public class ExcelPane extends JPanel {
 	 * <br>By default, the content is save to the file using the csv exporter.
 	 * @param file The file selected by the user to save the data.
 	 * @see #getCSVExporter()
+	 * @throws IOException If something goes wrong while writing file.
 	 */
 	protected void save(File file) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));

@@ -89,7 +89,9 @@ public class HTMLPane extends JScrollPane {
 		}
 	}
 	
-	/** Gets the internal text pane. */
+	/** Gets the internal text pane.
+	 * @return A JTextPane
+	 */
 	public JTextPane getTextPane() {
 		if (this.textPane==null) {
 			textPane = new JTextPane();
