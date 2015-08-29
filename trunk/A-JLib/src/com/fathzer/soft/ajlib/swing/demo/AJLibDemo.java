@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 
 import com.fathzer.soft.ajlib.swing.framework.Application;
 
-
 /** This is a simple demonstration application. */
 public class AJLibDemo extends Application {
 	public static final AJLibDemo DEMO = new AJLibDemo();
@@ -28,7 +27,7 @@ public class AJLibDemo extends Application {
 	}
 
 	/**
-	 * @param args
+	 * @param args Program arguments
 	 */
 	public static void main(String[] args) {
 		DEMO.launch();

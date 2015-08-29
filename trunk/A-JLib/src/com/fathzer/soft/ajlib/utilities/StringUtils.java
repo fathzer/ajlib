@@ -18,8 +18,8 @@ public abstract class StringUtils {
 	 * <br>The main advantage vs String#split is that the developer has not to deal with separators that
 	 * are reserved characters of the regular expressions syntax
 	 * <br>Some examples:<ul>
-	 * <li>split("",',') -> {""}</li>
-	 * <li>split(",a,",',') -> {"","a",""}</li>
+	 * <li>split("",',') -&gt; {""}</li>
+	 * <li>split(",a,",',') -&gt; {"","a",""}</li>
 	 * </ul>
 	 * @param string The String to split
 	 * @param separator The field separator

@@ -128,8 +128,8 @@ public class DateField extends TextWidget {
 	}
 	
 	/** Allow/Disallow this field to be empty (if it means a null date).
-	 * Keep in mind that a non null date for an empty field is always valid.
-	 * @param valid
+	 * <br>Keep in mind that a non null date for an empty field is always valid.
+	 * @param valid true if null is a valid date.
 	 * @see #setEmptyDate(Date)
 	 */
 	public void setIsEmptyNullDateIsValid(boolean valid) {

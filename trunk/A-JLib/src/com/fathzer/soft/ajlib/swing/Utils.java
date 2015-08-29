@@ -52,13 +52,13 @@ public abstract class Utils {
 		return (Window) component;
 	}
 
-	@Deprecated
 	/** Centers a window relatively to another.
 	 * @param window The window to center
 	 * @param reference The reference window
 	 * @see Window#setLocationRelativeTo(Component)
 	 * @deprecated
 	 */
+	@Deprecated
 	public static void centerWindow(Window window, Window reference) {
 		window.setLocationRelativeTo(reference);
 	}

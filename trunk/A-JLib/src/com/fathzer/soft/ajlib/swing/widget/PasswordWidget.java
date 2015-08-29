@@ -10,7 +10,7 @@ import javax.swing.text.PlainDocument;
  * <br>DocumentListeners are intended to do it, unfortunately, when a text is replace in a field, the listener receive two events:<ol>
  * <li>One when the replaced text is removed.</li>
  * <li>One when the replacing text is inserted</li>
- * </ul>
+ * </ol>
  * The first event is ... simply absolutely misleading, it corresponds to a value that the text never had.
  * <br>Another problem with DocumentListener is that you can't modify the text into it (it throws IllegalStateException).
  * <br><br>Another way was to use KeyListeners ... but some key events are throw a long time (probably the key auto-repeat interval)

@@ -66,7 +66,7 @@ public class CSVWriter {
 	}
 	
 	/** Ensures all the data is written to the underlying writer.
-	 * @throws IOException
+	 * @throws IOException If something goes wrong
 	 */
 	public void flush() throws IOException {
 		writer.flush();

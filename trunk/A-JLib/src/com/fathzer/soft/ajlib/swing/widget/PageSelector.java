@@ -204,7 +204,7 @@ public class PageSelector extends JPanel {
 	
 	/** Sets the number of pages.
 	 * @param pageCount The number of pages.
-	 * @throws IllegalArgumentException if pageCount < 0.
+	 * @throws IllegalArgumentException if pageCount &lt; 0.
 	 */
 	public void setPageCount(int pageCount) {
 		if (pageCount<0) {

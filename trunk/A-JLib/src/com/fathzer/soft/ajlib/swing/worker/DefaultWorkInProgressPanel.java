@@ -120,8 +120,8 @@ public class DefaultWorkInProgressPanel extends WorkInProgressPanel {
 	
 	/** Inits the progress bar.
 	 * <br>This method is called every time the worker phase or phase length changes (or when the worker itself changes).
-	 * <br>The default implementation sets the progress bar in indeterminate state if the length of the worker's phase is <= 0.
-	 * If it is > 0, then, it sets the maximum to the phase length and turns the StringPainted of the progress bar to true.
+	 * <br>The default implementation sets the progress bar in indeterminate state if the length of the worker's phase is &lt;= 0.
+	 * If it is &gt; 0, then, it sets the maximum to the phase length and turns the StringPainted of the progress bar to true.
 	 * <br>if the phase wording is null, the message text is unchanged.
 	 * <br>You can override this method to change this behavior. 
 	 */

@@ -12,12 +12,12 @@ import javax.swing.table.TableRowSorter;
  * <br>The TableRowSorter receives user's clicks on the table header and manage the sort keys and order.
  * Unfortunately, when the user click a column, the row sorter toggle the sort order (ascending/descending),
  * but provides no way to deselect the sort key.
- * <br>This class makes a cycle between ASCENDING, DESCENDING and UNSORTED when the user clicks a colmun header.
+ * <br>This class makes a cycle between ASCENDING, DESCENDING and UNSORTED when the user clicks a column header.
  * <br>Using this class is simple as:
  * <br><code>
  * &nbsp;&nbsp;JTable table;<br>
  * &nbsp;&nbsp;...<br>
- * &nbsp;&nbsp;table.setRowSorter<TableModel>(new RowSorter(table.getModel()))<br>
+ * &nbsp;&nbsp;table.setRowSorter&lt;TableModel&gt;(new RowSorter(table.getModel()))<br>
  * </code>
  * @author Jean-Marc Astesana
  * <BR>License: LGPL v3
@@ -46,7 +46,6 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
 	 */
 	@Override
 	public void toggleSortOrder(int column) {
-//System.out.println ("toggleSortOrder is called");
 		if (!isSortable(column)) {
 			return;
 		}
@@ -62,7 +61,6 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
 					index++;
 				}
 				theKey = new SortKey(column, toggleSequence.get(index));
-//System.out.println ("column "+column+" toggled from "+sortKey.getSortOrder()+" to "+toggleSequence.get(index)); //TODO
 			} else {
 				futureKeys.add(sortKey);
 			}

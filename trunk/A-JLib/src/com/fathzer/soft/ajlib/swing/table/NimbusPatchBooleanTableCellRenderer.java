@@ -8,7 +8,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-/** This class is a workaround for a very weird bug in Swing and Nimbus L&F :
+/** This class is a workaround for a very weird bug in Swing and Nimbus L&amp;F :
  * <br>Default boolean renderer is broken. Its background desperately remains blank instead of using the alternate Nimbus background.
  * @see <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6723524">bug id 6723524</a>
  * @author Jean-Marc Astesana

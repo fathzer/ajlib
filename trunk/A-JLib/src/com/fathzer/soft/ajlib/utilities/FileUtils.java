@@ -26,6 +26,7 @@ public class FileUtils {
 	 * <br>If the link is a link to a link to a file, this method returns the final file. 
 	 * @param file the file to test
 	 * @return a File
+	 * @throws IOException If something goes wrong
 	 */
 	@SuppressWarnings("unchecked")
 	public static File getCanonical(File file) throws IOException {
@@ -155,7 +156,7 @@ public class FileUtils {
 	 * <br>When the file was initially hidden, the close method of the returned stream hide it again.
 	 * @param file The file to be opened for writing
 	 * @return a new stream
-	 * @throws IOException
+	 * @throws IOException If something goes wrong
 	 */
 	public static FileOutputStream getHiddenCompliantStream(File file) throws IOException {
 		if (file.isHidden() && System.getProperty("os.name", "?").startsWith("Windows")) {

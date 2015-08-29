@@ -4,7 +4,7 @@ package com.fathzer.soft.ajlib.utilities;
  * @author Jean-Marc Astesana
  * <BR>License: LGPL v3
  */
-public final class NullUtils {
+public abstract class NullUtils {
 	private NullUtils() {
 	}
 	
