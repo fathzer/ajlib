@@ -1,12 +1,17 @@
 package com.fathzer.soft.ajlib.swing;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
+import java.util.prefs.Preferences;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -231,5 +236,59 @@ public abstract class Utils {
 			}
 		}
 		return lookAndFeelClass;
+	}
+	
+	private static final String LOCATION_Y_PROPERTY = "y"; //$NON-NLS-1$
+	private static final String LOCATION_X_PROPERTY = "x"; //$NON-NLS-1$
+	private static final String SIZE_X_PROPERTY = "size.x"; //$NON-NLS-1$
+	private static final String SIZE_Y_PROPERTY = "size.y"; //$NON-NLS-1$
+	
+	/** Saves the state (size, position, maximized/minimized state) of a frame.
+	 * @param frame The frame we want to save the state
+	 * @param prefs The preferences where to save the state
+	 * @see #restoreState(Frame, Preferences)
+	 */
+	public static void saveState(Frame frame, Preferences prefs) {
+		prefs.put(LOCATION_X_PROPERTY, Integer.toString(frame.getLocation().x));
+		prefs.put(LOCATION_Y_PROPERTY, Integer.toString(frame.getLocation().y));
+
+		Dimension size = frame.getSize();
+		int h = ((frame.getExtendedState() & Frame.MAXIMIZED_VERT) == 0) ? size.height : -1;
+		int w = ((frame.getExtendedState() & Frame.MAXIMIZED_HORIZ) == 0) ? size.width : -1;
+		
+		prefs.put(SIZE_X_PROPERTY, Integer.toString(w));
+		prefs.put(SIZE_Y_PROPERTY, Integer.toString(h));
+	}
+
+	/** Restores the state (size, position, maximized/minimized state) of a frame.
+	 * <br>State should have been previously saved with {@link #saveState}.
+	 * @param frame The frame we want to save the state
+	 * @param prefs The preferences where to save the state
+	 * @see #saveState(Frame, Preferences)
+	 */
+	public static void restoreState(Frame frame, Preferences prefs) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension dimension = new Dimension(prefs.getInt(SIZE_X_PROPERTY, 0), prefs.getInt(SIZE_Y_PROPERTY, 0));
+		int extendedState = Frame.NORMAL;
+		if ((dimension.width!=0) && (dimension.height!=0)) {
+			if (dimension.height<0) {
+				extendedState = extendedState | Frame.MAXIMIZED_VERT;
+				dimension.height = frame.getSize().height;
+			}
+			if (dimension.width<0) {
+				extendedState = extendedState | Frame.MAXIMIZED_HORIZ;
+				dimension.width = frame.getSize().width;
+			}
+			frame.setSize(dimension);
+			frame.setExtendedState(extendedState);
+		}
+		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
+		if (location.x+frame.getWidth()>screenSize.width) {
+			location.x = screenSize.width-frame.getWidth();
+		}
+		if (location.y+frame.getHeight()>screenSize.height) {
+			location.y = screenSize.height-frame.getHeight();
+		}
+		frame.setLocation(location);
 	}
 }
