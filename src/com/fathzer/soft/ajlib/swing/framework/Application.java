@@ -2,10 +2,7 @@ package com.fathzer.soft.ajlib.swing.framework;
 
 import java.awt.AWTEvent;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Frame;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
@@ -20,6 +17,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import com.fathzer.soft.ajlib.swing.Utils;
 import com.fathzer.soft.ajlib.utilities.LocalizationData;
 
 
@@ -47,11 +45,6 @@ import com.fathzer.soft.ajlib.utilities.LocalizationData;
  * <BR>License: LGPL v3
  */
 public abstract class Application {
-	private static final String LOCATION_Y_PROPERTY = "y"; //$NON-NLS-1$
-	private static final String LOCATION_X_PROPERTY = "x"; //$NON-NLS-1$
-	private static final String SIZE_X_PROPERTY = "size.x"; //$NON-NLS-1$
-	private static final String SIZE_Y_PROPERTY = "size.y"; //$NON-NLS-1$
-	
 	private JFrame frame;
 	
 	public static LocalizationData LOCALIZATION = LocalizationData.DEFAULT;
@@ -201,46 +194,18 @@ public abstract class Application {
 	 * <br>This implementation saves the frame's location and dimension.
 	 */
 	protected void saveState() {
-		Preferences prefs = Preferences.userRoot().node(getClass().getCanonicalName());
-		prefs.put(LOCATION_X_PROPERTY, Integer.toString(frame.getLocation().x));
-		prefs.put(LOCATION_Y_PROPERTY, Integer.toString(frame.getLocation().y));
-
-		Dimension size = frame.getSize();
-		int h = ((frame.getExtendedState() & Frame.MAXIMIZED_VERT) == 0) ? size.height : -1;
-		int w = ((frame.getExtendedState() & Frame.MAXIMIZED_HORIZ) == 0) ? size.width : -1;
-		
-		prefs.put(SIZE_X_PROPERTY, Integer.toString(w));
-		prefs.put(SIZE_Y_PROPERTY, Integer.toString(h));
+		Utils.saveState(getJFrame(), getPreferences());
 	}
 
 	/** Restores the application state.
 	 * <br>This implementation restores the frame's location and dimension.
 	 */
 	protected void restoreState() {
-		Preferences prefs = Preferences.userRoot().node(getClass().getCanonicalName());
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension dimension = new Dimension(prefs.getInt(SIZE_X_PROPERTY, 0), prefs.getInt(SIZE_Y_PROPERTY, 0));
-		int extendedState = Frame.NORMAL;
-		if ((dimension.width!=0) && (dimension.height!=0)) {
-			if (dimension.height<0) {
-				extendedState = extendedState | Frame.MAXIMIZED_VERT;
-				dimension.height = frame.getSize().height;
-			}
-			if (dimension.width<0) {
-				extendedState = extendedState | Frame.MAXIMIZED_HORIZ;
-				dimension.width = frame.getSize().width;
-			}
-			frame.setSize(dimension);
-			getJFrame().setExtendedState(extendedState);
-		}
-		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
-		if (location.x+frame.getWidth()>screenSize.width) {
-			location.x = screenSize.width-frame.getWidth();
-		}
-		if (location.y+frame.getHeight()>screenSize.height) {
-			location.y = screenSize.height-frame.getHeight();
-		}
-		frame.setLocation(location);
+		Utils.restoreState(getJFrame(), getPreferences());
+	}
+	
+	private Preferences getPreferences() {
+		return Preferences.userRoot().node(getClass().getCanonicalName());
 	}
 	
 	/** Creates the main panel.
