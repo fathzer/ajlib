@@ -89,11 +89,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>com.fathzer</groupId>
-			<artifactId>jlocal</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-	</dependencies>
 </project>
