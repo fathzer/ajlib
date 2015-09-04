@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import com.fathzer.soft.ajlib.swing.Utils;
 import com.fathzer.soft.ajlib.swing.dialog.FileChooser;
 import com.fathzer.soft.ajlib.swing.framework.Application;
+import com.fathzer.soft.ajlib.utilities.NullUtils;
 
 /** An abstract widget composed of four buttons to open, save, save as and create new file.
  * @author Jean-Marc Astesana
@@ -25,17 +26,27 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
  */
 public abstract class AbstractFileSelector extends JPanel {
 	private static final long serialVersionUID = 1L;
+	/** A property bind with the file selected in this panel.*/
+	public static final String SELECTED_FILE_PROPERTY = "SELECTED_FILE";
+	/** A property bind with the changes of the data managed by this panel.*/
+	public static final String CHANGED_PROPERTY = "CHANGED";
+	/** A property bind with the emptiness the data managed by this panel.*/
+	public static final String EMPTY_PROPERTY = "EMPTY";
 
 	private JButton btnOpen;
 	private JButton btnNew;
 	private JButton btnSave;
 	private JButton btnSaveAs;
+	
+	private File file;
+	private boolean isChanged;
 
 	/**
 	 * Creates the panel.
 	 */
-	public AbstractFileSelector() {
+	protected AbstractFileSelector() {
 		initialize();
+		this.isChanged = false;
 	}
 	private void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -60,7 +71,7 @@ public abstract class AbstractFileSelector extends JPanel {
 		add(getBtnSaveAs(), gbcBtnSaveAs);
 	}
 
-	private JButton getBtnOpen() {
+	protected JButton getBtnOpen() {
 		if (btnOpen == null) {
 			btnOpen = new JButton(Application.getString("FileSelector.open", getLocale())); //$NON-NLS-1$
 			btnOpen.setToolTipText(Application.getString("FileSelector.open.tooltip", getLocale())); //$NON-NLS-1$
@@ -71,19 +82,20 @@ public abstract class AbstractFileSelector extends JPanel {
 						return;
 					}
 					JFileChooser chooser = new FileChooser();
-					if (getCurrentFile()!=null) {
-						chooser.setCurrentDirectory(getCurrentFile().getParentFile());
+					if (getSelectedFile()!=null) {
+						chooser.setCurrentDirectory(getSelectedFile().getParentFile());
 					}
 					File file = chooser.showOpenDialog(Utils.getOwnerWindow(btnOpen)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
-					if (file != null) {
-						open(file);
+					if (file != null && read(file)) {
+						setFile(file);
+						setEmpty(false);
 					}
 				}
 			});
 		}
 		return btnOpen;
 	}
-	private JButton getBtnNew() {
+	protected JButton getBtnNew() {
 		if (btnNew == null) {
 			btnNew = new JButton(Application.getString("FileSelector.new", getLocale())); //$NON-NLS-1$
 			btnNew.setIcon(new ImageIcon(AbstractFileSelector.class.getResource("New.png"))); //$NON-NLS-1$
@@ -94,12 +106,14 @@ public abstract class AbstractFileSelector extends JPanel {
 						return;
 					}
 					newFile();
+					setEmpty(true);
+					setFile(null);
 				}
 			});
 		}
 		return btnNew;
 	}
-	private JButton getBtnSave() {
+	protected JButton getBtnSave() {
 		if (btnSave == null) {
 			btnSave = new JButton(Application.getString("FileSelector.save", getLocale())); //$NON-NLS-1$
 			btnSave.setIcon(new ImageIcon(AbstractFileSelector.class.getResource("Save.png"))); //$NON-NLS-1$
@@ -107,20 +121,20 @@ public abstract class AbstractFileSelector extends JPanel {
 			btnSave.setEnabled(false);
 			btnSave.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					File file = getCurrentFile();
+					File file = getSelectedFile();
 					if (file==null) {
 						JFileChooser chooser = new FileChooser();
 						file = chooser.showSaveDialog(Utils.getOwnerWindow(btnSave)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
 					}
-					if (file != null) {
-						save(file);
+					if (file != null && save(file)) {
+						setFile(file);
 					}
 				}
 			});
 		}
 		return btnSave;
 	}
-	private JButton getBtnSaveAs() {
+	protected JButton getBtnSaveAs() {
 		if (btnSaveAs == null) {
 			btnSaveAs = new JButton(Application.getString("FileSelector.saveAs", getLocale())); //$NON-NLS-1$
 			btnSaveAs.setIcon(new ImageIcon(AbstractFileSelector.class.getResource("SaveAs.png"))); //$NON-NLS-1$
@@ -129,12 +143,12 @@ public abstract class AbstractFileSelector extends JPanel {
 			btnSaveAs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser chooser = new FileChooser();
-					if (getCurrentFile()!=null) {
-						chooser.setCurrentDirectory(getCurrentFile().getParentFile());
+					if (getSelectedFile()!=null) {
+						chooser.setCurrentDirectory(getSelectedFile().getParentFile());
 					}
 					File file = chooser.showSaveDialog(Utils.getOwnerWindow(btnSave)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
-					if (file != null) {
-						save(file);
+					if (file != null && save(file)) {
+						setFile(file);
 					}
 				}
 			});
@@ -142,15 +156,38 @@ public abstract class AbstractFileSelector extends JPanel {
 		return btnSaveAs;
 	}
 	
-	/** Sets the data state.
+	private void updateButtons(boolean isEmpty) {
+		getBtnSaveAs().setEnabled(!isEmpty);
+		getBtnSave().setEnabled(!isEmpty && isChanged());
+	}
+	
+	/** Informs this panel that the data was changed since last save.
 	 * <br>This method should be called when the data state changes.
-	 * @param notEmpty true if data is not empty.
-	 * @param needToBeSaved true if dated as been modified since last call to save method.
+	 * <br>Please note that when data is successfully read, saved, or created using this panel buttons, changed state is automatically set to false. 
+	 * @param isChanged true if dated as been modified since last call to save method.
 	 * @see #save(File) 
 	 */
-	public void setDataState(boolean notEmpty, boolean needToBeSaved) {
-		getBtnSaveAs().setEnabled(notEmpty);
-		getBtnSave().setEnabled(notEmpty && needToBeSaved);
+	public void setChanged(boolean isChanged) {
+		if (isChanged!=this.isChanged) {
+			boolean oldIsChanged = this.isChanged;
+			this.isChanged = isChanged;
+			updateButtons(isEmpty());
+			firePropertyChange(CHANGED_PROPERTY, oldIsChanged, isChanged);
+		}
+	}
+
+	/** Informs this panel that the data was changed since last save.
+	 * <br>This method should be called when the data state changes.
+	 * <br>Please note that when data is successfully read, empty state is automatically set to false. 
+	 * <br>Please note that when data is successfully create, empty state is automatically set to true. 
+	 * @param isEmpty true if data is empty.
+	 */
+	public void setEmpty(boolean isEmpty) {
+		if (isEmpty!=this.isEmpty()) {
+			boolean oldIsEmpty = isEmpty(); 
+			updateButtons(isEmpty);
+			firePropertyChange(EMPTY_PROPERTY, oldIsEmpty, isEmpty);
+		}
 	}
 
 	/** This method is called before changing the selected file.
@@ -163,7 +200,7 @@ public abstract class AbstractFileSelector extends JPanel {
 			// If save button is enabled, there's nothing to save
 			return true;
 		}
-		String[] options =new String[]{getBtnSave().getText(),Application.getString("GenericButton.ignore", getLocale()),
+		String[] options = new String[]{getBtnSave().getText(),Application.getString("GenericButton.ignore", getLocale()),
 				Application.getString("GenericButton.cancel", getLocale())}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		int n = JOptionPane.showOptionDialog(Utils.getOwnerWindow(this),
 					getUnsavedQuestion(),
@@ -176,11 +213,15 @@ public abstract class AbstractFileSelector extends JPanel {
 		if (n==-1 || n==2) {
 			return false;
 		} else if (n==0) {
-			if (getCurrentFile()==null) {
+			if (getSelectedFile()==null) {
 				JFileChooser chooser = new FileChooser();
 				File file = chooser.showSaveDialog(Utils.getOwnerWindow(this)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
 				if (file != null) {
-					return save(file);
+					boolean ok =  save(file);
+					if (ok) {
+						setFile(file);
+					}
+					return ok;
 				} else {
 					return false;
 				}
@@ -197,12 +238,12 @@ public abstract class AbstractFileSelector extends JPanel {
 		return Application.getString("FileSelector.unsavedChanges.question", getLocale()); //$NON-NLS-1$
 	}
 
-	/** Opens a file.
+	/** Reads a file.
 	 * <br>This method is called when the user clicks the <b>"open"</b> button.
-	 * @param file The file to open.
-	 * @return true if the file was successfully opened, false if the file opening failed.
+	 * @param file The file to read.
+	 * @return true if the file was successfully read, false if the file reading failed.
 	 */
-	protected abstract boolean open(File file);
+	protected abstract boolean read(File file);
 
 	/** Creates a new empty data set.
 	 * <br>This method is called when the user clicks the <b>"new"</b> button.
@@ -219,5 +260,40 @@ public abstract class AbstractFileSelector extends JPanel {
 	/** Gets the current edited file.
 	 * @return The selected file or null if no file is selected.
 	 */
-	protected abstract File getCurrentFile();
+	public File getSelectedFile() {
+		return this.file;
+	}
+	
+	/** Sets the selected file.
+	 * <br>If current file has unmodified changes, a dialog asks the user if he wants to save the changes.
+	 * @param file The file to read or null to clear the data and select no file
+	 */
+	public void setSelectedFile(File file) {
+		if (!NullUtils.areEquals(this.file, file)) {
+			if (!lastChanceToSave()) {
+				return;
+			}
+			if (file == null && lastChanceToSave()) {
+				newFile();
+				setFile(null);
+			} else if (read(file)) {
+				setFile(file);
+			}
+		}
+	}
+	
+	private void setFile(File file) {
+		File old = this.file;
+		this.file = file;
+		firePropertyChange(SELECTED_FILE_PROPERTY, old, file);
+		setChanged(false);
+	}
+
+	public boolean isEmpty() {
+		return !getBtnSaveAs().isEnabled();
+	}
+	
+	public boolean isChanged() {
+		return isChanged;
+	}
 }
