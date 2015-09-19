@@ -85,9 +85,9 @@ public abstract class AbstractFileSelector extends JPanel {
 					if (getSelectedFile()!=null) {
 						chooser.setCurrentDirectory(getSelectedFile().getParentFile());
 					}
-					File file = chooser.showOpenDialog(Utils.getOwnerWindow(btnOpen)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
-					if (file != null && read(file)) {
-						setFile(file);
+					File selectedFile = chooser.showOpenDialog(Utils.getOwnerWindow(btnOpen)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+					if (selectedFile != null && read(selectedFile)) {
+						setFile(selectedFile);
 						setEmpty(false);
 					}
 				}
@@ -121,13 +121,13 @@ public abstract class AbstractFileSelector extends JPanel {
 			btnSave.setEnabled(false);
 			btnSave.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					File file = getSelectedFile();
-					if (file==null) {
+					File selectedFile = getSelectedFile();
+					if (selectedFile==null) {
 						JFileChooser chooser = new FileChooser();
-						file = chooser.showSaveDialog(Utils.getOwnerWindow(btnSave)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+						selectedFile = chooser.showSaveDialog(Utils.getOwnerWindow(btnSave)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
 					}
-					if (file != null && save(file)) {
-						setFile(file);
+					if (selectedFile != null && save(selectedFile)) {
+						setFile(selectedFile);
 					}
 				}
 			});
@@ -146,9 +146,9 @@ public abstract class AbstractFileSelector extends JPanel {
 					if (getSelectedFile()!=null) {
 						chooser.setCurrentDirectory(getSelectedFile().getParentFile());
 					}
-					File file = chooser.showSaveDialog(Utils.getOwnerWindow(btnSave)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
-					if (file != null && save(file)) {
-						setFile(file);
+					File selectedFile = chooser.showSaveDialog(Utils.getOwnerWindow(btnSave)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+					if (selectedFile != null && save(selectedFile)) {
+						setFile(selectedFile);
 					}
 				}
 			});
@@ -215,11 +215,11 @@ public abstract class AbstractFileSelector extends JPanel {
 		} else if (n==0) {
 			if (getSelectedFile()==null) {
 				JFileChooser chooser = new FileChooser();
-				File file = chooser.showSaveDialog(Utils.getOwnerWindow(this)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
-				if (file != null) {
-					boolean ok =  save(file);
+				File selectedFile = chooser.showSaveDialog(Utils.getOwnerWindow(this)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+				if (selectedFile != null) {
+					boolean ok =  save(selectedFile);
 					if (ok) {
-						setFile(file);
+						setFile(selectedFile);
 					}
 					return ok;
 				} else {

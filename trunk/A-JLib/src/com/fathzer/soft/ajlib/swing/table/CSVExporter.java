@@ -16,6 +16,7 @@ import com.fathzer.soft.ajlib.utilities.CSVWriter;
 public class CSVExporter {
 	
 	public CSVExporter() {
+		super();
 	}
 	
 	public void export(Writer writer, TableModel model, boolean withTitles) throws IOException {
