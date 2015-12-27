@@ -14,6 +14,7 @@ import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
+import com.fathzer.soft.ajlib.swing.widget.PageSelector;
 
 
 public class WidgetsDemoPanel extends JPanel {
@@ -42,6 +43,8 @@ public class WidgetsDemoPanel extends JPanel {
 	private NumberWidget numberWidget;
 	private JLabel lblNewLabel;
 	private CurrencyWidget currencyWidget;
+	private PageSelector pageSelector;
+	private JLabel lblNewLabel_1;
 
 	/**
 	 * Create the panel.
@@ -52,7 +55,6 @@ public class WidgetsDemoPanel extends JPanel {
 	}
 	private void initialize() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0};
 		setLayout(gridBagLayout);
 		GridBagConstraints gbcLblTextwidget = new GridBagConstraints();
 		gbcLblTextwidget.fill = GridBagConstraints.BOTH;
@@ -80,16 +82,28 @@ public class WidgetsDemoPanel extends JPanel {
 		gbcNumberWidget.gridy = 1;
 		add(getNumberWidget(), gbcNumberWidget);
 		GridBagConstraints gbcLblNewLabel = new GridBagConstraints();
-		gbcLblNewLabel.anchor = GridBagConstraints.EAST;
-		gbcLblNewLabel.insets = new Insets(0, 0, 0, 5);
+		gbcLblNewLabel.anchor = GridBagConstraints.WEST;
+		gbcLblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbcLblNewLabel.gridx = 0;
 		gbcLblNewLabel.gridy = 2;
 		add(getLblNewLabel(), gbcLblNewLabel);
 		GridBagConstraints gbcCurrencyWidget = new GridBagConstraints();
+		gbcCurrencyWidget.insets = new Insets(0, 0, 5, 0);
 		gbcCurrencyWidget.fill = GridBagConstraints.HORIZONTAL;
 		gbcCurrencyWidget.gridx = 1;
 		gbcCurrencyWidget.gridy = 2;
 		add(getCurrencyWidget(), gbcCurrencyWidget);
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_1.gridx = 0;
+		gbc_lblNewLabel_1.gridy = 3;
+		add(getLblNewLabel_1(), gbc_lblNewLabel_1);
+		GridBagConstraints gbc_pageSelector = new GridBagConstraints();
+		gbc_pageSelector.anchor = GridBagConstraints.WEST;
+		gbc_pageSelector.gridx = 1;
+		gbc_pageSelector.gridy = 3;
+		add(getPageSelector(), gbc_pageSelector);
 	}
 
 	private JLabel getLblTextwidget() {
@@ -153,5 +167,24 @@ public class WidgetsDemoPanel extends JPanel {
 			});
 		}
 		return currencyWidget;
+	}
+	private PageSelector getPageSelector() {
+		if (pageSelector == null) {
+			pageSelector = new PageSelector();
+			pageSelector.setPageCount(5);
+			pageSelector.addPropertyChangeListener(PageSelector.PAGE_SELECTED_PROPERTY_NAME, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					AJLibDemo.setMessage("Page set to "+evt.getNewValue());
+				}
+			});
+		}
+		return pageSelector;
+	}
+	private JLabel getLblNewLabel_1() {
+		if (lblNewLabel_1 == null) {
+			lblNewLabel_1 = new JLabel("Page selector:");
+		}
+		return lblNewLabel_1;
 	}
 }
