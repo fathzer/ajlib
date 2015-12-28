@@ -16,7 +16,6 @@ import java.util.Locale;
 import com.fathzer.soft.ajlib.swing.widget.TextWidget;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
 
-
 /** This class allows the user to just enter a day, or a day and a month, instead of a complete date (day, month, year).
  * It auto completes the typed date with the current month and year.
  * This field allows you to define what an empty field means. By default, an empty field means a null date, but, using the
@@ -138,6 +137,28 @@ public class DateField extends TextWidget {
 			updateDate();
 		}
 	}
+	
+	private static Date parseRelativeDate(CharSequence text) {
+		Date result = null;
+		if (text.length()>1) {
+			char c = text.charAt(0);
+			if (c=='+' || c=='-') {
+				int count = 1;
+				while (text.length()>count && text.charAt(count)==c) {
+					count++;
+				}
+				String num =text.toString().substring(count);
+				if (count<=3 && num.matches("\\d+")) {
+					int nb = Integer.parseInt(num);
+					GregorianCalendar cal = new GregorianCalendar();
+					cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE), 0,0,0);
+					cal.add(new int[]{Calendar.DATE, Calendar.MONTH, Calendar.YEAR}[count-1], c=='+'?nb:-nb);
+					return cal.getTime();
+				}
+			}
+		}
+		return result;
+	}
 
 	@SuppressWarnings("deprecation")
 	private void updateDate() {
@@ -147,34 +168,36 @@ public class DateField extends TextWidget {
 			internalSetDate(emptyValue);
 			this.valid = (emptyValue!=null) || isEmptyNullDateValid;
 		} else {
-			Date changed = null;
-			try {
-				changed = formatter.parse(text);
-				int year = changed.getYear()+1900;
-				if (year<10) {
-					// When the user enters a date with only one char for the year, it is interpreted as the full year (ie 9 -> year 9)
-					// So, we have to add the right century to this year
-					Date formatterStartYear = formatter.get2DigitYearStart();
-					year += ((formatterStartYear.getYear()+1900)/100)*100;
-					changed.setYear(year-1900);
-					// If that date is not in the 100 year period of the formatter, add one century
-					// Note: I compare the getTime() results, because, sometime, an exception is thrown that tells that instances are not of the same class
-					if (changed.getTime()-formatterStartYear.getTime()<0) {
-						changed.setYear(year-1800);
-					}
-				}
-			} catch (ParseException e) {
+			Date changed = parseRelativeDate(text);
+			if (changed==null) {
 				try {
-					int day = Integer.parseInt(text);
-					GregorianCalendar today = new GregorianCalendar();
-					if ((day>0) && (day<=today.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))) {
-						changed = new GregorianCalendar(today.get(GregorianCalendar.YEAR),today.get(GregorianCalendar.MONTH),day).getTime();
+					changed = formatter.parse(text);
+					int year = changed.getYear()+1900;
+					if (year<10) {
+						// When the user enters a date with only one char for the year, it is interpreted as the full year (ie 9 -> year 9)
+						// So, we have to add the right century to this year
+						Date formatterStartYear = formatter.get2DigitYearStart();
+						year += ((formatterStartYear.getYear()+1900)/100)*100;
+						changed.setYear(year-1900);
+						// If that date is not in the 100 year period of the formatter, add one century
+						// Note: I compare the getTime() results, because, sometime, an exception is thrown that tells that instances are not of the same class
+						if (changed.getTime()-formatterStartYear.getTime()<0) {
+							changed.setYear(year-1800);
+						}
 					}
-				} catch (NumberFormatException e1) {
+				} catch (ParseException e) {
 					try {
-						text = text+"/"+new GregorianCalendar().get(GregorianCalendar.YEAR);
-						changed = formatter.parse(text+"/"+new GregorianCalendar().get(GregorianCalendar.YEAR));
-					} catch (ParseException e2) {
+						int day = Integer.parseInt(text);
+						GregorianCalendar today = new GregorianCalendar();
+						if ((day>0) && (day<=today.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))) {
+							changed = new GregorianCalendar(today.get(GregorianCalendar.YEAR),today.get(GregorianCalendar.MONTH),day).getTime();
+						}
+					} catch (NumberFormatException e1) {
+						try {
+							text = text+"/"+new GregorianCalendar().get(GregorianCalendar.YEAR);
+							changed = formatter.parse(text+"/"+new GregorianCalendar().get(GregorianCalendar.YEAR));
+						} catch (ParseException e2) {
+						}
 					}
 				}
 			}
