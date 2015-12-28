@@ -32,6 +32,7 @@ public class PageSelector extends JPanel {
 	private JButton previousPage;
 	private JButton firstPage;
 	private int pageCount;
+	private int currentPage;
 	private JLabel sizeLabel;
 
 	/**
@@ -39,6 +40,7 @@ public class PageSelector extends JPanel {
 	 */
 	public PageSelector() {
 		this.pageCount = 0;
+		this.currentPage = -1;
 		setLayout(new GridBagLayout());
 		setOpaque(false);
 		
@@ -178,22 +180,26 @@ public class PageSelector extends JPanel {
 	/** Sets the current page index.
 	 * @param index The index of the page (should be in the range 0 - page count-1)
 	 * or -1 to specify that no page is selected.
+	 * @throws IllegalArgumentException If index is not in the range [-1,getPageCount()-1].
 	 */
 	public void setPage(int index) {
+		if (index>=getPageCount() || index<-1) {
+			throw new IllegalArgumentException();
+		}
 		int old = getCurrentPage();
 		if (index!=old) {
+			currentPage = index;
 			pageNumber.setValue(index<0?null:index+1);
 			restoreButtonStates();
-			firePropertyChange(PAGE_SELECTED_PROPERTY_NAME, old, index);
+			firePropertyChange(PAGE_SELECTED_PROPERTY_NAME, old, currentPage);
 		}
 	}
 	
 	private void restoreButtonStates() {
-		int currentPage = getCurrentPage();
-		firstPage.setEnabled(currentPage>0);
-		previousPage.setEnabled(currentPage>0);
-		nextPage.setEnabled(currentPage<pageCount-1);
-		lastPage.setEnabled(currentPage<pageCount-1);
+		firstPage.setEnabled(getCurrentPage()>0);
+		previousPage.setEnabled(getCurrentPage()>0);
+		nextPage.setEnabled(getCurrentPage()<getPageCount()-1);
+		lastPage.setEnabled(getCurrentPage()<getPageCount()-1);
 	}
 	
 	private void setSelectionButtonSize(JButton button) {
@@ -226,8 +232,7 @@ public class PageSelector extends JPanel {
 	 * @return the current page number (0 based) or -1 if no page is currently selected.
 	 */
 	public int getCurrentPage() {
-		BigInteger value = getPageNumber().getValue();
-		return value==null?-1:value.intValue()-1;
+		return currentPage;
 	}
 	
 	/** Gets the page count.

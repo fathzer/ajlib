@@ -44,7 +44,7 @@ public class WidgetsDemoPanel extends JPanel {
 	private JLabel lblNewLabel;
 	private CurrencyWidget currencyWidget;
 	private PageSelector pageSelector;
-	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel1;
 
 	/**
 	 * Create the panel.
@@ -93,17 +93,17 @@ public class WidgetsDemoPanel extends JPanel {
 		gbcCurrencyWidget.gridx = 1;
 		gbcCurrencyWidget.gridy = 2;
 		add(getCurrencyWidget(), gbcCurrencyWidget);
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 3;
-		add(getLblNewLabel_1(), gbc_lblNewLabel_1);
-		GridBagConstraints gbc_pageSelector = new GridBagConstraints();
-		gbc_pageSelector.anchor = GridBagConstraints.WEST;
-		gbc_pageSelector.gridx = 1;
-		gbc_pageSelector.gridy = 3;
-		add(getPageSelector(), gbc_pageSelector);
+		GridBagConstraints gbcLblNewLabel1 = new GridBagConstraints();
+		gbcLblNewLabel1.anchor = GridBagConstraints.WEST;
+		gbcLblNewLabel1.insets = new Insets(0, 0, 0, 5);
+		gbcLblNewLabel1.gridx = 0;
+		gbcLblNewLabel1.gridy = 3;
+		add(getLblNewLabel1(), gbcLblNewLabel1);
+		GridBagConstraints gbcPageSelector = new GridBagConstraints();
+		gbcPageSelector.anchor = GridBagConstraints.WEST;
+		gbcPageSelector.gridx = 1;
+		gbcPageSelector.gridy = 3;
+		add(getPageSelector(), gbcPageSelector);
 	}
 
 	private JLabel getLblTextwidget() {
@@ -181,10 +181,10 @@ public class WidgetsDemoPanel extends JPanel {
 		}
 		return pageSelector;
 	}
-	private JLabel getLblNewLabel_1() {
-		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("Page selector:");
+	private JLabel getLblNewLabel1() {
+		if (lblNewLabel1 == null) {
+			lblNewLabel1 = new JLabel("Page selector:");
 		}
-		return lblNewLabel_1;
+		return lblNewLabel1;
 	}
 }
