@@ -230,7 +230,7 @@ public abstract class Application {
 	private void start() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.add(buildMainPanel());
+		frame.setContentPane(buildMainPanel());
 		frame.setTitle(getName());
 		frame.addWindowListener(new WindowAdapter() {
 			@Override

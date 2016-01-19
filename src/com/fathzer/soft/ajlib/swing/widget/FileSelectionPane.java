@@ -14,7 +14,7 @@ import javax.swing.border.TitledBorder;
 import com.fathzer.soft.ajlib.swing.Utils;
 import com.fathzer.soft.ajlib.swing.dialog.FileChooser;
 import com.fathzer.soft.ajlib.swing.framework.Application;
-
+import com.fathzer.soft.ajlib.utilities.NullUtils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -26,16 +26,18 @@ import java.io.File;
  */
 public class FileSelectionPane extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
+	/** The name of the property that is fired each time the selected file changes.*/
 	public static final String SELECTED_FILE_PROPERTY = "selectedFile"; //$NON-NLS-1$
+	
 	private JTextField textField;
 	private File selectedFile;
 
 	private TitledBorder border;
 	private JLabel lblFile;
+	private JButton btnChange;
 
 	/**
-	 * Create the panel.
+	 * Constructor.
 	 */
 	public FileSelectionPane() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -53,6 +55,7 @@ public class FileSelectionPane extends JPanel {
 		
 		textField = new JTextField();
 		textField.setEditable(false);
+		textField.setFocusable(false);
 		GridBagConstraints gbcTextField = new GridBagConstraints();
 		gbcTextField.weightx = 1.0;
 		gbcTextField.insets = new Insets(0, 0, 0, 5);
@@ -62,41 +65,85 @@ public class FileSelectionPane extends JPanel {
 		add(textField, gbcTextField);
 		textField.setColumns(10);
 		
-		final JButton btnChange = new JButton(Application.getString("FileSelectionPanel.change", getLocale())); //$NON-NLS-1$
-		btnChange.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new FileChooser();
-				chooser.setCurrentDirectory(new File(".")); //$NON-NLS-1$
-				File file = chooser.showOpenDialog(Utils.getOwnerWindow(btnChange)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
-				if (file != null) {
-					setSelectedFile(file);
-				}
-			}
-		});
 		GridBagConstraints gbcBtnChange = new GridBagConstraints();
 		gbcBtnChange.gridx = 2;
 		gbcBtnChange.gridy = 0;
-		add(btnChange, gbcBtnChange);
+		add(getBtn(), gbcBtnChange);
+		
+		setOpaque(false);
 	}
 
+	/** Sets the selected file.
+	 * @param file The selected file (null to de-select file).
+	 */
 	public void setSelectedFile(File file) {
-		if (!file.equals(selectedFile)) {
+		if (!NullUtils.areEquals(file, selectedFile)) {
 			File oldValue = this.selectedFile;
 			this.selectedFile = file;
-			textField.setText(file.getAbsolutePath());
+			textField.setText(file==null?"":file.getAbsolutePath()); //$NON-NLS-1$
 			this.firePropertyChange(SELECTED_FILE_PROPERTY, oldValue, file);
 		}
 	}
 	
+	/** Gets the currently selected file.
+	 * @return a File or null if no file is selected
+	 */
 	public File getSelectedFile() {
 		return this.selectedFile;
 	}
 	
+	/** Sets the title of the panel (It appears on the border of the panel)
+	 * @param title The title
+	 */
 	public void setTitle(String title) {
 		border.setTitle(title);
 	}
 	
+	/** Sets the label before the File name field.
+	 * @param label The label
+	 */
 	public void setLabel(String label) {
 		lblFile.setText(label);
+		lblFile.setVisible(!label.isEmpty());
+	}
+	
+	/** Gets the button that allows the selection of the file in a dialog.
+	 * @return a JButton
+	 */
+	public JButton getBtn() {
+		if (btnChange==null) {
+			btnChange = new JButton(Application.getString("FileSelectionPanel.change", getLocale())); //$NON-NLS-1$
+			btnChange.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFileChooser chooser = new FileChooser();
+					setUpFileChooser(chooser);
+					File file;
+					if (chooser.getDialogType()==JFileChooser.SAVE_DIALOG) {
+						file = chooser.showSaveDialog(Utils.getOwnerWindow(btnChange)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+					} else {
+						file = chooser.showOpenDialog(Utils.getOwnerWindow(btnChange)) == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+					}
+					if (file != null) {
+						setSelectedFile(file);
+					}
+				}
+			});
+		}
+		return btnChange;
+	}
+	
+	/** Customizes the file chooser.
+	 * <br>This method is called every time before the file selection dialog is opened.
+	 * <br>It can be used to set up the file filter or the change the default current directory.
+	 * The default implementation sets the current directory to the directory of currently selected file or user's directory if no file is currently selected.
+	 * The chooser's dialog type is JFileChooser.OPEN_DIALOG
+	 * @param chooser The chooser used in the dialog.
+	 */
+	protected void setUpFileChooser(JFileChooser chooser) {
+		if (getSelectedFile()!=null) {
+			chooser.setCurrentDirectory(getSelectedFile().getParentFile());
+		} else {
+			chooser.setCurrentDirectory(new File(".")); //$NON-NLS-1$
+		}
 	}
 }
