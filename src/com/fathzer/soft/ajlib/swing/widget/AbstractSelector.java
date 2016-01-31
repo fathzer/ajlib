@@ -7,10 +7,7 @@ import javax.swing.JPanel;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,6 +15,8 @@ import javax.swing.JButton;
 
 import com.fathzer.soft.ajlib.swing.Utils;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
+import javax.swing.SwingConstants;
+import java.awt.BorderLayout;
 
 
 /** An abstract widget composed of an optional label, a combo box and a new button.
@@ -117,26 +116,12 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	}
 
 	private void initialize() {
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		setLayout(gridBagLayout);
-		GridBagConstraints gbcJLabel = new GridBagConstraints();
 		String label = getLabel();
-		gbcJLabel.insets = new Insets(0, 0, 0, 5);
-		gbcJLabel.anchor = GridBagConstraints.WEST;
-		gbcJLabel.gridx = 0;
-		gbcJLabel.gridy = 0;
-		add(getJLabel(), gbcJLabel);
-		GridBagConstraints gbcCombo = new GridBagConstraints();
-		gbcCombo.weightx = 1.0;
-		gbcCombo.fill = GridBagConstraints.HORIZONTAL;
-		gbcCombo.gridx = 1;
-		gbcCombo.gridy = 0;
-		add(getCombo(), gbcCombo);
-		GridBagConstraints gbcNewButton = new GridBagConstraints();
-		gbcNewButton.gridx = 2;
-		gbcNewButton.gridy = 0;
+		setLayout(new BorderLayout(0, 0));
+		add(getJLabel(), BorderLayout.WEST);
+		add(getCombo());
 
-		add(getNewButton(), gbcNewButton);
+		add(getNewButton(), BorderLayout.EAST);
 
 		Dimension dimension = getCombo().getPreferredSize();
 		getNewButton().setPreferredSize(new Dimension(dimension.height, dimension.height));
@@ -168,6 +153,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	public JButton getNewButton() {
 		if (newButton == null) {
 			newButton = new JButton();
+			newButton.setHorizontalAlignment(SwingConstants.LEFT);
 			Icon icon = getNewButtonIcon();
 			newButton = new JButton(icon);
 			newButton.setFocusable(false);
