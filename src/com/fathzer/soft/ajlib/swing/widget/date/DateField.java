@@ -133,7 +133,7 @@ public class DateField extends TextWidget {
 	 */
 	public void setIsEmptyNullDateIsValid(boolean valid) {
 		this.isEmptyNullDateValid = valid;
-		if (this.getText().trim().length()==0) {
+		if (this.getText().trim().isEmpty()) {
 			updateDate();
 		}
 	}
@@ -162,11 +162,9 @@ public class DateField extends TextWidget {
 
 	@SuppressWarnings("deprecation")
 	private void updateDate() {
-		boolean oldValid = this.valid;
 		String text = this.getText().trim();
-		if (text.length()==0) {
-			internalSetDate(emptyValue);
-			this.valid = (emptyValue!=null) || isEmptyNullDateValid;
+		if (text.isEmpty()) {
+			internalSetDate(emptyValue, (emptyValue!=null) || isEmptyNullDateValid);
 		} else {
 			Date changed = parseRelativeDate(text);
 			if (changed==null) {
@@ -201,11 +199,7 @@ public class DateField extends TextWidget {
 					}
 				}
 			}
-			this.valid = changed!=null;
-			internalSetDate(changed);
-		}
-		if (oldValid!=this.valid) {
-			firePropertyChange(CONTENT_VALID_PROPERTY, oldValid, this.valid);
+			internalSetDate(changed, changed!=null);
 		}
 	}
 
@@ -221,7 +215,11 @@ public class DateField extends TextWidget {
 	 * @param date The date to set.
 	 */
 	public void setDate(Date date) {
-		this.setText(date==null?"":formatter.format(date));
+		super.setText(date==null?"":formatter.format(date));
+		if (date==null) {
+			date = emptyValue;
+		}
+		internalSetDate(date, date!=null || isEmptyNullDateValid);
 	}
 
 	@Override
@@ -235,16 +233,18 @@ public class DateField extends TextWidget {
 	 * @param date
 	 * @return true if the value was changed
 	 */
-	private boolean internalSetDate(Date date) {
-		// Does nothing if date is equals to current widget date
-		// Be aware of null values
-		if (NullUtils.areEquals(date, this.date)) {
-			return false;
+	private boolean internalSetDate(Date date, boolean isValid) {
+		boolean changed = ! NullUtils.areEquals(date, this.date);
+		if (changed) {
+			Date old = this.date;
+			this.date = date;
+			firePropertyChange(DATE_PROPERTY, old, date);
 		}
-		Date old = this.date;
-		this.date = date;
-		firePropertyChange(DATE_PROPERTY, old, date);
-		return true;
+		if (isValid!=this.valid) {
+			this.valid = isValid;
+			firePropertyChange(CONTENT_VALID_PROPERTY, !this.isValid(), this.valid);
+		}
+		return changed;
 	}
 	
 	/** Gets the content validity.

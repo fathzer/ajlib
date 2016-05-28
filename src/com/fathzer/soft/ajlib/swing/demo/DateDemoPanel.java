@@ -5,6 +5,11 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.border.TitledBorder;
 
@@ -23,6 +28,18 @@ public class DateDemoPanel extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		
+		PropertyChangeListener listener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				Date old = (Date) evt.getOldValue();
+				Date date = (Date) evt.getNewValue();
+				DateFormat format = SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
+				String oldString = old == null ? "?" : format.format(old);
+				String dateString = date == null ? "?" : format.format(date);
+				AJLibDemo.setMessage("Date changed from "+oldString+" to "+dateString);
+			}
+		};
+
 		JLabel lblNewLabel = new JLabel("DateWidget:");
 		GridBagConstraints gbcLblNewLabel = new GridBagConstraints();
 		gbcLblNewLabel.insets = new Insets(0, 5, 5, 5);
@@ -32,6 +49,7 @@ public class DateDemoPanel extends JPanel {
 		add(lblNewLabel, gbcLblNewLabel);
 		
 		DateWidget panel = new DateWidget();
+		panel.addPropertyChangeListener(DateWidget.DATE_PROPERTY, listener);
 		GridBagConstraints gbcPanel = new GridBagConstraints();
 		gbcPanel.insets = new Insets(0, 0, 5, 0);
 		gbcPanel.anchor = GridBagConstraints.NORTHWEST;
@@ -48,6 +66,7 @@ public class DateDemoPanel extends JPanel {
 		add(lblDatefield, gbcLblDatefield);
 		
 		textField = new DateField();
+		textField.addPropertyChangeListener(DateField.DATE_PROPERTY, listener);
 		GridBagConstraints gbcTextField = new GridBagConstraints();
 		gbcTextField.insets = new Insets(0, 0, 5, 0);
 		gbcTextField.anchor = GridBagConstraints.WEST;
@@ -71,6 +90,7 @@ public class DateDemoPanel extends JPanel {
 		panel1.setLayout(gblPanel1);
 		
 		CalendarWidget calendarWidget = new CalendarWidget();
+		calendarWidget.addPropertyChangeListener(CalendarWidget.DATE_PROPERTY, listener);
 		GridBagConstraints gbcCalendarWidget = new GridBagConstraints();
 		gbcCalendarWidget.anchor = GridBagConstraints.WEST;
 		gbcCalendarWidget.insets = new Insets(0, 0, 5, 0);
@@ -78,7 +98,5 @@ public class DateDemoPanel extends JPanel {
 		gbcCalendarWidget.gridx = 0;
 		gbcCalendarWidget.gridy = 0;
 		panel1.add(calendarWidget, gbcCalendarWidget);
-
 	}
-
 }
