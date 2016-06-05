@@ -6,8 +6,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.DateFormat;
-import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +14,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import com.fathzer.soft.ajlib.swing.widget.TextWidget;
+import com.fathzer.soft.ajlib.utilities.CoolDateFormatter;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
 
 /** This class allows the user to just enter a day, or a day and a month, instead of a complete date (day, month, year).
@@ -34,7 +33,7 @@ public class DateField extends TextWidget {
 	public static final String DATE_PROPERTY = "date";
 	public static final String CONTENT_VALID_PROPERTY = "contentValid";
 		
-	private SimpleDateFormat formatter;
+	private CoolDateFormatter formatter;
 	private Date date;
 	private boolean valid;
 	private Date emptyValue;
@@ -51,8 +50,7 @@ public class DateField extends TextWidget {
 	@Override
 	public void setLocale(Locale locale) {
 		super.setLocale(locale);
-		this.formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
-		this.formatter.setLenient(false);
+		this.formatter = new CoolDateFormatter(locale);
 		if (date!=null) {
 			this.setText(formatter.format(date));
 		}
@@ -65,13 +63,14 @@ public class DateField extends TextWidget {
 	 */
 	public DateField(Date emptyDate) {
 		super();
-		this.setColumns(6);
+		this.setColumns(7);
 		this.isEmptyNullDateValid = true;
 		this.emptyValue = emptyDate;
-		formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
-		this.formatter.setLenient(false);
-		 // Set the field to today's date (we don't use setDate because new Date() returns a date with hours, minutes and seconds fields not always set to 0).
-		this.setText(formatter.format(new Date()));
+		formatter = new CoolDateFormatter(getLocale());
+		// Set the field to today's date
+		Calendar calendar = Calendar.getInstance(getLocale());
+		CoolDateFormatter.eraseTime(calendar);
+		this.setDate(calendar.getTime());
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -176,7 +175,8 @@ public class DateField extends TextWidget {
 					if (year<10) {
 						// When the user enters a date with only one char for the year, it is interpreted as the full year (ie 9 -> year 9)
 						// So, we have to add the right century to this year
-						Date formatterStartYear = formatter.get2DigitYearStart();
+						SimpleDateFormat simpleFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
+						Date formatterStartYear = simpleFormat.get2DigitYearStart();
 						year += ((formatterStartYear.getYear()+1900)/100)*100;
 						changed.setYear(year-1900);
 						// If that date is not in the 100 year period of the formatter, add one century
@@ -255,17 +255,4 @@ public class DateField extends TextWidget {
 	public boolean isContentValid() {
 		return this.valid;
 	}
-	
-	public static void main(String[] x) {
-		StringBuffer buffer = new StringBuffer();
-	
-	    Calendar date = Calendar.getInstance();
-	    DateFormat dateFormat = new SimpleDateFormat("yy/MM/dd");
-	    FieldPosition yearPosition = new FieldPosition(DateFormat.YEAR_FIELD);
-	
-	    StringBuffer format = dateFormat.format(date.getTime(), buffer, yearPosition);
-	    format.replace(yearPosition.getBeginIndex(), yearPosition.getEndIndex(), String.valueOf(date.get(Calendar.YEAR)));
-	
-	    System.out.println(format);
-    }
 }
