@@ -21,25 +21,6 @@
 	</scm>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-		<testSourceDirectory>srcJUnit</testSourceDirectory>
-		<testResources>
-			<testResource>
-				<directory>srcJUnit</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</testResource>
-		</testResources>
-
 		<plugins>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
