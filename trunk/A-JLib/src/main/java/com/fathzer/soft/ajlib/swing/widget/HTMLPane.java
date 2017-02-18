@@ -101,10 +101,13 @@ public class HTMLPane extends JScrollPane {
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
 						URL url = e.getURL();
+						if (url==null) {
+							throw new IllegalArgumentException(e.getDescription()+" leads to a null url");
+						}
 						try {
 							Browser.show(url.toURI(), HTMLPane.this, Application.getString("Generic.error", getLocale())); //$NON-NLS-1$
-						} catch (URISyntaxException e2) {
-							throw new RuntimeException();
+						} catch (URISyntaxException ex) {
+							throw new RuntimeException(ex);
 						}
 					}
 				}
