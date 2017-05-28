@@ -2,24 +2,30 @@ package com.fathzer.soft.ajlib.swing.demo;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import com.fathzer.soft.ajlib.swing.Utils;
 import com.fathzer.soft.ajlib.swing.dialog.AbstractDialog;
+import com.fathzer.soft.ajlib.swing.dialog.FileChooser;
 import com.fathzer.soft.ajlib.swing.widget.HTMLPane;
 
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class DialogsPanel extends JPanel {
 	private JButton btnOpenDialog;
+	private JButton btnOpenDirectoryChooser;
 
 	/**
 	 * Create the panel.
 	 */
 	public DialogsPanel() {
 		add(getBtnOpenDialog());
+		add(getBtnOpenDirectoryChooser());
 	}
 
 	private JButton getBtnOpenDialog() {
@@ -52,5 +58,23 @@ public class DialogsPanel extends JPanel {
 			});
 		}
 		return btnOpenDialog;
+	}
+	private String path;
+	private JButton getBtnOpenDirectoryChooser() {
+		if (btnOpenDirectoryChooser == null) {
+			btnOpenDirectoryChooser = new JButton("Open directory chooser");
+			btnOpenDirectoryChooser.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+			    JFileChooser chooser = new FileChooser(path);
+			    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					File file = chooser.showOpenDialog(DialogsPanel.this)==JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile() : null;
+					if (file!=null) {
+						path = file.getPath();
+						JOptionPane.showMessageDialog(DialogsPanel.this, "You selected "+path);
+					}
+				}
+			});
+		}
+		return btnOpenDirectoryChooser;
 	}
 }
