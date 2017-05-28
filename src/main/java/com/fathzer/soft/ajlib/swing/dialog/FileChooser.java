@@ -93,7 +93,7 @@ public class FileChooser extends JFileChooser {
 				File old = getSelectedFile();
 				File superSelected = FileChooser.super.getSelectedFile();
 				String name = fileNameField != null ? fileNameField.getText() : superSelected==null?"":superSelected.getName();
-				File selectedFile = name.length() == 0 ? null : new File(FileChooser.super.getCurrentDirectory(), name);
+				File selectedFile = buildSelectedFile(name);
 				if (!NullUtils.areEquals(old, selectedFile)) {
 					int pos = fileNameField != null ? fileNameField.getCaretPosition() : 0;
 					firePropertyChange(SELECTED_FILE_CHANGED_PROPERTY, old, selectedFile);
@@ -135,15 +135,13 @@ public class FileChooser extends JFileChooser {
 
 	@Override
 	public File getSelectedFile() {
-		// The JFileChooser getSelectedFile returns a wrong value when the file
-		// name field is changed
-		// So, we use an attribute updated when events that modify the selected
-		// file occurs ... if we can find it in the UI.
-		// Another way is asking the ui ... if it allows it
+		// The JFileChooser getSelectedFile returns a wrong value when the file name field is changed
+		// So, we use an attribute updated when events that modify the selected file occurs ... if we can find it in the UI.
 		if (!isGetSelectedFileFixed()) {
+			// If not, we ask the ui ... if it allows it
 			if (getUI() instanceof BasicFileChooserUI) {
 				String name = ((BasicFileChooserUI)getUI()).getFileName();
-				selectedFile = name.length()==0?null:new File(super.getCurrentDirectory(),name) ;
+				selectedFile = buildSelectedFile(name);
 			} else {
 				System.err.println ("Warning, unable to get the current file name. UI is instance of "+ui.getClass());
 				selectedFile = super.getSelectedFile();
@@ -276,6 +274,12 @@ public class FileChooser extends JFileChooser {
 		} else {
 			super.setSelectedFile(file);
 		}
+	}
+
+	private File buildSelectedFile(String name) {
+		// We should remove directory because in DIRECTORIES_ONLY selection mode, the directory may be in the file name
+		name = new File(name).getName();
+		return name.length() == 0 ? null : new File(FileChooser.super.getCurrentDirectory(), name);
 	}
 
 	private class MyDocument extends PlainDocument {
