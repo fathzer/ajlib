@@ -44,7 +44,6 @@ public class CurrencyWidget extends NumberWidget {
 		this.numberFormat = super.buildFormat(locale);
 		return patchJavaBug4510618((DecimalFormat) NumberFormat.getCurrencyInstance(locale));
 	}
-
 	
 	/** Gets the widget's currency.
 	 * @return the windget's currency

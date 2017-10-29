@@ -104,6 +104,10 @@ public class NumberWidget extends TextWidget {
 			decimalFormatSymbols.setDecimalSeparator(SPACE);
 		}
 		format.setDecimalFormatSymbols(decimalFormatSymbols);
+		format.setPositiveSuffix(format.getPositiveSuffix().replace(NON_BREAKING_SPACE, SPACE));
+		format.setNegativeSuffix(format.getNegativeSuffix().replace(NON_BREAKING_SPACE, SPACE));
+		format.setPositivePrefix(format.getPositivePrefix().replace(NON_BREAKING_SPACE, SPACE));
+		format.setNegativePrefix(format.getNegativePrefix().replace(NON_BREAKING_SPACE, SPACE));
 		return format;
 	}
 	
