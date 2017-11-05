@@ -29,6 +29,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * <BR>License: LGPL v3
  */
 public class DateField extends TextWidget {
+	//FIXME See DateWidgetTest
 	private static final long serialVersionUID = 1L;
 	public static final String DATE_PROPERTY = "date";
 	public static final String CONTENT_VALID_PROPERTY = "contentValid";
