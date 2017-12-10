@@ -20,6 +20,8 @@ public class DateWidgetTest extends AbstractSwingTest {
   public void test() throws Throwable {
 		final DateWidgetFrame test = new DateWidgetFrame();
 		test.initTest();
+		assertTrue(test.widget.isContentValid());
+		assertTrue(test.widget.getDateField().isContentValid());
 		MyListener widgetListener = new MyListener();
 		test.widget.addPropertyChangeListener(DateWidget.CONTENT_VALID_PROPERTY, widgetListener);
 		MyListener fieldListener = new MyListener();
@@ -29,6 +31,7 @@ public class DateWidgetTest extends AbstractSwingTest {
     robot.delay(50);
     assertEquals("x", test.widget.getDateField().getText());
     assertFalse(test.widget.isContentValid());
+    assertFalse(test.widget.getDateField().isContentValid());
     widgetListener.reset();
     fieldListener.reset();
     robot.keyPress(KeyEvent.VK_BACK_SPACE);

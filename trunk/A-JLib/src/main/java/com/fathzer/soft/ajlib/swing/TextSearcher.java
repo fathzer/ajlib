@@ -68,7 +68,7 @@ public class TextSearcher {
 		}
 
 		// Look for the text we are given
-		// 1°) Extract a normalized form of the text in which to search
+		// 1) Extract a normalized form of the text in which to search
 		String content = null;
 		try {
 			Document d = comp.getDocument();
@@ -78,10 +78,10 @@ public class TextSearcher {
 			throw new RuntimeException(e);
 		}
 
-		// 2°) Get the normalized form of the searched text
+		// 2) Get the normalized form of the searched text
 		text = normalize(text);
 
-		// 3°) Search for the searched text
+		// 3) Search for the searched text
 		List<Integer> indexes = new LinkedList<Integer>();
 		int lastIndex = 0;
 		int size = 0;
