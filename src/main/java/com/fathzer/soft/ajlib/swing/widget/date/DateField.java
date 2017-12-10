@@ -29,7 +29,6 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * <BR>License: LGPL v3
  */
 public class DateField extends TextWidget {
-	//FIXME See DateWidgetTest
 	private static final long serialVersionUID = 1L;
 	public static final String DATE_PROPERTY = "date";
 	public static final String CONTENT_VALID_PROPERTY = "contentValid";
@@ -48,15 +47,6 @@ public class DateField extends TextWidget {
 		this(null);
 	}
 	
-	@Override
-	public void setLocale(Locale locale) {
-		super.setLocale(locale);
-		this.formatter = new CoolDateFormatter(locale);
-		if (date!=null) {
-			this.setText(formatter.format(date));
-		}
-	}
-
 	/** Constructor.
 	 * Creates a new Date widget. The date is set to today.
 	 * @param emptyDate The date to be set if the field becomes empty
@@ -117,6 +107,15 @@ public class DateField extends TextWidget {
 		});
 	}
 	
+	@Override
+	public void setLocale(Locale locale) {
+		super.setLocale(locale);
+		this.formatter = new CoolDateFormatter(locale);
+		if (date!=null) {
+			this.setText(formatter.format(date));
+		}
+	}
+
 	/** Set the meaning of an empty field.
 	 * @param date The date that a is equivalent to an empty field.
 	 * By default, this date is null.
@@ -245,7 +244,7 @@ public class DateField extends TextWidget {
 		}
 		if (isValid!=this.valid) {
 			this.valid = isValid;
-			firePropertyChange(CONTENT_VALID_PROPERTY, !this.isValid(), this.valid);
+			firePropertyChange(CONTENT_VALID_PROPERTY, !this.valid, this.valid);
 		}
 		return changed;
 	}
