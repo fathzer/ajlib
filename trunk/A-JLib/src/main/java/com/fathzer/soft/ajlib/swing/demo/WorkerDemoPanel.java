@@ -161,7 +161,7 @@ public class WorkerDemoPanel extends JPanel {
 
 		@Override
 		protected void done() {
-			AJLibDemo.setMessage("Task n°"+taskNumber+" is finished");
+			AJLibDemo.setMessage("Task nÂ°"+taskNumber+" is finished");
 		}
 
 		@Override
@@ -177,7 +177,7 @@ public class WorkerDemoPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				WorkerSample worker = new WorkerSample();
-				WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.MODELESS, worker);
+				WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task nï¿½"+worker.taskNumber, ModalityType.MODELESS, worker);
 				jobFrame.setSize(300, jobFrame.getSize().height);
 				jobFrame.setLocationRelativeTo(Utils.getOwnerWindow(WorkerDemoPanel.this));
 				jobFrame.setVisible(true);
@@ -193,7 +193,7 @@ public class WorkerDemoPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					WorkerSample worker = new WorkerSample();
-					WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task n°"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
+					WorkInProgressFrame jobFrame = new WorkInProgressFrame(Utils.getOwnerWindow(WorkerDemoPanel.this), "task nï¿½"+worker.taskNumber, ModalityType.APPLICATION_MODAL, worker);
 					jobFrame.setSize(300, jobFrame.getSize().height);
 					jobFrame.setLocationRelativeTo(Utils.getOwnerWindow(WorkerDemoPanel.this));
 					jobFrame.setMinimumVisibleTime(1500);

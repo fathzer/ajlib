@@ -208,7 +208,7 @@ public class WorkInProgressFrame extends JDialog {
 //						System.out.println ("Wait expired at "+System.currentTimeMillis());
 						showIt();
 					} catch (InterruptedException e) {
-						throw new RuntimeException(e);
+						Thread.currentThread().interrupt();
 					}
 				}
 			} else {

@@ -89,7 +89,7 @@ public abstract class Application {
 					}
 				});
 			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+				Thread.currentThread().interrupt();
 			} catch (InvocationTargetException e) {
 				throw new RuntimeException(e.getCause());
 			}

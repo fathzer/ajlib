@@ -168,7 +168,7 @@ public class FileUtils {
 						return new HiddenFileOutputStream(file);
 					}
 				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
+					Thread.currentThread().interrupt();
 				}
 			} catch (IOException e) {
 				// This try catch block is empty because this exception, in this context, means that the attrib command is not available.
@@ -197,7 +197,7 @@ public class FileUtils {
 			try {
 				process.waitFor();
 			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+				Thread.currentThread().interrupt();
 			}
 		}
 	}
