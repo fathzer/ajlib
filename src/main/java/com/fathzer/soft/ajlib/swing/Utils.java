@@ -3,8 +3,11 @@ package com.fathzer.soft.ajlib.swing;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
@@ -266,7 +269,6 @@ public abstract class Utils {
 	 * @see #saveState(Frame, Preferences)
 	 */
 	public static void restoreState(Frame frame, Preferences prefs) {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension dimension = new Dimension(prefs.getInt(SIZE_X_PROPERTY, 0), prefs.getInt(SIZE_Y_PROPERTY, 0));
 		int extendedState = Frame.NORMAL;
 		if ((dimension.width!=0) && (dimension.height!=0)) {
@@ -282,12 +284,21 @@ public abstract class Utils {
 			frame.setExtendedState(extendedState);
 		}
 		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
-		if (location.x+frame.getWidth()>screenSize.width) {
-			location.x = screenSize.width-frame.getWidth();
-		}
-		if (location.y+frame.getHeight()>screenSize.height) {
-			location.y = screenSize.height-frame.getHeight();
+		final Rectangle bounds = new Rectangle(location, dimension);
+		if (!isVisible(bounds)) {
+			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			location = new Point(screenSize.width/4, screenSize.height/4);
 		}
 		frame.setLocation(location);
 	}
+    
+    public static boolean isVisible(Rectangle rec) {
+        for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+            Rectangle bounds = gd.getDefaultConfiguration().getBounds();
+            if (bounds.intersects(rec)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
