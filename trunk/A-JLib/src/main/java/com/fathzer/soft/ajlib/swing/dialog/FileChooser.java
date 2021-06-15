@@ -19,6 +19,7 @@ import javax.swing.text.PlainDocument;
 import com.fathzer.soft.ajlib.swing.framework.Application;
 import com.fathzer.soft.ajlib.utilities.FileUtils;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
+import com.fathzer.soft.ajlib.utilities.RuntimeUtils;
 
 /**
  * A better file chooser. <br>
@@ -32,7 +33,8 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * <li>The application have no right to access the file.</li>
  * </ul>
  * </li>
- * <li>The getSelectedFile methods returns the selected file, even if the file
+ * <li>The getSelectedFile methods returns the selected file.
+ * In Java version &lt; 16, it works even if the file
  * name field has been modified (It's strange but that method in JFileChooser
  * returns the last file selected in the file list until the "ok" button is
  * pressed. It sounds like a bug of JFileChooser)</li>
@@ -44,7 +46,7 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * individual files, not folder, not multiple files :-(
  * <br>
  * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
+ * License: LGPL v3
  */
 public class FileChooser extends JFileChooser {
 	private static final long serialVersionUID = 1L;
@@ -62,29 +64,31 @@ public class FileChooser extends JFileChooser {
 		this.selectionTestEnabled = true;
 		this.selectedFile = null;
 		fileNameField = null;
-		try {
-			Field field = getUI().getClass().getDeclaredField("fileNameTextField"); //$NON-NLS-1$
+		if (RuntimeUtils.getJavaMajorVersion()<16) {
 			try {
-				field.setAccessible(true);
-				fileNameField = (JTextField) field.get(getUI());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+				Field field = getUI().getClass().getDeclaredField("fileNameTextField"); //$NON-NLS-1$
+				try {
+					field.setAccessible(true);
+					fileNameField = (JTextField) field.get(getUI());
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			} catch (NoSuchFieldException e) {
+				// If there's no fileNameField ... we will suppose there's no
+				// problem with this field updates !
 			}
-		} catch (NoSuchFieldException e) {
-			// If there's no fileNameField ... we will suppose there's no
-			// problem with this field updates !
-		}
-
-		try {
-			Field field = getUI().getClass().getDeclaredField("fileNameLabel"); //$NON-NLS-1$
+	
 			try {
-				field.setAccessible(true);
-				fileNameLabel = (JLabel) field.get(getUI());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+				Field field = getUI().getClass().getDeclaredField("fileNameLabel"); //$NON-NLS-1$
+				try {
+					field.setAccessible(true);
+					fileNameLabel = (JLabel) field.get(getUI());
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			} catch (NoSuchFieldException e) {
+				// If there's no fileNameLabel ... ok, then we will not do anything with it !
 			}
-		} catch (NoSuchFieldException e) {
-			// If there's no fileNameLabel ... ok, then we will not do anything with it !
 		}
 
 		PropertyChangeListener listener = new PropertyChangeListener() {
