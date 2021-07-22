@@ -270,8 +270,20 @@ public abstract class Utils {
 	 */
 	public static void restoreState(Frame frame, Preferences prefs) {
 		Dimension dimension = new Dimension(prefs.getInt(SIZE_X_PROPERTY, 0), prefs.getInt(SIZE_Y_PROPERTY, 0));
+		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
+		setSafeBounds(frame, new Rectangle(location, dimension));
+	}
+
+	/** Carefully sets the rectangle of a frame.
+	 * <br>This means it ensure the frame is visible on the screen.
+	 * @param frame The frame to resize/move
+	 * @param bounds The future frame rectangle. If its height or its width is < 0, the frame is maximized vertically/horizontally.
+	 * If it is not visible on the current available screens, the frame's location is set to the middle of the default screen.
+	 */
+	public static void setSafeBounds(Frame frame, Rectangle bounds) {
+		final Dimension dimension = bounds.getSize();
 		int extendedState = Frame.NORMAL;
-		if ((dimension.width!=0) && (dimension.height!=0)) {
+		if (dimension.width!=0 && dimension.height!=0) {
 			if (dimension.height<0) {
 				extendedState = extendedState | Frame.MAXIMIZED_VERT;
 				dimension.height = frame.getSize().height;
@@ -283,11 +295,12 @@ public abstract class Utils {
 			frame.setSize(dimension);
 			frame.setExtendedState(extendedState);
 		}
-		Point location = new Point(prefs.getInt(LOCATION_X_PROPERTY, 0), prefs.getInt(LOCATION_Y_PROPERTY, 0));
-		final Rectangle bounds = new Rectangle(location, dimension);
+		final Point location;
 		if (!isVisible(bounds)) {
 			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			location = new Point(screenSize.width/4, screenSize.height/4);
+		} else {
+			location = bounds.getLocation();
 		}
 		frame.setLocation(location);
 	}
