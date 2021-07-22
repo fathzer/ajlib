@@ -277,7 +277,7 @@ public abstract class Utils {
 	/** Carefully sets the rectangle of a frame.
 	 * <br>This means it ensure the frame is visible on the screen.
 	 * @param frame The frame to resize/move
-	 * @param bounds The future frame rectangle. If its height or its width is < 0, the frame is maximized vertically/horizontally.
+	 * @param bounds The future frame rectangle. If its height or its width is &lt; 0, the frame is maximized vertically/horizontally.
 	 * If it is not visible on the current available screens, the frame's location is set to the middle of the default screen.
 	 */
 	public static void setSafeBounds(Frame frame, Rectangle bounds) {
