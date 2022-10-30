@@ -1,10 +1,14 @@
 package com.fathzer.soft.ajlib.utilities;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
@@ -103,9 +107,9 @@ public class FileUtils {
 		if (dest.exists() && !overrideExisting) {
 			throw new IOException(MessageFormat.format("File {0} already exists", dest));
 		}
-		FileInputStream in = new FileInputStream(src);
+		InputStream in = new BufferedInputStream(new FileInputStream(src));
 		try {
-			FileOutputStream out = new FileOutputStream(dest);
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(dest));
 			try {
 				int c;
 				while ((c = in.read()) != -1) {

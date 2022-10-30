@@ -7,7 +7,7 @@
 		<version>1.0.3</version>
 	</parent>
 	<artifactId>ajlib</artifactId>
-	<version>0.3.13</version>
+	<version>0.3.14</version>
 
   	<packaging>jar</packaging>
 
@@ -16,8 +16,8 @@
 	<url>http://ajlib.soft.fathzer.com</url>
 
 	<scm>
-		<url>http://svn.code.sf.net/p/ajlib/code/trunk</url>
-		<connection>http://svn.code.sf.net/p/ajlib/code/trunk</connection>
+		<url>https://github.com/fathzer/ajlib</url>
+		<connection>scm:git:git@github.com:fathzer/ajlib</connection>
 	</scm>
 
 	<properties>
