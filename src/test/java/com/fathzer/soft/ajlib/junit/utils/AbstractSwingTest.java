@@ -3,6 +3,7 @@ package com.fathzer.soft.ajlib.junit.utils;
 import java.awt.AWTException;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.Robot;
 
 import javax.swing.JFrame;
@@ -14,7 +15,9 @@ public abstract class AbstractSwingTest {
 
 	@BeforeClass
 	public static void init() throws AWTException {
-		robot = new Robot();
+		if (!GraphicsEnvironment.isHeadless()) {
+			robot = new Robot();
+		}
 	}
 	
 	protected static abstract class AbstractSwingWindow {
