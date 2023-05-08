@@ -22,16 +22,16 @@ public abstract class AbstractSwingTest {
 		
 		public void initTest() throws InterruptedException, Throwable {
 			EventQueue.invokeLater(new Runnable() {
-	      public void run() {
+				public void run() {
 					build();
-	      }
-	    });
-	    synchronized (this) {
-	      wait();
+				}
+			});
+			synchronized (this) {
+				wait();
 			}
-	    if (exception!=null) {
-	    	throw exception;
-	    }
+		    if (exception!=null) {
+		    	throw exception;
+		    }
 		}
 
 		private void build() {
@@ -40,9 +40,9 @@ public abstract class AbstractSwingTest {
 			} catch (Throwable e) {
 				exception = e;
 			}
-      synchronized (this) {
-      	notifyAll();
-      }
+			synchronized (this) {
+				notifyAll();
+			}
 		}
 		
 		private void init() {
