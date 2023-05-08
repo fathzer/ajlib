@@ -1,7 +1,9 @@
 package com.fathzer.soft.ajlib.junit;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeFalse;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -18,6 +20,8 @@ public class DateWidgetTest extends AbstractSwingTest {
 	
 	@Test
 	public void test() throws Throwable {
+	    assumeFalse(GraphicsEnvironment.isHeadless());
+		
 		final DateWidgetFrame test = new DateWidgetFrame();
 		test.initTest();
 		assertTrue(test.widget.isContentValid());
