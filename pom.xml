@@ -17,14 +17,6 @@
 		and other stuff</description>
 	<url>http://ajlib.soft.fathzer.com</url>
 
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License v3 (LGPL-v3)</name>
-			<url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
 	<scm>
 		<url>https://github.com/fathzer/ajlib</url>
 		<connection>scm:git:git@github.com:fathzer/ajlib</connection>
