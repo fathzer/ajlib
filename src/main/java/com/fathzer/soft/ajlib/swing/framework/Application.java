@@ -202,7 +202,10 @@ public abstract class Application {
 		Utils.restoreState(getJFrame(), getPreferences());
 	}
 	
-	private Preferences getPreferences() {
+	/** Gets the preferences used store the application's preferences.
+	 * @return a Preferences instance
+	 */
+	protected Preferences getPreferences() {
 		return Preferences.userRoot().node(getClass().getCanonicalName());
 	}
 	
