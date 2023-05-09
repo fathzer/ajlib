@@ -16,8 +16,6 @@ import javax.swing.JTable;
  * <br>A pop-up menu is shown when needed (when a right click occurs under windows).
  * <br>You should register this with a JTable in order to receive interesting events (using JTable.addMouseListener).
  * <br>Please note that this class doesn't guarantee that actions will be enabled/disabled when rows are selected/deselected.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class JTableListener extends MouseAdapter {
 	private Action[] actions;

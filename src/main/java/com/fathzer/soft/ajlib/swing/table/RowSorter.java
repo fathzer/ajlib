@@ -19,8 +19,6 @@ import javax.swing.table.TableRowSorter;
  * &nbsp;&nbsp;...<br>
  * &nbsp;&nbsp;table.setRowSorter&lt;TableModel&gt;(new RowSorter(table.getModel()))<br>
  * </code>
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  * @param <M> The type of the table model
  */
 public class RowSorter<M extends TableModel> extends TableRowSorter<M> {

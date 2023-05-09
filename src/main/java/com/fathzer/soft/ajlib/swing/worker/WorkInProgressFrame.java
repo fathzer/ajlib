@@ -23,8 +23,6 @@ import java.beans.PropertyChangeListener;
  * <br><br>By default, when the user clicks the frame close box, it cancels the task and immediately disposes the window.
  * If you set the frame default close operation to "do nothing" (with <code>this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE)</code>)
  * the close box does nothing at all. You can then listen to window closing event in order to do what you want.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  * @see Worker
  */
 @SuppressWarnings("serial")

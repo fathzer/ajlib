@@ -13,12 +13,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+
 import sun.awt.shell.ShellFolder;
 
 /** Utility to perform some operations on files.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
+@IgnoreJRERequirement
 public class FileUtils {
 	private static final String ACCESS_DENIED_MESSAGE = "What's the right message ?";
 

@@ -16,8 +16,6 @@ import java.util.regex.Pattern;
  * @see Kind#REGULAR
  * @see Kind#EQUALS
  * @see Kind#CONTAINS
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class TextMatcher {
 	/** A kind of comparison a TextMatcher can perform. */

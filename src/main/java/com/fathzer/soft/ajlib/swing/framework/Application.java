@@ -41,8 +41,6 @@ import com.fathzer.soft.ajlib.utilities.LocalizationData;
  * &nbsp;&nbsp;}<br>
  * }<br>
  * </code>
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class Application {
 	private JFrame frame;
@@ -204,7 +202,10 @@ public abstract class Application {
 		Utils.restoreState(getJFrame(), getPreferences());
 	}
 	
-	private Preferences getPreferences() {
+	/** Gets the preferences used store the application's preferences.
+	 * @return a Preferences instance
+	 */
+	protected Preferences getPreferences() {
 		return Preferences.userRoot().node(getClass().getCanonicalName());
 	}
 	

@@ -25,8 +25,6 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * field is allowed, you can change that calling setIsEmptyNullDateValid. Keep in mind that if you called the setEmptyDate method
  * with a non null argument, the empty field will always be valid.
  * The up/down arrow keys increments/decrements the date.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class DateField extends TextWidget {
 	private static final long serialVersionUID = 1L;

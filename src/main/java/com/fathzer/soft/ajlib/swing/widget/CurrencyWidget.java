@@ -13,8 +13,6 @@ import java.util.Locale;
  * <li>CONTENT_VALID_PROPERTY: a boolean, true if the text currently entered in the field is a valid value, false if it is not.
  * <br>The CONTENT_VALID_PROPERTY is a read only property.</li>
  * </ul>
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class CurrencyWidget extends NumberWidget {
 	private static final long serialVersionUID = 1L;

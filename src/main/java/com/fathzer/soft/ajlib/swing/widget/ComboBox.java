@@ -7,8 +7,6 @@ import javax.swing.JComboBox;
  * It could be very useful when you have to refresh the menu but don't want any event being sent.</LI>
  * <LI>The method <b>contains</b> tests whether the menu contains an item or not</LI>
  * </UL>
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class ComboBox extends JComboBox {
 	private static final long serialVersionUID = 1L;

@@ -17,8 +17,6 @@ import javax.swing.AbstractButton;
  * Another difference is that this class extends the java.util.Observable class and calls its observers update method
  * when the selected button changes. 
  * </p>
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
  */
 public class ButtonGroup extends Observable {
 	/**

@@ -12,7 +12,6 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /** A JTable CellRenderer easy to customize.
- * @author Jean-Marc Astesana (Licence LGPL v3)
  */
 public class CustomCellRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;

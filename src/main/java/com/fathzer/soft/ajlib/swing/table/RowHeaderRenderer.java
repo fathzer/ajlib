@@ -8,8 +8,6 @@ import javax.swing.JTable;
 
 /**
  * A table CellRenderer that renders row headers.
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
  */
 public class RowHeaderRenderer implements TableCellRenderer {
 	private TableCellRenderer renderer;

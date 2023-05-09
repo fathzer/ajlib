@@ -8,10 +8,6 @@ import java.awt.Rectangle;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
-/**
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
- */
 @SuppressWarnings("serial")
 class DefaultScrollablePanel extends JPanel implements Scrollable {
 	DefaultScrollablePanel(Component component) {

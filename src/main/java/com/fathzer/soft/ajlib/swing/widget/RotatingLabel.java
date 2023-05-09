@@ -8,8 +8,6 @@ import java.awt.geom.AffineTransform;
 import javax.swing.JLabel;
 
 /** A JLabel that can be rotated.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class RotatingLabel extends JLabel {
 	private static final long serialVersionUID = 1L;

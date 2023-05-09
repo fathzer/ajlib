@@ -16,8 +16,6 @@ import javax.swing.text.PlainDocument;
  * <br><br>Another way was to use KeyListeners ... but some key events are throw a long time (probably the key auto-repeat interval)
  * after the key was released. And others events (for example a click on an OK button) may occurs before the listener is informed of the change.
  * <br><br>This widget guarantees that no "ghost" property change is thrown !
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class PasswordWidget extends JPasswordField {
 	private static final long serialVersionUID = 1L;

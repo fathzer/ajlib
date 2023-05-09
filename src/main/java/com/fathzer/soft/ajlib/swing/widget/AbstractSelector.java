@@ -27,8 +27,6 @@ import java.awt.BorderLayout;
  * @param <V> The class of the constructor argument.
  * @see #getPropertyName()
  * @see #getDefaultRenderedValue(Object)
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class AbstractSelector<T,V> extends JPanel {
 	private static final long serialVersionUID = 1L;

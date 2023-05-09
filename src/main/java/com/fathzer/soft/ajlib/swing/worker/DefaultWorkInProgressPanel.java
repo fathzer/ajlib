@@ -20,8 +20,6 @@ import java.beans.PropertyChangeListener;
 
 /** A default panel reporting the progress of a background task.
  * <br>This panel contains a message, a progress bar and a cancel button. 
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  * @see Worker
  */
 @SuppressWarnings("serial")

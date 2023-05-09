@@ -29,9 +29,6 @@ import javax.swing.table.TableColumnModel;
 
 /**
  * Some Swing utilities.
- * 
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
  */
 public abstract class Utils {
 	private Utils() {

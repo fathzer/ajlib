@@ -17,8 +17,6 @@ import java.awt.Insets;
 
 /** An abstract widget composed of two buttons to move up or down selected rows of a JTable.
  * @see JTable
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class AbstractTableRowMover extends JPanel {
 	private static final long serialVersionUID = 1L;

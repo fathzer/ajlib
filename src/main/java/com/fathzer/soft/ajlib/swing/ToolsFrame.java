@@ -13,8 +13,6 @@ import javax.swing.JFrame;
  * <br>Such a window remains always on top of other windows and remains usable
  * while modal dialogs are opened.
  * <br>If it is attached to an owner window, it is automatically iconified/closed if the owner is.
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
  */
 public class ToolsFrame extends JFrame {
 	private static final long serialVersionUID = 1L;

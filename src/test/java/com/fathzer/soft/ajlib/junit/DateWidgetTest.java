@@ -1,7 +1,9 @@
 package com.fathzer.soft.ajlib.junit;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeFalse;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -17,7 +19,9 @@ import com.fathzer.soft.ajlib.swing.widget.date.DateWidget;
 public class DateWidgetTest extends AbstractSwingTest {
 	
 	@Test
-  public void test() throws Throwable {
+	public void test() throws Throwable {
+	    assumeFalse(GraphicsEnvironment.isHeadless());
+		
 		final DateWidgetFrame test = new DateWidgetFrame();
 		test.initTest();
 		assertTrue(test.widget.isContentValid());
@@ -26,22 +30,24 @@ public class DateWidgetTest extends AbstractSwingTest {
 		test.widget.addPropertyChangeListener(DateWidget.CONTENT_VALID_PROPERTY, widgetListener);
 		MyListener fieldListener = new MyListener();
 		test.widget.getDateField().addPropertyChangeListener(DateField.CONTENT_VALID_PROPERTY, fieldListener);
-    robot.keyPress(KeyEvent.VK_X);
-    robot.keyRelease(KeyEvent.VK_X);
-    robot.delay(50);
-    assertEquals("x", test.widget.getDateField().getText());
-    assertFalse(test.widget.isContentValid());
-    assertFalse(test.widget.getDateField().isContentValid());
-    widgetListener.reset();
-    fieldListener.reset();
-    robot.keyPress(KeyEvent.VK_BACK_SPACE);
-    robot.keyRelease(KeyEvent.VK_BACK_SPACE);
-    robot.delay(50);
-    assertTrue(test.widget.getDateField().getText().isEmpty());
-    assertTrue(test.widget.isContentValid());
-    assertTrue(fieldListener.changed);
-    assertTrue(widgetListener.changed);
-  }
+		// Let some time to allow window to acquire the focus
+		robot.delay(100);
+		robot.keyPress(KeyEvent.VK_X);
+		robot.keyRelease(KeyEvent.VK_X);
+		robot.delay(50);
+		assertEquals("x", test.widget.getDateField().getText());
+		assertFalse(test.widget.isContentValid());
+		assertFalse(test.widget.getDateField().isContentValid());
+		widgetListener.reset();
+		fieldListener.reset();
+		robot.keyPress(KeyEvent.VK_BACK_SPACE);
+		robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+		robot.delay(50);
+		assertTrue(test.widget.getDateField().getText().isEmpty());
+		assertTrue(test.widget.isContentValid());
+		assertTrue(fieldListener.changed);
+		assertTrue(widgetListener.changed);
+	}
 
 	private static final class MyListener implements PropertyChangeListener {
 		private boolean changed;

@@ -15,11 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.fathzer.soft.ajlib.swing.Utils;
-import com.fathzer.soft.ajlib.swing.widget.IntegerWidget;
 
 /** A widget that allows to select a page in a specified range.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class PageSelector extends JPanel {
 	private static final String RES_PATH = "/com/fathzer/soft/ajlib/swing/widget/";

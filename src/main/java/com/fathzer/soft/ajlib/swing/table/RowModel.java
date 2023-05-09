@@ -4,10 +4,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-/**
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
- */
 class RowModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 

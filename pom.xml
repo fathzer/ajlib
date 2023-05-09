@@ -1,18 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.fathzer</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>1.0.3</version>
+		<version>1.0.8</version>
 	</parent>
 	<artifactId>ajlib</artifactId>
-	<version>0.3.14</version>
+	<version>0.3.15</version>
 
-  	<packaging>jar</packaging>
+	<packaging>jar</packaging>
 
 	<name>A-JLib</name>
-	<description>AJlib is a simple java library with Swing widgets, utilities and other stuff</description>
+	<description>A-Jlib is a simple java library with Swing widgets, utilities
+		and other stuff</description>
 	<url>http://ajlib.soft.fathzer.com</url>
 
 	<scm>
@@ -22,10 +24,36 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sonar.organization>fathzer</sonar.organization>
+		<animal-sniffer-version>1.23</animal-sniffer-version>
+		<animal-sniffer-signature>java16</animal-sniffer-signature>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fathzer</groupId>
+			<artifactId>jlocal</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>animal-sniffer-annotations</artifactId>
+			<version>${animal-sniffer-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>animal-sniffer-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.10.3</version>
@@ -44,8 +72,6 @@
 						</manifest>
 					</archive>
 					<excludes>
-						<exclude>com/fathzer/soft/ajlib/junit/*.*</exclude>
-						<exclude>com/fathzer/soft/ajlib/junit</exclude>
 						<exclude>**/package.html</exclude>
 					</excludes>
 				</configuration>
@@ -59,10 +85,10 @@
 						<phase>install</phase>
 						<configuration>
 							<target>
-								<zip destfile="${basedir}/A-JLib-v${project.version}.zip">
+								<zip
+									destfile="${basedir}/A-JLib-v${project.version}.zip">
 									<zipfileset dir="." includes="license.html" />
-									<zipfileset dir="${project.build.directory}"
-										includes="*.jar" />
+									<zipfileset dir="${project.build.directory}" includes="*.jar" />
 								</zip>
 							</target>
 						</configuration>
@@ -74,11 +100,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>com.fathzer</groupId>
-			<artifactId>jlocal</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-	</dependencies>
 </project>

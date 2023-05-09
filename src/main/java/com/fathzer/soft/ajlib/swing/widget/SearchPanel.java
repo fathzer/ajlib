@@ -24,7 +24,6 @@ import javax.swing.ImageIcon;
 
 import com.fathzer.soft.ajlib.swing.TextSearcher;
 import com.fathzer.soft.ajlib.swing.framework.Application;
-import com.fathzer.soft.ajlib.swing.widget.TextWidget;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -32,8 +31,6 @@ import java.awt.event.ActionEvent;
 /** A panel with every need to search text in a text component.
  * <br>It provides a text field to enter the searched text, buttons to navigate through occurrences and setting buttons.
  * <br>When text is entered in search the text field, the first occurrence is automatically highlight in the text component. 
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 @SuppressWarnings("serial")
 public class SearchPanel extends JPanel {

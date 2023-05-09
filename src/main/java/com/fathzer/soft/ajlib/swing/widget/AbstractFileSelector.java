@@ -21,8 +21,6 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
 
 /** An abstract widget composed of four buttons to open, save, save as and create new file.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class AbstractFileSelector extends JPanel {
 	private static final long serialVersionUID = 1L;
