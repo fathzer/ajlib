@@ -8,8 +8,6 @@ import javax.swing.JTable;
  * be aware of view/model index and don't forget to scroll the table to make the selection visible.
  * <br>This class takes care of this for you.
  * @param <T> The class of the elements in the table.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class JTableSelector<T> {
 	/** The JTable that contains the selected elements.*/

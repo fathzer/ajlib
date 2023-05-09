@@ -15,9 +15,7 @@ import javax.swing.event.HyperlinkListener;
 import com.fathzer.soft.ajlib.swing.Browser;
 import com.fathzer.soft.ajlib.swing.framework.Application;
 
-/** A HTML component.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
+/** A HTML rendering component.
  */
 @SuppressWarnings("serial")
 public class HTMLPane extends JScrollPane {

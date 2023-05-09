@@ -4,8 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 /** Utility to parse the fields separated by a char in a string.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class StringUtils {
 	public static final String EMPTY = ""; //$NON-NLS-1$

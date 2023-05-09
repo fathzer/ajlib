@@ -84,9 +84,8 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
 /**
  * A panel that allows the user to select a date.
  * @author David Gilbert (modified by Jean-Marc Astesana)
- * <BR>License: LGPL v3
  */
-public class CalendarWidget extends JPanel /*implements ActionListener*/ {
+public class CalendarWidget extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public static final String DATE_PROPERTY = "DATE_PROPERTY";
 

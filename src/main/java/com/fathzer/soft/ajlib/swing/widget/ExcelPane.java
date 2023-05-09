@@ -26,8 +26,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /** A widget with a JTable and a button that is able to save it in csv format.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */ 
 public class ExcelPane extends JPanel {
 	private static final long serialVersionUID = 1L;

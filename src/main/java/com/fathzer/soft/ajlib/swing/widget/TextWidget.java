@@ -44,8 +44,6 @@ import com.fathzer.soft.ajlib.utilities.TextMatcher;
  * <br><br>This class implements a popup menu that allows to select the field content into a list of predefined values.
  * <br>The difference with a JComboBox is the popup content and selection is updated when the user changes the text field content.
  * It always contains only predefined text that contains the current widget text.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class TextWidget extends JTextField {
 	private static final long serialVersionUID = 1L;

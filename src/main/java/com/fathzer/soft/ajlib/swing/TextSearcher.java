@@ -20,10 +20,9 @@ import com.fathzer.soft.ajlib.swing.widget.HTMLPane;
  * It could be used, for instance, with an HTMLPane. <br>
  * It supports case and diacritical sensitive/insensitive search.
  * 
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3 <br>
+ * @author Jean-Marc Astesana
  *         This code was inspired by an example from Kim Topley (ISBN: 0 13
- *         083292 8 - Publisher: Prentice Hall)
+ *         083292 8 - Publisher: Prentice Hall
  * @see HTMLPane
  */
 public class TextSearcher {

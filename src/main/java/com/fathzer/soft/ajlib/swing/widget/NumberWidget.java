@@ -10,7 +10,6 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Locale;
 
-import com.fathzer.soft.ajlib.swing.widget.TextWidget;
 import com.fathzer.soft.ajlib.utilities.NullUtils;
 
 
@@ -22,8 +21,6 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  * <li>CONTENT_VALID_PROPERTY: a boolean, true if the text currently entered in the field is a valid value, false if it is not.
  * <br>The CONTENT_VALID_PROPERTY is a read only property.</li>
  * </ul>
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class NumberWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;

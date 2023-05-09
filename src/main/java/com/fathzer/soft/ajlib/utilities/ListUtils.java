@@ -3,8 +3,6 @@ package com.fathzer.soft.ajlib.utilities;
 import java.util.List;
 
 /** Utilities dealing with lists.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class ListUtils {
 

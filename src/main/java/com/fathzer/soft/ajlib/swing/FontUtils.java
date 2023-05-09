@@ -9,8 +9,6 @@ import java.util.Locale;
 import javax.swing.UIManager;
 
 /** Some utilities related to font management.
- * @author Jean-Marc Astesana <BR>
- *         License: LGPL v3
  */
 public abstract class FontUtils {
 	private static final String DEFAULT_FONT_PROPERTY_NAME = "defaultFont"; //$NON-NLS-1$

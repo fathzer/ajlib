@@ -44,9 +44,6 @@ import com.fathzer.soft.ajlib.utilities.RuntimeUtils;
  * </ul>
  * <b>Here is the bad news</b>: This component is designed to allow selection of
  * individual files, not folder, not multiple files :-(
- * <br>
- * @author Jean-Marc Astesana <BR>
- * License: LGPL v3
  */
 public class FileChooser extends JFileChooser {
 	private static final long serialVersionUID = 1L;

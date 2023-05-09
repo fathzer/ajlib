@@ -41,8 +41,6 @@ import com.fathzer.soft.ajlib.utilities.LocalizationData;
  * &nbsp;&nbsp;}<br>
  * }<br>
  * </code>
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class Application {
 	private JFrame frame;

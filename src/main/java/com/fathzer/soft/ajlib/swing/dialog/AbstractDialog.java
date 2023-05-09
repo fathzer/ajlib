@@ -28,8 +28,6 @@ import com.fathzer.soft.ajlib.swing.framework.Application;
  * never be bigger than the screen (in such a case ok/cancel buttons would be hidden).
  * @param <T> The class of the parameter of the dialog (information that is useful to build the center pane).
  * @param <V> The class of the result of the dialog
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public abstract class AbstractDialog<T,V> extends JDialog {
 	//FIXME The horizontal scroll bar is always shown when the vertical one is shown. 

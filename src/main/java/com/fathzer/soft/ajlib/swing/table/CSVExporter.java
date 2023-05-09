@@ -10,8 +10,6 @@ import com.fathzer.soft.ajlib.utilities.CSVWriter;
 
 
 /** A specialized CSV Exporter that exports TableModels
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class CSVExporter {
 	

@@ -21,8 +21,6 @@ import java.awt.event.ActionListener;
 
 
 /** A month selector.
- * @author Jean-Marc Astesana
- * <BR>License: LGPL v3
  */
 public class MonthWidget extends JPanel {
 	private static final long serialVersionUID = 1L;
