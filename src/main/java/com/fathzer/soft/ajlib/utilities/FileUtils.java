@@ -9,19 +9,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
-
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
-
-import sun.awt.shell.ShellFolder;
+import java.text.ParseException;
 
 /** Utility to perform some operations on files.
  */
-@IgnoreJRERequirement
 public class FileUtils {
-	private static final String ACCESS_DENIED_MESSAGE = "What's the right message ?";
+	private static final String ACCESS_DENIED_MESSAGE = "Write access to file refused";
 
 	private FileUtils() {
 	}
@@ -33,32 +28,19 @@ public class FileUtils {
 	 * @return a File
 	 * @throws IOException If something goes wrong
 	 */
-	@SuppressWarnings("unchecked")
 	public static File getCanonical(File file) throws IOException {
 		if (!file.exists()) {
 			return file;
 		}
 		try {
-			// The following lines are equivalent to sf = new sun.awt.shell.Win32ShellFolderManager2().createShellFolder(file);
-			// We use reflection in order the code to compile on non Windows platform (where new sun.awt.shell.Win32ShellFolderManager2
-			// is a unknown class.
-			ShellFolder sf;
-			@SuppressWarnings("rawtypes")
-			Class cl = Class.forName("sun.awt.shell.Win32ShellFolderManager2");
-			Object windowsFolderManager = cl.newInstance();
-			sf = (ShellFolder) cl.getMethod("createShellFolder", File.class).invoke(windowsFolderManager, file);
-			if (sf.isLink()) {
-				return sf.getLinkLocation();
+			// Java has nothing to decode shortcut (what a pity!).
+			// we will try to decode ourselves
+			if (WindowsShortcut.isPotentialValidLink(file)) {
+				return new File(new WindowsShortcut(file).getRealFilename());
 			}
-		} catch (ClassNotFoundException e) {
-			// We're not on a windows platform
-			// We also ignore other errors that may not happen.
-			// Ok, errors always happens ... In such a case, we can do we have already done our best effort and
-			// we will let file.CanonicalFile do better.
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (InstantiationException e) {
+		} catch (ParseException e) {
+			// Something went wrong
+			// In such a case, let file.CanonicalFile a chance to do better.
 		}
 		return file.getCanonicalFile();
 	}
@@ -87,8 +69,8 @@ public class FileUtils {
 				copy(src, dest, true);
 				// Now, deletes the src file
 				if (!src.delete()) {
-					// Oh ... we were thinking we had the right to delete the file ... but we can't
-					// delete the dest file
+					// Oh ... we were thinking we had the right to delete the file ... but we can't:
+					// Delete the dest file
 					dest.delete();
 					throw new SecurityException(ACCESS_DENIED_MESSAGE);
 				}
@@ -108,19 +90,13 @@ public class FileUtils {
 		if (dest.exists() && !overrideExisting) {
 			throw new IOException(MessageFormat.format("File {0} already exists", dest));
 		}
-		InputStream in = new BufferedInputStream(new FileInputStream(src));
-		try {
-			OutputStream out = new BufferedOutputStream(new FileOutputStream(dest));
-			try {
+		try (InputStream in = new BufferedInputStream(new FileInputStream(src))) {
+			try (OutputStream out = new BufferedOutputStream(new FileOutputStream(dest))) {
 				int c;
 				while ((c = in.read()) != -1) {
 					out.write(c);
 				}
-			} finally {
-				out.close();
 			}
-		} finally {
-			in.close();
 		}
 		dest.setLastModified(src.lastModified());
 	}
@@ -235,10 +211,8 @@ public class FileUtils {
 				return false;
 			}
 		} else {
-			// If the argument is a file, we will simply to open it for writing 
-			try {
-				FileOutputStream x = new FileOutputStream(file,true);
-				try {
+			// If the argument is a file, we will simply open it for writing 
+			try (FileOutputStream x = new FileOutputStream(file,true)) {
 					FileLock lock = null;
 					lock = x.getChannel().tryLock();
 					if (lock==null) {
@@ -247,9 +221,6 @@ public class FileUtils {
 						lock.release();
 						return true;
 					}
-				} finally {
-					x.close();
-				}
 			} catch (FileNotFoundException e) {
 				// File is locked by another application
 				return false;

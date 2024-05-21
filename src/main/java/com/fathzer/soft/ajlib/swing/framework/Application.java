@@ -16,6 +16,7 @@ import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.WindowConstants;
 
 import com.fathzer.soft.ajlib.swing.Utils;
 import com.fathzer.soft.ajlib.utilities.LocalizationData;
@@ -230,7 +231,7 @@ public abstract class Application {
 
 	private void start() {
 		frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.setContentPane(buildMainPanel());
 		frame.setTitle(getName());
 		frame.addWindowListener(new WindowAdapter() {
@@ -239,10 +240,8 @@ public abstract class Application {
 				onClose(event);
 			}
 		});
-		// CheckNewReleaseAction.doAutoCheck(frame);
 		frame.setJMenuBar(buildMenuBar());
 		frame.pack();
-//		frame.setMinimumSize(frame.getSize());
 		restoreState();
 		boolean quit = !onStart();
 		if (quit) {

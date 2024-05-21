@@ -8,14 +8,14 @@
 		<version>1.0.8</version>
 	</parent>
 	<artifactId>ajlib</artifactId>
-	<version>0.3.15</version>
+	<version>0.3.16</version>
 
 	<packaging>jar</packaging>
 
 	<name>A-JLib</name>
 	<description>A-Jlib is a simple java library with Swing widgets, utilities
 		and other stuff</description>
-	<url>http://ajlib.soft.fathzer.com</url>
+	<url>https://github.com/fathzer/ajlib</url>
 
 	<scm>
 		<url>https://github.com/fathzer/ajlib</url>
@@ -24,10 +24,29 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sonar.organization>fathzer</sonar.organization>
 		<animal-sniffer-version>1.23</animal-sniffer-version>
-		<animal-sniffer-signature>java16</animal-sniffer-signature>
+		<animal-sniffer-signature>java17</animal-sniffer-signature>
+		<maven.compiler.source>1.7</maven.compiler.source>
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<maven.compiler.target>1.7</maven.compiler.target>
+			</properties>
+		</profile>
+		<profile>
+			<id>sonar</id>
+			<properties>
+		<sonar.organization>fathzer</sonar.organization>
+				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>

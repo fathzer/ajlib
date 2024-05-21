@@ -24,7 +24,7 @@ public abstract class StringUtils {
 	 * @return an array of Strings.
 	 */
 	public static String[] split(String string, char separator) {
-		List<String> result = new LinkedList<String>();
+		List<String> result = new LinkedList<>();
 		StringBuilder buffer = new StringBuilder(); 
 		for (int i = 0; i < string.length(); i++) {
 			if (string.charAt(i)==separator) {

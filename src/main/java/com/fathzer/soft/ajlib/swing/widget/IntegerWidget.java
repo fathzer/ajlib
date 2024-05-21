@@ -16,7 +16,6 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  */
 public class IntegerWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;
-	private static final boolean DEBUG = false;
 	/** The field value property name. */
 	public static final String VALUE_PROPERTY = "VALUE_PROPERTY";
 	/** An utility constant for Integer.MAX_VALUE.
@@ -103,9 +102,6 @@ public class IntegerWidget extends TextWidget {
 			value = null;
 		}
 		if (!NullUtils.areEquals(value,old)) {
-			if (DEBUG) {
-				System.out.println ("->"+value);
-			}
 			this.firePropertyChange(VALUE_PROPERTY, old, value);
 		}
 	}
@@ -120,9 +116,6 @@ public class IntegerWidget extends TextWidget {
 	 * @return an integer or null if the value is not valid.
 	 */
 	public BigInteger getValue() {
-		if (DEBUG) {
-			System.out.println ("IntegerWidget.getValue() returns "+value);
-		}
 		return this.value==null?null:this.value;
 	}
 
@@ -139,7 +132,7 @@ public class IntegerWidget extends TextWidget {
 	 * @param value an integer or null to set the field empty.
 	 */
 	public void setValue(Integer value) {
-		setValue(value==null?(BigInteger)null:BigInteger.valueOf(value));
+		setValue(value==null?null:BigInteger.valueOf(value));
 	}
 	
 	/** Sets the min value of the widget.

@@ -84,6 +84,7 @@ public class DateWidget extends JPanel {
 	/** Set the locale.
 	 * Changes the calendar popup appearence and the text field format.
 	 */
+	@Override
 	public void setLocale(Locale locale) {
 		getDateField().setLocale(locale);
 		dateChooser.setLocale(locale);
@@ -108,6 +109,7 @@ public class DateWidget extends JPanel {
 		jLabel = new JLabel();
 		jLabel.setIcon(Utils.createIcon(DateWidget.class.getResource(MonthWidget.RES_PATH+"calendar.png"), 16*getFont().getSize()/12));
 		jLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (jLabel.isEnabled() && !popup.isVisible()) {
 					DateField widget = getDateField();

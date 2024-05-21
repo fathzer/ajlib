@@ -7,6 +7,7 @@ import java.net.URL;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.HyperlinkEvent;
@@ -30,7 +31,7 @@ public class HTMLPane extends JScrollPane {
 	 */
 	public HTMLPane () {
 		super();
-		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.contentType = null;
 		getTextPane().getDocument().addDocumentListener(getDocumentListener());
 		this.setViewportView(getTextPane());

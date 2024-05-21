@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
  * <LI>The method <b>contains</b> tests whether the menu contains an item or not</LI>
  * </UL>
  */
-public class ComboBox extends JComboBox {
+public class ComboBox<T> extends JComboBox<T> {
 	private static final long serialVersionUID = 1L;
 
 	private boolean isActionEnabled = true;
@@ -32,7 +32,7 @@ public class ComboBox extends JComboBox {
 	 * @param item the item to test
 	 * @return true if the item is in the menu.
 	 */
-	public boolean contains (Object item) {
+	public boolean contains (T item) {
 		for (int i = 0; i < this.getItemCount(); i++) {
 			if (this.getItemAt(i).equals(item)) {
 				return true;

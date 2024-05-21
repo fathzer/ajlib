@@ -34,7 +34,7 @@ public abstract class Worker<T,V> extends SwingWorker<T,V> {
 	/** Constructor.
 	 *  <br>The phase is initialize to null and the length is set to -1 (indeterminate length).
 	 */
-	public Worker() {
+	protected Worker() {
 		super();
 		this.phase = null;
 		this.phaseLength = -1;

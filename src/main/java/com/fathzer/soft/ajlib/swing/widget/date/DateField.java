@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -173,7 +174,7 @@ public class DateField extends TextWidget {
 					if (year<10) {
 						// When the user enters a date with only one char for the year, it is interpreted as the full year (ie 9 -> year 9)
 						// So, we have to add the right century to this year
-						SimpleDateFormat simpleFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
+						SimpleDateFormat simpleFormat = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
 						Date formatterStartYear = simpleFormat.get2DigitYearStart();
 						year += ((formatterStartYear.getYear()+1900)/100)*100;
 						changed.setYear(year-1900);
@@ -187,13 +188,13 @@ public class DateField extends TextWidget {
 					try {
 						int day = Integer.parseInt(text);
 						GregorianCalendar today = new GregorianCalendar();
-						if ((day>0) && (day<=today.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))) {
-							changed = new GregorianCalendar(today.get(GregorianCalendar.YEAR),today.get(GregorianCalendar.MONTH),day).getTime();
+						if ((day>0) && (day<=today.getActualMaximum(Calendar.DAY_OF_MONTH))) {
+							changed = new GregorianCalendar(today.get(Calendar.YEAR),today.get(Calendar.MONTH),day).getTime();
 						}
 					} catch (NumberFormatException e1) {
 						try {
-							text = text+"/"+new GregorianCalendar().get(GregorianCalendar.YEAR);
-							changed = formatter.parse(text+"/"+new GregorianCalendar().get(GregorianCalendar.YEAR));
+							text = text+"/"+new GregorianCalendar().get(Calendar.YEAR);
+							changed = formatter.parse(text+"/"+new GregorianCalendar().get(Calendar.YEAR));
 						} catch (ParseException e2) {
 						}
 					}

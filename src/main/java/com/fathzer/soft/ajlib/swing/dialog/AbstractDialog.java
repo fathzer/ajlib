@@ -47,7 +47,7 @@ public abstract class AbstractDialog<T,V> extends JDialog {
 	 * @param title Dialog's title
 	 * @param data optional data (will be transfered to createContentPane)
 	 */
-	 public AbstractDialog(Window owner, String title, T data) {
+	 protected AbstractDialog(Window owner, String title, T data) {
 		super(owner, title, ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.data = data;

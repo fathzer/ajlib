@@ -31,9 +31,9 @@ public class LocalizationData {
 	 * @see #add(String)
 	 */
 	public LocalizationData(String bundlePath) {
-		this.bundleNames = new ArrayList<String>();
+		this.bundleNames = new ArrayList<>();
 		this.bundleNames.add(bundlePath);
-		this.bundles = new HashMap<Locale, List<ResourceBundle>>();
+		this.bundles = new HashMap<>();
 		this.translatorMode = false;
 	}
 	
@@ -93,11 +93,9 @@ public class LocalizationData {
 	private List<ResourceBundle> getBundle(Locale locale) {
 		List<ResourceBundle> result = bundles.get(locale);
 		if (result==null) {
-//			System.out.println ("Loading bundle for locale "+locale);
-			result = new ArrayList<ResourceBundle>();
+			result = new ArrayList<>();
 			for (String bundleName : this.bundleNames) {
 				ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
-//				System.out.println ("  ->"+bundle.getLocale());
 				result.add(bundle);
 			}
 			bundles.put(locale, result);

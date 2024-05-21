@@ -8,7 +8,6 @@ import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.border.TitledBorder;
@@ -33,7 +32,7 @@ public class DateDemoPanel extends JPanel {
 			public void propertyChange(PropertyChangeEvent evt) {
 				Date old = (Date) evt.getOldValue();
 				Date date = (Date) evt.getNewValue();
-				DateFormat format = SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
+				DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
 				String oldString = old == null ? "?" : format.format(old);
 				String dateString = date == null ? "?" : format.format(date);
 				AJLibDemo.setMessage("Date changed from "+oldString+" to "+dateString);

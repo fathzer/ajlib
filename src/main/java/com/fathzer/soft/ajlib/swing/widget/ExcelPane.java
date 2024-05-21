@@ -111,6 +111,7 @@ public class ExcelPane extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser chooser = new FileChooser(getInitialPath()) {
 				private static final long serialVersionUID = 1L;
+				@Override
 				public File getSelectedFile() {
 					File f = super.getSelectedFile();
 					if ((f!=null) && !f.getName().endsWith(CSV_EXTENSION)) {
@@ -149,12 +150,9 @@ public class ExcelPane extends JPanel {
 	 * @throws IOException If something goes wrong while writing file.
 	 */
 	protected void save(File file) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		try {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 			getCSVExporter().export(writer, getTable().getModel(), true);
 			writer.flush();
-		} finally {
-			writer.close();
 		}
 	}
 

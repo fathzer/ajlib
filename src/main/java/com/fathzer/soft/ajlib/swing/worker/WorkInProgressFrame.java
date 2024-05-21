@@ -1,9 +1,9 @@
 package com.fathzer.soft.ajlib.swing.worker;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
+import javax.swing.WindowConstants;
 import javax.swing.SwingWorker.StateValue;
 
 import java.awt.Window;
@@ -31,7 +31,6 @@ public class WorkInProgressFrame extends JDialog {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (Worker.STATE_PROPERTY_NAME.equals(evt.getPropertyName()) && SwingWorker.StateValue.DONE.equals(evt.getNewValue())) {
-//				System.out.println ("End of worker detected at "+System.currentTimeMillis());
 				WorkInProgressFrame.this.dispose();
 			}
 		}
@@ -59,19 +58,19 @@ public class WorkInProgressFrame extends JDialog {
 		super(owner, title, modality);
 		this.delay = DEFAULT_DELAY;
 		this.minimumVisibleTime = DEFAULT_MINIMUM_TIME_VISIBLE;
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
-				if (getDefaultCloseOperation()!=JFrame.DO_NOTHING_ON_CLOSE) {
+				if (getDefaultCloseOperation()!=WindowConstants.DO_NOTHING_ON_CLOSE) {
 					// Cancel the task if the window is closing
 					Worker<?, ?> worker = progressPanel.getWorker();
 					if (!worker.isFinished()) {
 						worker.cancel(false);
 					}
 					
-					if (getDefaultCloseOperation()==JFrame.DISPOSE_ON_CLOSE) {
+					if (getDefaultCloseOperation()==WindowConstants.DISPOSE_ON_CLOSE) {
 						forceDispose();
 					}
 				}
@@ -160,14 +159,12 @@ public class WorkInProgressFrame extends JDialog {
 			});
 			disposeTimer.setRepeats(false);
 			disposeTimer.start();
-//System.out.println ("Window will be closed after "+remaining+" ms");
 		} else {
 			forceDispose();
 		}
 	}
 
 	private void forceDispose() {
-//		System.out.println ("Window disposed at "+System.currentTimeMillis());
 		super.dispose();
 	}
 	
@@ -181,7 +178,6 @@ public class WorkInProgressFrame extends JDialog {
 			return;
 		}
 		// Start the job task.
-//		System.out.println ("execute at "+System.currentTimeMillis()+". Delay="+this.delay);
 		worker.execute();
 		if (!isVisible()) {
 			if (delay>0) {
@@ -190,20 +186,17 @@ public class WorkInProgressFrame extends JDialog {
 					// If the dialog is not modal, then create a timer to show the window and returns immediately 
 					this.timer = new Timer(delay, new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-	//		 System.out.println ("Timer expired at "+System.currentTimeMillis());
 							showIt();
 						}
 					});
 					timer.setRepeats(false);
 					timer.start();
-	//				System.out.println ("Timer is set to "+delay);
 				} else {
 					// If the dialog is modal wait until the delay is expired or the task is completed (the method should not return immediately to conform with modal dialogs behavior
 					try {
 						synchronized (worker) {
 							worker.wait(delay);
 						}
-//						System.out.println ("Wait expired at "+System.currentTimeMillis());
 						showIt();
 					} catch (InterruptedException e) {
 						Thread.currentThread().interrupt();
@@ -217,7 +210,6 @@ public class WorkInProgressFrame extends JDialog {
 	
 	private synchronized void showIt() {
 		setVisibleTime = System.currentTimeMillis(); // Remember when the dialog was displayed
-//		System.out.println ("setVisible(true) at "+setVisibleTime+". Minimum="+this.minimumVisibleTime);
 		if (!isVisible() && !worker.isFinished()) {
 			super.setVisible(true);
 		}
@@ -226,24 +218,4 @@ public class WorkInProgressFrame extends JDialog {
 	protected Worker<?,?> getWorker() {
 		return this.worker;
 	}
-
-//	/** Sets the auto-dispose attribute.
-//	 * <br>This attribute is true by default.
-//	 * The auto-dispose set to true means that the window will be disposed when the worker will be completed.
-//	 * @param auto true to have the window automatically closed when the worker completes.
-//	 */
-//	public void setAutoDispose(boolean auto) {
-//		this.autoDispose = auto;
-//	}
-
-//	/** Sets a new worker.
-//	 * <br>Used with setAutoDispose(false), this allow to chain workers in the same WorkInProgressFrame.
-//	 * <br>The method launches the new worker.
-//	 * @param worker The new worker
-//	 * @throws IllegalStateException if the current worker is not done.
-//	 */
-//	private void setWorker(Worker<?, ?> worker) {
-//		synchronized (this) {
-//		}
-//	}
 }

@@ -30,7 +30,7 @@ public abstract class AbstractTableRowMover extends JPanel {
 	 * Creates the panel.
 	 * @param table The table that contains the moveable rows.
 	 */
-	public AbstractTableRowMover(JTable table) {
+	protected AbstractTableRowMover(JTable table) {
 		this.table = table;
 		initialize();
 		
