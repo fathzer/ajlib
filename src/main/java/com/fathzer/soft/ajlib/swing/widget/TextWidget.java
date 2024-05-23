@@ -55,7 +55,7 @@ public class TextWidget extends JTextField {
 	public static final String PREDEFINED_VALUE = "PREDEFINED_VALUE"; //$NON-NLS-1$
 	
 	private JPopupMenu popup;
-	private JList list;
+	private JList<String> list;
 	private String predefined=null;
 	private String lastText=""; //$NON-NLS-1$
 	private int unsortedMax;
@@ -80,7 +80,7 @@ public class TextWidget extends JTextField {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			if (((String)value).length()==0) {
 				value = " "; //$NON-NLS-1$
 			}
@@ -104,7 +104,7 @@ public class TextWidget extends JTextField {
 		if (popup==null) {
 			unsortedMax = Integer.MAX_VALUE;
 			popup = new JPopupMenu();
-			list = new JList(new PopupListModel());
+			list = new JList<>(new PopupListModel());
 			list.setAutoscrolls(true);
 			list.setCellRenderer(new MyRenderer());
 			popup.add(new JScrollPane(list));
@@ -133,7 +133,7 @@ public class TextWidget extends JTextField {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (e.getButton()==MouseEvent.BUTTON1) {
-						setPredefined((String) list.getSelectedValue());
+						setPredefined(list.getSelectedValue());
 						popup.setVisible(false);
 					}
 				}
@@ -169,7 +169,7 @@ public class TextWidget extends JTextField {
 					} else if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Enter key pressed
 						if (popup.isVisible()) {
 							if (list.getSelectedIndex()>=0) {
-								setPredefined((String) list.getSelectedValue());
+								setPredefined(list.getSelectedValue());
 							}
 							popup.setVisible(false);
 							e.consume();
@@ -248,8 +248,8 @@ public class TextWidget extends JTextField {
 
 	private void fillModel(String text) {
 		TextMatcher matcher = new TextMatcher(TextMatcher.Kind.CONTAINS, text, false, false); //TODO Must match "starts with" ... to be implemented in TextMatcher
-		ArrayList<String> okProbaSort = new ArrayList<String>();
-		TreeSet<String> okAlphabeticSort = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		ArrayList<String> okProbaSort = new ArrayList<>();
+		TreeSet<String> okAlphabeticSort = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		for (String value : this.proposals) {
 			if (matcher.matches(value)) {
 				if (okProbaSort.size()<=unsortedMax) {
@@ -267,7 +267,7 @@ public class TextWidget extends JTextField {
 		}
 	}
 
-	private final static class PopupListModel extends AbstractListModel {
+	private static final class PopupListModel extends AbstractListModel<String> {
 		private static final long serialVersionUID = 1L;
 		String[] values;
 		
@@ -281,7 +281,7 @@ public class TextWidget extends JTextField {
 		}
 
 		@Override
-		public Object getElementAt(int index) {
+		public String getElementAt(int index) {
 			return values[index];
 		}
 

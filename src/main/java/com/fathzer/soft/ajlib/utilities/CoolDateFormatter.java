@@ -3,7 +3,6 @@ package com.fathzer.soft.ajlib.utilities;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,7 +19,7 @@ public class CoolDateFormatter {
 	 * @param locale The locale used to format the date.
 	 */
 	public CoolDateFormatter(Locale locale) {
-		format = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
+		format = DateFormat.getDateInstance(DateFormat.SHORT, locale);
 		format.setLenient(false);
 	}
 	

@@ -30,9 +30,7 @@ public abstract class Browser {
 	public static void show(URI uri, Component parent, String errorDialogTitle) {
 		try {
 			Desktop.getDesktop().browse(uri);
-		} catch (IOException e) {
-			error(uri, parent, errorDialogTitle);
-		} catch (UnsupportedOperationException e) {
+		} catch (IOException | UnsupportedOperationException e) {
 			error(uri, parent, errorDialogTitle);
 		}
 	}

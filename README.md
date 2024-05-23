@@ -5,4 +5,13 @@
 
 A-JLib is a simple java library with Swing widgets, utilities and other stuff.
 
-Please have a look at the javadoc [here](https://javadoc.io/doc/com.fathzer/ajlib/latest/index.html)
+It tries to simplify the development of Swing applications ... which is, sometime, a nightmare!<br>
+It contains the classes I developed during the <a href="https://www.yapbam.net">Yapbam project</a> in
+order to deal with the problems I encountered.
+
+It requires Java 7+ and is released under Apache 2 License.
+
+A demonstration of Swing widgets is available at [https://fathzer.github.io/ajlib/ajlib-demo.jar](https://fathzer.github.io/ajlib/ajlib-demo.jar).  
+It is a runnable jar. After you've downloaded it, run it using:
+`java -jar ajlib-demo.jar`
+Javadoc is available [here](https://javadoc.io/doc/com.fathzer/ajlib).

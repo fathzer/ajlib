@@ -29,7 +29,7 @@ public abstract class AbstractTitledPanel<T> extends JPanel {
 	 * @param headerIcon The header icon (null for no icon)
 	 * @param data The center component's data
 	 */
-	public AbstractTitledPanel(String headerMessage, Icon headerIcon, T data) {
+	protected AbstractTitledPanel(String headerMessage, Icon headerIcon, T data) {
 		super();
 		this.data = data;
 		initialize();

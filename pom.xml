@@ -8,14 +8,14 @@
 		<version>1.0.8</version>
 	</parent>
 	<artifactId>ajlib</artifactId>
-	<version>0.3.15</version>
+	<version>0.3.16</version>
 
 	<packaging>jar</packaging>
 
 	<name>A-JLib</name>
 	<description>A-Jlib is a simple java library with Swing widgets, utilities
 		and other stuff</description>
-	<url>http://ajlib.soft.fathzer.com</url>
+	<url>https://github.com/fathzer/ajlib</url>
 
 	<scm>
 		<url>https://github.com/fathzer/ajlib</url>
@@ -24,21 +24,86 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sonar.organization>fathzer</sonar.organization>
 		<animal-sniffer-version>1.23</animal-sniffer-version>
-		<animal-sniffer-signature>java16</animal-sniffer-signature>
+		<animal-sniffer-signature>java17</animal-sniffer-signature>
+		<maven.compiler.source>1.7</maven.compiler.source>
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<maven.compiler.target>1.7</maven.compiler.target>
+			</properties>
+		</profile>
+		<profile>
+			<id>sonar</id>
+			<properties>
+		<sonar.organization>fathzer</sonar.organization>
+				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+				<maven.javadoc.skip>true</maven.javadoc.skip>
+	</properties>
+		</profile>
+		<profile>
+			<id>demo</id>
+			<properties>
+				<maven.javadoc.skip>true</maven.javadoc.skip>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>3.4.1</version>
+						<configuration>
+          					<excludes combine.self="override" />
+				        </configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>3.5.3</version>
+						<configuration>
+							<finalName>ajlib-demo</finalName>
+							<minimizeJar>true</minimizeJar>
+							<filters>
+								<filter>
+									<artifact>*.*</artifact>
+									<excludes>
+										<exclude>META-INF/MANIFEST.MF</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>com.fathzer.soft.ajlib.swing.demo.AJLibDemo</Main-Class>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.fathzer</groupId>
 			<artifactId>jlocal</artifactId>
 			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>animal-sniffer-annotations</artifactId>
-			<version>${animal-sniffer-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -63,40 +128,12 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
+				<version>3.4.1</version>
 				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.fathzer.soft.ajlib.swing.demo.AJLibDemo</mainClass>
-						</manifest>
-					</archive>
 					<excludes>
-						<exclude>**/package.html</exclude>
+						<exclude>**/demo/**</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<configuration>
-							<target>
-								<zip
-									destfile="${basedir}/A-JLib-v${project.version}.zip">
-									<zipfileset dir="." includes="license.html" />
-									<zipfileset dir="${project.build.directory}" includes="*.jar" />
-								</zip>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

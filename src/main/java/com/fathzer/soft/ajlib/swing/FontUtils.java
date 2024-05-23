@@ -25,7 +25,7 @@ public abstract class FontUtils {
 	 * @return The list of fonts that are available and able to display text in the specified locale.
 	 */
 	public static List<Font> getAvailableTextFonts(Locale locale) {
-		ArrayList<Font> result = new ArrayList<Font>();
+		ArrayList<Font> result = new ArrayList<>();
 		Font[] allfonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 		for (Font font : allfonts) {
 		    if (font.canDisplayUpTo(font.getFontName(locale)) == -1) {

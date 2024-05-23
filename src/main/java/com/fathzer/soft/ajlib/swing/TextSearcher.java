@@ -81,7 +81,7 @@ public class TextSearcher {
 		text = normalize(text);
 
 		// 3) Search for the searched text
-		List<Integer> indexes = new LinkedList<Integer>();
+		List<Integer> indexes = new LinkedList<>();
 		int lastIndex = 0;
 		int size = 0;
 		searchedNormalizedLength = text.length();

@@ -31,7 +31,7 @@ import java.awt.BorderLayout;
 public abstract class AbstractSelector<T,V> extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel jLabel;
-	private ComboBox combo;
+	private ComboBox<T> combo;
 	private JButton newButton;
 
 	private T lastSelected;
@@ -41,7 +41,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 * Constructor.
 	 * @param parameters The init parameters of the selector (that object will be used to populate the combo).
 	 */
-	public AbstractSelector(V parameters) {
+	protected AbstractSelector(V parameters) {
 		this.parameters = parameters;
 		initialize();
 		internalPopulate();
@@ -178,9 +178,9 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	/** Gets the ComboBox.
 	 * @return a CoolJComboBox.
 	 */
-	public ComboBox getCombo() {
+	public ComboBox<T> getCombo() {
 		if (combo == null) {
-			combo = new ComboBox();
+			combo = new ComboBox<>();
 			combo.setRenderer(new Renderer());
 			combo.addActionListener(new ActionListener() {
 				@Override
@@ -200,7 +200,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	private class Renderer extends DefaultListCellRenderer {
 		@SuppressWarnings("unchecked")
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			T v = (T)value;
 			Component renderer = super.getListCellRendererComponent(list, getDefaultRenderedValue(v), index, isSelected, cellHasFocus);
 			return getCustomizedRenderer (renderer, v, index, isSelected, cellHasFocus);
@@ -267,7 +267,6 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	/** Gets the selected value.
 	 * @return the selected value.
 	 */
-	@SuppressWarnings("unchecked")
 	public T get() {
 		return (T)getCombo().getSelectedItem();
 	}
@@ -286,6 +285,7 @@ public abstract class AbstractSelector<T,V> extends JPanel {
 	 * <br>This method is a shortcut to this.getCombo().setToolTipText(text)
 	 * @param tip The tooltip text.
 	 */
+	@Override
 	public void setToolTipText(String tip) {
 		getCombo().setToolTipText(tip);
 	}

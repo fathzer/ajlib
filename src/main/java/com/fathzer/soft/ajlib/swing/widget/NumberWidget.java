@@ -4,6 +4,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -24,8 +25,8 @@ import com.fathzer.soft.ajlib.utilities.NullUtils;
  */
 public class NumberWidget extends TextWidget {
 	private static final long serialVersionUID = 1L;
-	private static final boolean DEBUG = false;
-	private static final char NON_BREAKING_SPACE = 160;
+	private static final char NON_BREAKING_SPACE = 0x00A0;
+	private static final char NARROW_NON_BREAKING_SPACE = 0x202F;
 	private static final char SPACE = ' ';
 	
 	/** Value property identifier. */ 
@@ -81,9 +82,12 @@ public class NumberWidget extends TextWidget {
 		});
 	}
 	
-	/** Workaround of a weird java implementation (see http://bugs.sun.com/view_bug.do?bug_id=4510618).
-	 * <br>In some locals, the grouping or decimal separators are a non breaking space ... not a single space.
+	/** Workaround of a weird java implementation (The bug id was 4510618, but it was removed despite not being fixed).
+	 * <br>In some locals (French for instance), the grouping or decimal separators are a non breaking space or a narrow non breaking space,
+	 * (depending on java version!!!) ... not a single space.
 	 * Users may be very surprised to see that in France, "1 000,00" is not a number.
+	 * <br>To make things easy, Java did not provide any method for getting or setting the effective grouping separator of currency instance until java 15.
+	 * <br>In one word: Nightmare!  
 	 * <br>This method changes non breaking spaces in the format symbol by simple spaces.
 	 * <br>When the user type a non breaking space, it is automatically converted to a simple space before to be passed
 	 * to the parseValue method. So, it is highly recommended that this method is applied on the format returned by buildFormat.
@@ -94,18 +98,38 @@ public class NumberWidget extends TextWidget {
 	 */
 	protected DecimalFormat patchJavaBug4510618 (DecimalFormat format) {
 		DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
-		if (decimalFormatSymbols.getGroupingSeparator()==NON_BREAKING_SPACE) {
+		if (isNonBreakingSpaceFlavor(decimalFormatSymbols.getGroupingSeparator())) {
 			decimalFormatSymbols.setGroupingSeparator(SPACE);
 		}
-		if (decimalFormatSymbols.getDecimalSeparator()==NON_BREAKING_SPACE) {
+		if (isNonBreakingSpaceFlavor(decimalFormatSymbols.getDecimalSeparator())) {
 			decimalFormatSymbols.setDecimalSeparator(SPACE);
 		}
+		if (isNonBreakingSpaceFlavor(decimalFormatSymbols.getMonetaryDecimalSeparator())) {
+			decimalFormatSymbols.setMonetaryDecimalSeparator(SPACE);
+		}
+		// Until Java 15, there was nothing to set monetary grouping separator, hopefully no need in Java 8 and 11, other pre-15 versions reached their end of life.
+		try {
+			char sep = (Character)decimalFormatSymbols.getClass().getDeclaredMethod("getMonetaryGroupingSeparator").invoke(decimalFormatSymbols);
+			if (isNonBreakingSpaceFlavor(sep)) {
+				decimalFormatSymbols.getClass().getDeclaredMethod("setMonetaryGroupingSeparator", char.class).invoke(decimalFormatSymbols, SPACE);
+			}
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			// Fucking java < 15
+		}
 		format.setDecimalFormatSymbols(decimalFormatSymbols);
-		format.setPositiveSuffix(format.getPositiveSuffix().replace(NON_BREAKING_SPACE, SPACE));
-		format.setNegativeSuffix(format.getNegativeSuffix().replace(NON_BREAKING_SPACE, SPACE));
-		format.setPositivePrefix(format.getPositivePrefix().replace(NON_BREAKING_SPACE, SPACE));
-		format.setNegativePrefix(format.getNegativePrefix().replace(NON_BREAKING_SPACE, SPACE));
+		format.setPositiveSuffix(replaceNonBreakingSpaces(format.getPositiveSuffix()));
+		format.setNegativeSuffix(replaceNonBreakingSpaces(format.getNegativeSuffix()));
+		format.setPositivePrefix(replaceNonBreakingSpaces(format.getPositivePrefix()));
+		format.setNegativePrefix(replaceNonBreakingSpaces(format.getNegativePrefix()));
 		return format;
+	}
+	
+	private boolean isNonBreakingSpaceFlavor(char character) {
+		return character==NON_BREAKING_SPACE || character==NARROW_NON_BREAKING_SPACE;
+	}
+	
+	private String replaceNonBreakingSpaces(String string) {
+		return string.replace(NON_BREAKING_SPACE, SPACE).replace(NARROW_NON_BREAKING_SPACE, SPACE);
 	}
 	
 	protected DecimalFormat buildFormat(Locale locale) {
@@ -135,12 +159,9 @@ public class NumberWidget extends TextWidget {
 		if (text.length()==0) {
 			this.valid = isEmptyAllowed;
 		} else {
-			changed = parseValue(text.replace(NON_BREAKING_SPACE, SPACE));
+			changed = parseValue(text.replace(NON_BREAKING_SPACE, SPACE).replace(NARROW_NON_BREAKING_SPACE, SPACE));
 			this.valid = (changed!=null) && (changed.doubleValue()>=minValue.doubleValue()) && (changed.doubleValue()<=maxValue.doubleValue());
-			if (DEBUG) {
-				System.out.println (text+"->"+changed+" => this.valid:"+oldValid+"->"+valid);
 			}
-		}
 		internalSetValue(changed==null?null:changed.doubleValue());
 		if (this.valid!=oldValid) {
 			firePropertyChange(CONTENT_VALID_PROPERTY, oldValid, this.valid);
@@ -225,10 +246,7 @@ public class NumberWidget extends TextWidget {
 	 */
 	public Double getValue() {
 		updateValue();
-		if (DEBUG) {
-			System.out.println ("AmountWidget.getValue returns "+value);
-		}
-		return this.value==null?null:new Double(this.value.doubleValue());
+		return this.value==null?null: this.value.doubleValue();
 	}
 
 	/** Sets the current value.

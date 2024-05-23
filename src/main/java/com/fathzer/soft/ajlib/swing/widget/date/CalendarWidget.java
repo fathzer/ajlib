@@ -376,9 +376,7 @@ public class CalendarWidget extends JPanel {
 	 *          the new color
 	 */
 	public void setChosenDateButtonColor(final Color chosenDateButtonColor) {
-		if (chosenDateButtonColor == null) {
-			throw new NullPointerException("UIColor must not be null.");
-		}
+		checkButtonColor(chosenDateButtonColor);
 		final Color oldValue = this.chosenDateButtonColor;
 		this.chosenDateButtonColor = chosenDateButtonColor;
 		refreshButtons();
@@ -401,9 +399,7 @@ public class CalendarWidget extends JPanel {
 	 *          the color for the current month.
 	 */
 	public void setChosenMonthButtonColor(final Color chosenMonthButtonColor) {
-		if (chosenMonthButtonColor == null) {
-			throw new NullPointerException("UIColor must not be null.");
-		}
+		checkButtonColor(chosenMonthButtonColor);
 		final Color oldValue = this.chosenMonthButtonColor;
 		this.chosenMonthButtonColor = chosenMonthButtonColor;
 		refreshButtons();
@@ -426,12 +422,16 @@ public class CalendarWidget extends JPanel {
 	 *          a color.
 	 */
 	public void setChosenOtherButtonColor(final Color chosenOtherButtonColor) {
-		if (chosenOtherButtonColor == null) {
-			throw new NullPointerException("UIColor must not be null.");
-		}
+		checkButtonColor(chosenOtherButtonColor);
 		final Color oldValue = this.chosenOtherButtonColor;
 		this.chosenOtherButtonColor = chosenOtherButtonColor;
 		refreshButtons();
 		firePropertyChange("chosenOtherButtonColor", oldValue, chosenOtherButtonColor);
+	}
+	
+	private static void checkButtonColor(Color color) {
+		if (color == null) {
+			throw new NullPointerException("UIColor must not be null.");
+		}
 	}
 }

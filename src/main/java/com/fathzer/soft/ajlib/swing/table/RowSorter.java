@@ -48,7 +48,7 @@ public class RowSorter<M extends TableModel> extends TableRowSorter<M> {
 			return;
 		}
 		List<? extends SortKey> sortKeys = getSortKeys();
-		ArrayList<SortKey> futureKeys = new ArrayList<SortKey>();
+		ArrayList<SortKey> futureKeys = new ArrayList<>();
 		SortKey theKey = null;
 		for (SortKey sortKey : sortKeys) {
 			if (sortKey.getColumn()==column) {

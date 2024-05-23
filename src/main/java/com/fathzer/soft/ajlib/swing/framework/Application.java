@@ -16,6 +16,7 @@ import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.WindowConstants;
 
 import com.fathzer.soft.ajlib.swing.Utils;
 import com.fathzer.soft.ajlib.utilities.LocalizationData;
@@ -71,13 +72,8 @@ public abstract class Application {
 	public final void launch() {
 		// Set the look and feel
 		setLookAndFeel();
-		// Install the exceptions logger on the AWT event queue.
-		if (isJava6()) {
-			// Warning the new event queue may ABSOLUTLY be NOT installed by the event dispatch thread under java 1.6 or the program will never exit
-			installEventQueue();
-		} else {
-			// Warning the new event queue may ABSOLUTLY be installed by the event dispatch thread under java 1.7 or the program will never exit
-			// Warning - 2, if the new event queue is installed by the Runnable that launches start, it sometimes cause a NullPointerException
+		// Warning the new event queue may ABSOLUTLY be installed by the event dispatch thread under java 1.7+ or the program will never exit
+		// Warning (2), if the new event queue is installed by the Runnable that launches start, it sometimes cause a NullPointerException
 			// at java.awt.EventQueue.getCurrentEventImpl(EventQueue.java:796), for instance when setting the selectedItem of a JComboBox in the start method
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
@@ -91,7 +87,6 @@ public abstract class Application {
 			} catch (InvocationTargetException e) {
 				throw new RuntimeException(e.getCause());
 			}
-		}
 		// Schedule a job for the event-dispatching thread:
 		// creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -99,10 +94,6 @@ public abstract class Application {
 				start();
 			}
 		});
-	}
-	
-	private static boolean isJava6() {
-		return "1.6".equals(System.getProperty("java.specification.version"));
 	}
 	
 	private void installEventQueue() {
@@ -230,7 +221,7 @@ public abstract class Application {
 
 	private void start() {
 		frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.setContentPane(buildMainPanel());
 		frame.setTitle(getName());
 		frame.addWindowListener(new WindowAdapter() {
@@ -239,10 +230,8 @@ public abstract class Application {
 				onClose(event);
 			}
 		});
-		// CheckNewReleaseAction.doAutoCheck(frame);
 		frame.setJMenuBar(buildMenuBar());
 		frame.pack();
-//		frame.setMinimumSize(frame.getSize());
 		restoreState();
 		boolean quit = !onStart();
 		if (quit) {

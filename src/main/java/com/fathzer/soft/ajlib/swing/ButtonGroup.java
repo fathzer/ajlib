@@ -35,7 +35,7 @@ public class ButtonGroup extends Observable {
 	 */
 	public ButtonGroup() {
 		this.autoDeselect = false;
-		this.buttons = new ArrayList<AbstractButton>();
+		this.buttons = new ArrayList<>();
 		this.selected = null;
 		this.listener = new ItemListener() {
 			@Override
