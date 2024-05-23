@@ -34,4 +34,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B -Dsonar.coverage.exclusions=**/WindowsShortcut.java -P sonar org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dorg.slf4j.simpleLogger.log.org.mockserver.log=warn -Dsonar.projectKey=fathzer_ajlib
+        run: mvn -B -Dsonar.coverage.exclusions=**/WindowsShortcut.java,**/demo/** -P sonar org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dorg.slf4j.simpleLogger.log.org.mockserver.log=warn -Dsonar.projectKey=fathzer_ajlib
