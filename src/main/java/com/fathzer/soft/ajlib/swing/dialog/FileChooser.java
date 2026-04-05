@@ -196,6 +196,10 @@ public class FileChooser extends JFileChooser {
 		this.selectionTestEnabled = enabled;
 	}
 
+	/**
+	 * Returns the cause why the current selection is disabled, or null if it is not disabled.
+	 * @return the cause why the current selection is disabled, or null if it is not disabled.
+	 */
 	public String getDisabledCause() {
 		File file = getSelectedFile();
 		if (file == null) {
