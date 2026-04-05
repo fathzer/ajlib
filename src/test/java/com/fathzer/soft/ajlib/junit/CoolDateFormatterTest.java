@@ -1,6 +1,6 @@
 package com.fathzer.soft.ajlib.junit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fathzer.soft.ajlib.utilities.CoolDateFormatter;
 

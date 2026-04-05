@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.fathzer.soft.ajlib.utilities.ListUtils;
 import com.fathzer.soft.ajlib.utilities.StringUtils;
@@ -18,7 +18,7 @@ import com.fathzer.soft.ajlib.utilities.StringUtils;
 public class ListUtilsTest {
 	private static Collection<Integer> list;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void init() {
 		list = new ArrayList<Integer>();
 		for (int i = 0; i < 10; i++) {

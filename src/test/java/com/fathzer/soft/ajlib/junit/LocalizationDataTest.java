@@ -1,11 +1,11 @@
 package com.fathzer.soft.ajlib.junit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Locale;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fathzer.soft.ajlib.utilities.LocalizationData;
 
