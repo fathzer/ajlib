@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import com.fathzer.soft.ajlib.swing.widget.CurrencyWidget;
 import com.fathzer.soft.ajlib.swing.widget.NumberWidget;
 
-public class CurrencyWidgetTest {
+class CurrencyWidgetTest {
 	@Test
-	public void test() {
+	void test() {
 		CurrencyWidget w = new CurrencyWidget(Locale.FRANCE);
 		double value = 5000.0;
 		w.setValue(value);
@@ -36,7 +36,7 @@ public class CurrencyWidgetTest {
 	}
 	
 	@Test
-	public void fuckingJavaDecimalFormatTest() {
+	void fuckingJavaDecimalFormatTest() {
 		DecimalFormat format = (DecimalFormat)NumberFormat.getCurrencyInstance(Locale.FRENCH);
 		final String x = format.format(5000.0).replace((char)0x202F, ' ').replace((char)0x00A0, ' ');
 		

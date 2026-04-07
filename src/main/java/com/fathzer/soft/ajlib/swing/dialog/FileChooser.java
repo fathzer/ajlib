@@ -280,7 +280,7 @@ public class FileChooser extends JFileChooser {
 	private File buildSelectedFile(String name) {
 		// We should remove directory because in DIRECTORIES_ONLY selection mode, the directory may be in the file name
 		name = new File(name).getName();
-		return name.length() == 0 ? null : new File(FileChooser.super.getCurrentDirectory(), name);
+		return name.isEmpty() ? null : new File(FileChooser.super.getCurrentDirectory(), name);
 	}
 
 	private class MyDocument extends PlainDocument {

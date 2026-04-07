@@ -121,7 +121,7 @@ public class DateField extends TextWidget {
 	 */
 	public void setEmptyDate(Date date) {
 		this.emptyValue = date;
-		if (this.getText().trim().length()==0) {
+		if (this.getText().trim().isEmpty()) {
 			updateDate();
 		}
 	}

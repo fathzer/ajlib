@@ -156,7 +156,7 @@ public class NumberWidget extends TextWidget {
 		boolean oldValid = this.valid;
 		Number changed = null;
 		String text = this.getText().trim();
-		if (text.length()==0) {
+		if (text.isEmpty()) {
 			this.valid = isEmptyAllowed;
 		} else {
 			changed = parseValue(text.replace(NON_BREAKING_SPACE, SPACE).replace(NARROW_NON_BREAKING_SPACE, SPACE));
@@ -208,7 +208,7 @@ public class NumberWidget extends TextWidget {
 	 */
 	public void setEmptyAllowed(boolean isEmptyAllowed) {
 		this.isEmptyAllowed = isEmptyAllowed;
-		if (this.getText().trim().length()==0) {
+		if (this.getText().trim().isEmpty()) {
 			updateValue();
 		}
 	}

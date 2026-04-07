@@ -16,10 +16,10 @@ import com.fathzer.soft.ajlib.junit.utils.AbstractSwingTest;
 import com.fathzer.soft.ajlib.swing.widget.date.DateField;
 import com.fathzer.soft.ajlib.swing.widget.date.DateWidget;
 
-public class DateWidgetTest extends AbstractSwingTest {
+class DateWidgetTest extends AbstractSwingTest {
 	
 	@Test
-	public void test() throws Throwable {
+	void test() throws Throwable {
 	    assumeFalse(GraphicsEnvironment.isHeadless());
 		
 		final DateWidgetFrame test = new DateWidgetFrame();

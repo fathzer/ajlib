@@ -7,15 +7,14 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 
 import com.fathzer.soft.ajlib.utilities.FileUtils;
-import com.fathzer.soft.ajlib.utilities.StringUtils;
 
-/** Tests for StringUtils class.
- * @see StringUtils
+/** Tests for FileUtils class.
+ * @see FileUtils
  */
-public class FileUtilsTest {
+class FileUtilsTest {
 
 	@Test
-	public void testExtension() {
+	void testExtension() {
 		assertEquals(".xml", FileUtils.getExtension(new File("x.xml")));
 		assertEquals(null, FileUtils.getExtension(new File("")));
 		assertEquals(".", FileUtils.getExtension(new File(".")));

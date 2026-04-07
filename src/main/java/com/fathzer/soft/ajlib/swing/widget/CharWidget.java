@@ -31,7 +31,7 @@ public class CharWidget extends TextWidget {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				String text = getText();
-				if (text.length()==0) {
+				if (text.isEmpty()) {
 					setChar(defaultChar);
 				} else if (text.length()>1){
 					setText(new String(new char[]{text.charAt(text.length()-1)}));
