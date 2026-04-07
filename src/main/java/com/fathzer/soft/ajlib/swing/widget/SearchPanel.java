@@ -156,7 +156,7 @@ public class SearchPanel extends JPanel {
 		String text = getSearchedTextField().getText();
 		searcher.setSearchedText(text);
 		int[] offsets = searcher.getOffsets();
-		searchedTextField.setBackground((text.length()>0) && (offsets.length==0)?Color.red:Color.white);
+		searchedTextField.setBackground((!text.isEmpty()) && (offsets.length==0)?Color.red:Color.white);
 		getResultPanel().setVisible(offsets.length>0);
 		if (offsets.length>0) {
 			setSelected(0);

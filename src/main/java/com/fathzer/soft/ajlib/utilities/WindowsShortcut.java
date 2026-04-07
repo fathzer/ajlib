@@ -32,9 +32,10 @@ import java.text.ParseException;
  *     by Joshua Marinacci and Chris Adamson
  *     ISBN: 0-596-00907-0
  *     http://www.oreilly.com/catalog/swinghks/
- * The author of AJlib library only made minor changes to comply with Sonar rules.
+ * The author of AJlib library only made minor changes to comply with Sonar rules and make isPotentialValidLink() more tolerant to read protected files.
  */
 public class WindowsShortcut {
+    static final int MINIMUM_LENGTH = 0x64;
     private boolean isDirectory;
     private boolean isLocal;
     private String realFile;
@@ -54,13 +55,11 @@ public class WindowsShortcut {
      * @throws IOException if an IOException is thrown while reading from the file
      */
     public static boolean isPotentialValidLink(final File file) throws IOException {
-        final int minimum_length = 0x64;
-        boolean isPotentiallyValid = false;
-        try (InputStream fis = new FileInputStream(file)) {
-            isPotentiallyValid = file.isFile()
-                && file.getName().toLowerCase().endsWith(".lnk")
-                && fis.available() >= minimum_length
-                && isMagicPresent(getBytes(fis, 32));
+        boolean isPotentiallyValid = file.isFile() && file.getName().toLowerCase().endsWith(".lnk") && file.length() >= MINIMUM_LENGTH;
+        if (isPotentiallyValid) {
+            try (InputStream fis = new FileInputStream(file)) {
+                isPotentiallyValid = isMagicPresent(getBytes(fis, 32));
+            }
         }
         return isPotentiallyValid;
     }

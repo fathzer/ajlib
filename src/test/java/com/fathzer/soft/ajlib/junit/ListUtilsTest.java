@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.fathzer.soft.ajlib.utilities.ListUtils;
 import com.fathzer.soft.ajlib.utilities.StringUtils;
@@ -15,11 +15,11 @@ import com.fathzer.soft.ajlib.utilities.StringUtils;
 /** Tests for StringUtils class.
  * @see StringUtils
  */
-public class ListUtilsTest {
+class ListUtilsTest {
 	private static Collection<Integer> list;
 	
-	@BeforeClass
-	public static void init() {
+	@BeforeAll
+	static void init() {
 		list = new ArrayList<Integer>();
 		for (int i = 0; i < 10; i++) {
 			list.add(i);
@@ -28,7 +28,7 @@ public class ListUtilsTest {
 	}
 	
 	@Test
-	public void testOne() {
+	void testOne() {
 		List<Integer> tested = new ArrayList<Integer>(list);
 		ListUtils.move(tested, 4, -2);
 		assertIs(new int[]{0,1,4,2,3,5,6,7,8,9},tested);
@@ -37,7 +37,7 @@ public class ListUtilsTest {
 	}
 	
 	@Test
-	public void testMany() {
+	void testMany() {
 		List<Integer> tested = new ArrayList<Integer>(list);
 		ListUtils.move(tested, new int[]{4,8,9}, -3);
 		assertIs(new int[]{0,4,1,2,3,8,9,5,6,7},tested);

@@ -81,7 +81,7 @@ public class TextWidget extends JTextField {
 
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			if (((String)value).length()==0) {
+			if (((String)value).isEmpty()) {
 				value = " "; //$NON-NLS-1$
 			}
 			JComponent label = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);

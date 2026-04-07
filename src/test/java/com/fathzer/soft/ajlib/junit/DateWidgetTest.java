@@ -1,7 +1,7 @@
 package com.fathzer.soft.ajlib.junit;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
@@ -10,16 +10,16 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fathzer.soft.ajlib.junit.utils.AbstractSwingTest;
 import com.fathzer.soft.ajlib.swing.widget.date.DateField;
 import com.fathzer.soft.ajlib.swing.widget.date.DateWidget;
 
-public class DateWidgetTest extends AbstractSwingTest {
+class DateWidgetTest extends AbstractSwingTest {
 	
 	@Test
-	public void test() throws Throwable {
+	void test() throws Throwable {
 	    assumeFalse(GraphicsEnvironment.isHeadless());
 		
 		final DateWidgetFrame test = new DateWidgetFrame();

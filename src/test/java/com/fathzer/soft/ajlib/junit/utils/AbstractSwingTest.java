@@ -8,12 +8,12 @@ import java.awt.Robot;
 
 import javax.swing.JFrame;
 
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 
 public abstract class AbstractSwingTest {
 	protected static Robot robot;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws AWTException {
 		if (!GraphicsEnvironment.isHeadless()) {
 			robot = new Robot();
