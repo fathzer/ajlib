@@ -3,8 +3,9 @@ package com.fathzer.soft.ajlib.swing.worker;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.awaitility.Awaitility.await;
 
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -83,7 +84,7 @@ class WorkerTest {
 
 
     @Test
-    void testOk() {
+    void testOk() throws Exception {
         TestWorker worker = new TestWorker(() -> "result") ;
         
         worker.launch(() -> {});
@@ -92,7 +93,7 @@ class WorkerTest {
 
         assertTrue(worker.isDone());
         assertFalse(worker.isCancelled());
-        assertEquals(Future.State.SUCCESS, worker.state());
+        assertEquals("result", worker.get());
         assertTrue(worker.isFinished());
     }
 
@@ -106,7 +107,7 @@ class WorkerTest {
         worker.getWaitSpy().awaitWaitAndDone(worker);
         assertTrue(worker.isDone());
         assertFalse(worker.isCancelled());
-        assertEquals(Future.State.FAILED, worker.state());
+        assertThrows(ExecutionException.class, worker::get);
         assertTrue(worker.isFinished());
     }
 
@@ -118,7 +119,7 @@ class WorkerTest {
         worker.getWaitSpy().awaitWaitAndDone(worker);
         assertTrue(worker.isDone());
         assertTrue(worker.isCancelled());
-        assertEquals(Future.State.CANCELLED, worker.state());
+        assertThrows(CancellationException.class, worker::get);
         assertTrue(worker.isFinished());
     }
 }
