@@ -1,14 +1,13 @@
 package com.fathzer.soft.ajlib.swing.worker;
 
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.SwingWorker.StateValue;
 
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -45,7 +44,7 @@ public class WorkInProgressFrame extends JDialog {
 	private int minimumVisibleTime;
 	private int delay;
 	private Timer timer;
-	private Worker<?, ?> worker;
+	private final Worker<?, ?> worker;
 
 	/**
 	 * Constructor.
@@ -56,6 +55,7 @@ public class WorkInProgressFrame extends JDialog {
 	 */
 	public WorkInProgressFrame(Window owner, String title, ModalityType modality, Worker<?,?> worker) {
 		super(owner, title, modality);
+		this.worker = worker;
 		this.delay = DEFAULT_DELAY;
 		this.minimumVisibleTime = DEFAULT_MINIMUM_TIME_VISIBLE;
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -71,13 +71,12 @@ public class WorkInProgressFrame extends JDialog {
 					}
 					
 					if (getDefaultCloseOperation()==WindowConstants.DISPOSE_ON_CLOSE) {
-						forceDispose();
+						disposeNow();
 					}
 				}
 			}
 		});
 		
-		this.worker = worker;
 		buildContentPane();
 		this.worker.addPropertyChangeListener(new AutoClosePropertyChangeListener());
 
@@ -132,7 +131,7 @@ public class WorkInProgressFrame extends JDialog {
 	
 	/** Sets the frame visible or not
 	 * <br> if visible is true and the worker is pending, then the execute method is called.
-	 * @param visible true to set the dialog visible.
+	 * @param visible true to set the dialog visible. False is ignored.
 	 * @see #execute()
 	 */
 	@Override
@@ -151,20 +150,24 @@ public class WorkInProgressFrame extends JDialog {
 		if (remaining>0) {
 			// If the dialog is displayed for less than the minimum visible time ms, and the task was not cancelled
 			// Wait for the user to see what happens ;-)
-			Timer disposeTimer = new Timer((int) remaining, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					forceDispose();
-				}
+			Timer disposeTimer = new Timer((int) remaining, e -> {
+				SwingUtilities.invokeLater(this::disposeNow);
 			});
 			disposeTimer.setRepeats(false);
 			disposeTimer.start();
 		} else {
-			forceDispose();
+			disposeNow();
 		}
 	}
 
-	private void forceDispose() {
+	/** Disposes the frame immediately.
+	 * <br>Unlike the dispose method, this method does not wait for the minimum visible time to be satisfied. It cancels any pending dispose timer.
+	 */
+	public void disposeNow() {
+		if (timer != null) {
+			timer.stop();
+			timer = null;
+		}
 		super.dispose();
 	}
 	
@@ -184,19 +187,18 @@ public class WorkInProgressFrame extends JDialog {
 				// If the window display should be delayed
 				if (ModalityType.MODELESS.equals(getModalityType())) {
 					// If the dialog is not modal, then create a timer to show the window and returns immediately 
-					this.timer = new Timer(delay, new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							showIt();
-						}
-					});
+					this.timer = new Timer(delay, e -> showIt());
 					timer.setRepeats(false);
 					timer.start();
 				} else {
 					// If the dialog is modal wait until the delay is expired or the task is completed (the method should not return immediately to conform with modal dialogs behavior
 					try {
 						synchronized (worker) {
+							// No need to have a loop, we can assume it is not a big deal to have spurious wakeups,
+							// It will simply show the window a bit earlier than expected
 							worker.wait(delay);
 						}
+						// Remember showIt will not show the window if the worker is finished
 						showIt();
 					} catch (InterruptedException e) {
 						Thread.currentThread().interrupt();

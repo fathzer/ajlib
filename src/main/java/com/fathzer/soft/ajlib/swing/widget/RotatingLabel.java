@@ -46,7 +46,6 @@ public class RotatingLabel extends JLabel {
 		int w = (int) (Math.abs(preferredSize.width*Math.cos(rad)) + Math.abs(preferredSize.height*Math.sin(rad)));
 		int h = (int) (Math.abs(preferredSize.width*Math.sin(rad)) + Math.abs(preferredSize.height*Math.cos(rad)));
 		Dimension result = new Dimension(w, h);
-//		System.out.println ("Angle: "+angle+", original pref size: "+preferredSize+" ,rotated: "+result);
 		return result;
 	}
 
